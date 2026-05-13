@@ -78,5 +78,18 @@ namespace DAL_QuanLy
 
             return ExecuteNonQuery(query, parameters) > 0;
         }
+
+        /// <summary>
+        /// Tìm kiếm nhân viên theo từ khóa
+        /// </summary>
+        public DataTable TimKiemNhanVien(string keyword)
+        {
+            string query = @"SELECT * FROM NHANVIEN 
+                             WHERE HONV LIKE @keyword OR TENNV LIKE @keyword OR SDT LIKE @keyword OR CHUCVU LIKE @keyword";
+            SqlParameter[] parameters = {
+                new SqlParameter("@keyword", "%" + keyword + "%")
+            };
+            return ExecuteQuery(query, parameters);
+        }
     }
 }

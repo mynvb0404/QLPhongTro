@@ -12,6 +12,13 @@ namespace DAL_QuanLy
 {
     public class DAL_PHONG : DBConnect
     {
+        //Lấy toàn bộ danh sách phòng
+        public DataTable LayDanhSachPhong()
+        {
+            string query = "SELECT * FROM PHONG";
+            return ExecuteQuery(query, null);
+        }
+
         public bool ThemPhong(DTO_PHONG p)
         {
             string query = "INSERT INTO PHONG (TENPHONG, MAKV, GIAPHONG, DIENTICH, LOAIPHONG, TRANGTHAIPHONG, SONGUOIHIENTAI, NOITHAT) VALUES (@TENPHONG, @MAKV, @GIAPHONG, @DIENTICH, @LOAIPHONG, @TRANGTHAIPHONG, @SONGUOIHIENTAI, @NOITHAT);";
@@ -63,8 +70,7 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(query, parameters) > 0;
         }
 
-        public DataTable TimKiemPhong(string? maKV = null, decimal? minGia = null,
-                                      decimal? maxGia = null, DTO_TINOGHEP tinOGhep = null)
+        public DataTable TimKiemPhong(string? maKV = null, decimal? minGia = null, decimal? maxGia = null, DTO_TINOGHEP tinOGhep = null)
         {
             var queryBuilder = new StringBuilder("SELECT * FROM PHONG WHERE 1=1");
             var parameters = new List<SqlParameter>();
@@ -99,17 +105,15 @@ namespace DAL_QuanLy
 
             if (oghepFilter.HasValue)
             {
-                string likeValue = "%ghép%";
-
                 if (oghepFilter.Value)
                 {
-                    queryBuilder.Append(" AND LOAIPHONG LIKE @OGHEP");
-                    parameters.Add(new SqlParameter("@OGHEP", likeValue));
+                    queryBuilder.Append(" AND TRANGTHAIPHONG = @TRANGTHAIPHONG");
+                    parameters.Add(new SqlParameter("@TRANGTHAIPHONG", "Cần ở ghép"));
                 }
                 else
                 {
-                    queryBuilder.Append(" AND (LOAIPHONG NOT LIKE @OGHEP OR LOAIPHONG IS NULL)");
-                    parameters.Add(new SqlParameter("@OGHEP", likeValue));
+                    queryBuilder.Append(" AND TRANGTHAIPHONG != @TRANGTHAIPHONG");
+                    parameters.Add(new SqlParameter("@TRANGTHAIPHONG", "Cần ở ghép"));
                 }
             }
 
