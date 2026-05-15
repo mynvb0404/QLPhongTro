@@ -7,7 +7,7 @@ namespace BUS_QuanLy
 {
     public class BUS_Phong
     {
-        private DAL_PHONG dalPhong = new DAL_PHONG();
+        private DAL_Phong dalPhong = new DAL_Phong();
 
         // 1. Lấy danh sách toàn bộ phòng
         public DataTable LayDanhSachPhong()

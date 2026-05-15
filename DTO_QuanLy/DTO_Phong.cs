@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO_QuanLy
 {
-    public class DTO_PHONG
+    public class DTO_Phong
     {
         public int MAPHONG { get; set; }
 
@@ -26,9 +26,9 @@ namespace DTO_QuanLy
 
         public string? NOITHAT { get; set; }
 
-        public DTO_PHONG() { }
+        public DTO_Phong() { }
 
-        public DTO_PHONG(int maphong, string tenphong, string makv, decimal giaphong,
+        public DTO_Phong(int maphong, string tenphong, string makv, decimal giaphong,
                          double? dientich, string loaiphong, string trangthaiphong,
                          int songuoihientai, string? noithat)
         {

@@ -4,7 +4,7 @@ using DTO_QuanLy;
 
 namespace DAL_QuanLy
 {
-    public class DAL_KHUVUC : DBConnect
+    public class DAL_KhuVuc : DBConnect
     {
         // 1. Xem danh sách toàn bộ khu vực
         public DataTable LayDanhSachKhuVuc()
@@ -14,7 +14,7 @@ namespace DAL_QuanLy
         }
 
         // 2. Thêm khu vực mới
-        public bool ThemKhuVuc(DTO_KHUVUC kv)
+        public bool ThemKhuVuc(DTO_KhuVuc kv)
         {
             string query = "INSERT INTO KHUVUC (MAKV, TENKV, MANV, DCHI) VALUES (@MAKV, @TENKV, @MANV, @DCHI)";
 
@@ -30,7 +30,7 @@ namespace DAL_QuanLy
         }
 
         // 3. Sửa thông tin khu vực theo mã khu vực
-        public bool SuaKhuVuc(DTO_KHUVUC kv)
+        public bool SuaKhuVuc(DTO_KhuVuc kv)
         {
             string query = "UPDATE KHUVUC SET TENKV = @TENKV, MANV = @MANV, DCHI = @DCHI WHERE MAKV = @MAKV";
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO_QuanLy
 {
-    public class DTO_KHUVUC
+    public class DTO_KhuVuc
     {
         public string MAKV { get; set; } = "";
 
@@ -16,9 +16,9 @@ namespace DTO_QuanLy
 
         public int MANV { get; set; }
 
-        public DTO_KHUVUC() { }
+        public DTO_KhuVuc() { }
 
-        public DTO_KHUVUC(string makv, string tenkv, string dchi, int manv)
+        public DTO_KhuVuc(string makv, string tenkv, string dchi, int manv)
         {
             MAKV = makv;
             TENKV = tenkv;

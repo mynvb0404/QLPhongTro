@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO_QuanLy
 {
-    public class DTO_TAIKHOAN
+    public class DTO_TaiKhoan
     {
         public string MATK { get; set; } = "";
 
@@ -20,9 +20,9 @@ namespace DTO_QuanLy
 
         public string LOAITK { get; set; } = "";
 
-        public DTO_TAIKHOAN() { }
+        public DTO_TaiKhoan() { }
 
-        public DTO_TAIKHOAN(string matk, int? manv, int? makh,
+        public DTO_TaiKhoan(string matk, int? manv, int? makh,
                             string tendangnhap, string matkhau, string loaitk)
         {
             MATK = matk;

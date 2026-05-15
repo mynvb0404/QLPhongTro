@@ -5,26 +5,19 @@ using DTO_QuanLy;
 
 namespace DAL_QuanLy
 {
-    public class DAL_NHANVIEN : DBConnect
+    public class DAL_NhanVien: DBConnect
     {
-        /// <summary>
-        /// Lấy danh sách nhân viên
-        /// </summary>
+        // Lấy danh sách nhân viên
         public DataTable LayDanhSachNhanVien()
         {
             string query = "SELECT * FROM NHANVIEN";
             return ExecuteQuery(query);
         }
 
-        /// <summary>
-        /// Thêm nhân viên
-        /// </summary>
-        public bool ThemNhanVien(DTO_NHANVIEN nv)
+        //Thêm nhân viên
+        public bool ThemNhanVien(DTO_NhanVien nv)
         {
-            string query = @"INSERT INTO NHANVIEN
-                            (HONV, TENNV, SDT, EMAIL, CHUCVU)
-                            VALUES
-                            (@HONV, @TENNV, @SDT, @EMAIL, @CHUCVU)";
+            string query = "INSERT INTO NHANVIEN (HONV, TENNV, SDT, EMAIL, CHUCVU) VALUES (@HONV, @TENNV, @SDT, @EMAIL, @CHUCVU)";
 
             SqlParameter[] parameters = new SqlParameter[]
             {
@@ -38,18 +31,10 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(query, parameters) > 0;
         }
 
-        /// <summary>
-        /// Sửa thông tin nhân viên
-        /// </summary>
-        public bool SuaNhanVien(DTO_NHANVIEN nv)
+        // Sửa thông tin nhân viên
+        public bool SuaNhanVien(DTO_NhanVien nv)
         {
-            string query = @"UPDATE NHANVIEN
-                             SET HONV = @HONV,
-                                 TENNV = @TENNV,
-                                 SDT = @SDT,
-                                 EMAIL = @EMAIL,
-                                 CHUCVU = @CHUCVU
-                             WHERE MANV = @MANV";
+            string query = "UPDATE NHANVIEN SET HONV = @HONV, TENNV = @TENNV, SDT = @SDT, EMAIL = @EMAIL, CHUCVU = @CHUCVU WHERE MANV = @MANV";
 
             SqlParameter[] parameters = new SqlParameter[]
             {
@@ -64,9 +49,7 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(query, parameters) > 0;
         }
 
-        /// <summary>
-        /// Xóa nhân viên
-        /// </summary>
+        //Xóa nhân viên
         public bool XoaNhanVien(int maNV)
         {
             string query = "DELETE FROM NHANVIEN WHERE MANV = @MANV";
@@ -79,13 +62,10 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(query, parameters) > 0;
         }
 
-        /// <summary>
-        /// Tìm kiếm nhân viên theo từ khóa
-        /// </summary>
+        // Tìm kiếm nhân viên theo từ khóa
         public DataTable TimKiemNhanVien(string keyword)
         {
-            string query = @"SELECT * FROM NHANVIEN 
-                             WHERE HONV LIKE @keyword OR TENNV LIKE @keyword OR SDT LIKE @keyword OR CHUCVU LIKE @keyword";
+            string query = "SELECT * FROM NHANVIEN WHERE HONV LIKE @keyword OR TENNV LIKE @keyword OR SDT LIKE @keyword OR CHUCVU LIKE @keyword";
             SqlParameter[] parameters = {
                 new SqlParameter("@keyword", "%" + keyword + "%")
             };

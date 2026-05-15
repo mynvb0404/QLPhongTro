@@ -8,7 +8,7 @@ namespace BUS_QuanLy
 {
     public class BUS_NhanVien
     {
-        private DAL_NHANVIEN dalNhanVien = new DAL_NHANVIEN();
+        private DAL_NhanVien dalNhanVien = new DAL_NhanVien();
 
         // 1. Lấy danh sách toàn bộ nhân viên
         public DataTable LayDanhSachNhanVien()
@@ -16,7 +16,7 @@ namespace BUS_QuanLy
             return dalNhanVien.LayDanhSachNhanVien();
         }
 
-        // 2. Chức năng Thêm Nhân Viên mới (Có kiểm tra luật nghiệp vụ)
+        // 2. Chức năng Thêm Nhân Viên mới
         public string ThemNhanVien(DTO_NHANVIEN nv)
         {
             // Không được để trống Họ và Tên nhân viên

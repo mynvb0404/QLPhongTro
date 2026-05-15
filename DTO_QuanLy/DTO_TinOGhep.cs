@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO_QuanLy
 {
-    public class DTO_TINOGHEP
+    public class DTO_TinOGhep
     {
         public int MATINOG { get; set; }
 
@@ -24,9 +24,9 @@ namespace DTO_QuanLy
 
         public string TRANGTHAITIN { get; set; } = "";
 
-        public DTO_TINOGHEP() { }
+        public DTO_TinOGhep() { }
 
-        public DTO_TINOGHEP(int matinog, int maphong, int makh, int songuoican,
+        public DTO_TinOGhep(int matinog, int maphong, int makh, int songuoican,
                             string gioitinh, decimal giachia,
                             string mota, string trangthaitin)
         {

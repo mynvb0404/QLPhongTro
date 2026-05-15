@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO_QuanLy
 {
-    public class DTO_HOPDONG
+    public class DTO_HopDong
     {
         public int MAHOPDONG { get; set; }
 
@@ -22,9 +22,9 @@ namespace DTO_QuanLy
 
         public string THONGTINHD { get; set; } = "";
 
-        public DTO_HOPDONG() { }
+        public DTO_HopDong() { }
 
-        public DTO_HOPDONG(int mahopdong, int maphong, int makh,
+        public DTO_HopDong(int mahopdong, int maphong, int makh,
                            DateTime ngaykyhd, DateTime ngaykt,
                            string trangthaihopdong, string thongtinhd)
         {

@@ -5,21 +5,17 @@ using DTO_QuanLy;
 
 namespace DAL_QuanLy
 {
-    public class DAL_KHACHTHUE : DBConnect
+    public class DAL_KhachHang : DBConnect
     {
-        /// <summary>
-        /// Lấy toàn bộ danh sách khách thuê
-        /// </summary>
+        // Lấy toàn bộ danh sách khách thuê
         public DataTable LayDanhSachKhachThue()
         {
             string query = "SELECT * FROM KHACHTHUE";
             return ExecuteQuery(query);
         }
 
-        /// <summary>
-        /// Thêm khách thuê
-        /// </summary>
-        public bool ThemKhachThue(DTO_KHACHTHUE kh)
+        //Thêm khách thuê
+        public bool ThemKhachThue(DTO_KhachHang kh)
         {
             string query = @"INSERT INTO KHACHTHUE
                             (HOKH, TENKH, NGAYSINH, GIOITINH, CCCD, SDT, NGAYBATDAUTHUE, TRANGTHAITHUE)
@@ -41,10 +37,8 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(query, parameters) > 0;
         }
 
-        /// <summary>
-        /// Cập nhật thông tin khách thuê theo MAKH
-        /// </summary>
-        public bool SuaKhachThue(DTO_KHACHTHUE kh)
+        // Cập nhật thông tin khách thuê theo MAKH
+        public bool SuaKhachThue(DTO_KhachHang kh)
         {
             string query = @"UPDATE KHACHTHUE
                              SET HOKH = @HOKH,
@@ -73,9 +67,7 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(query, parameters) > 0;
         }
 
-        /// <summary>
-        /// Xóa khách thuê
-        /// </summary>
+        // Xóa khách thuê
         public bool XoaKhachThue(int maKH)
         {
             string query = "DELETE FROM KHACHTHUE WHERE MAKH = @MAKH";
@@ -88,9 +80,8 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(query, parameters) > 0;
         }
 
-        /// <summary>
-        /// Tìm kiếm khách thuê
-        /// </summary>
+
+        // Tìm kiếm khách thuê
         public DataTable TimKiemKhachThue(string keyword)
         {
             string query = @"SELECT *

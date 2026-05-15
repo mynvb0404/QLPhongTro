@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO_QuanLy
 {
-    public class DTO_NHANVIEN
+    public class DTO_NhanVien
     {
         public int MANV { get; set; }
         public string HONV { get; set; } = "";
@@ -15,9 +15,9 @@ namespace DTO_QuanLy
         public string? EMAIL { get; set; }
         public string? CHUCVU { get; set; }
 
-        public DTO_NHANVIEN() { }
+        public DTO_NhanVien() { }
 
-        public DTO_NHANVIEN(int manv, string honv, string tennv, string? sdt, string? email, string? chucvu)
+        public DTO_NhanVien(int manv, string honv, string tennv, string? sdt, string? email, string? chucvu)
         {
             MANV = manv;
             HONV = honv;

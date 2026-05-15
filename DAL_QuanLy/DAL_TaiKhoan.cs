@@ -5,7 +5,7 @@ using DTO_QuanLy;
 
 namespace DAL_QuanLy
 {
-    public class DAL_TAIKHOAN : DBConnect
+    public class DAL_TaiKhoan : DBConnect
     {
         // Kiểm tra đăng nhập
         public DataTable KiemTraDangNhap(string tenDN, string matKhau)
@@ -22,7 +22,7 @@ namespace DAL_QuanLy
         }
 
         // 1. Thêm tài khoản
-        public bool ThemTaiKhoan(DTO_TAIKHOAN tk)
+        public bool ThemTaiKhoan(DTO_TaiKhoan tk)
         {
             string query = "INSERT INTO TAIKHOAN (MATK, MANV, MAKH, TENDANGNHAP, MATKHAU, LOAITK) VALUES (@MATK, @MANV, @MAKH, @TENDANGNHAP, @MATKHAU, @LOAITK)";
 
@@ -55,7 +55,7 @@ namespace DAL_QuanLy
         }
 
         // 2. Sửa tài khoản
-        public bool SuaTaiKhoan(DTO_TAIKHOAN tk)
+        public bool SuaTaiKhoan(DTO_TaiKhoan tk)
         {
             string query = "UPDATE TAIKHOAN SET TENDANGNHAP = @TENDANGNHAP, MATKHAU = @MATKHAU WHERE MATK = @MATK";
 

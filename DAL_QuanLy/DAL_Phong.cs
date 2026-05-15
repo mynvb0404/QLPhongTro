@@ -10,7 +10,7 @@ using Microsoft.Data.SqlClient;
 
 namespace DAL_QuanLy
 {
-    public class DAL_PHONG : DBConnect
+    public class DAL_Phong : DBConnect
     {
         //Lấy toàn bộ danh sách phòng
         public DataTable LayDanhSachPhong()
@@ -19,7 +19,7 @@ namespace DAL_QuanLy
             return ExecuteQuery(query, null);
         }
 
-        public bool ThemPhong(DTO_PHONG p)
+        public bool ThemPhong(DTO_Phong p)
         {
             string query = "INSERT INTO PHONG (TENPHONG, MAKV, GIAPHONG, DIENTICH, LOAIPHONG, TRANGTHAIPHONG, SONGUOIHIENTAI, NOITHAT) VALUES (@TENPHONG, @MAKV, @GIAPHONG, @DIENTICH, @LOAIPHONG, @TRANGTHAIPHONG, @SONGUOIHIENTAI, @NOITHAT);";
 
@@ -38,7 +38,7 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(query, parameters) > 0;
         }
 
-        public bool SuaPhong(DTO_PHONG p)
+        public bool SuaPhong(DTO_Phong p)
         {
             string query = "UPDATE PHONG SET TENPHONG = @TENPHONG, MAKV = @MAKV, GIAPHONG = @GIAPHONG, DIENTICH = @DIENTICH, LOAIPHONG = @LOAIPHONG, TRANGTHAIPHONG = @TRANGTHAIPHONG, SONGUOIHIENTAI = @SONGUOIHIENTAI, NOITHAT = @NOITHAT WHERE MAPHONG = @MAPHONG;";
 
@@ -70,7 +70,7 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(query, parameters) > 0;
         }
 
-        public DataTable TimKiemPhong(string? maKV = null, decimal? minGia = null, decimal? maxGia = null, DTO_TINOGHEP tinOGhep = null)
+        public DataTable TimKiemPhong(string? maKV = null, decimal? minGia = null, decimal? maxGia = null, DTO_TinOGhep tinOGhep = null)
         {
             var queryBuilder = new StringBuilder("SELECT * FROM PHONG WHERE 1=1");
             var parameters = new List<SqlParameter>();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO_QuanLy
 {
-    public class DTO_LICHHEN
+    public class DTO_LichHen
     {
         public int MALH { get; set; }
 
@@ -26,9 +26,9 @@ namespace DTO_QuanLy
 
         public DateTime? THOIGIANCAPNHAT { get; set; }
 
-        public DTO_LICHHEN() { }
+        public DTO_LichHen() { }
 
-        public DTO_LICHHEN(int malh, int makh, int manv, int maphong,
+        public DTO_LichHen(int malh, int makh, int manv, int maphong,
                            DateTime thoigianhen, string trangthaihen,
                            string? noidunghen, DateTime thoigiantao,
                            DateTime? thoigiancapnhat)

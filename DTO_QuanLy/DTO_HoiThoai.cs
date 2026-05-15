@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO_QuanLy
 {
-    public class DTO_HOITHOAI
+    public class DTO_HoiThoai
     {
         public int MAHT { get; set; }
 
@@ -16,9 +16,9 @@ namespace DTO_QuanLy
 
         public DateTime THOIGIANTAOHT { get; set; }
 
-        public DTO_HOITHOAI() { }
+        public DTO_HoiThoai() { }
 
-        public DTO_HOITHOAI(int maht, int makh, int manv, DateTime thoigiantaoht)
+        public DTO_HoiThoai(int maht, int makh, int manv, DateTime thoigiantaoht)
         {
             MAHT = maht;
             MAKH = makh;
