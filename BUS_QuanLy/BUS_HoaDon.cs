@@ -1,0 +1,64 @@
+﻿using System;
+using System.Data;
+using DAL_QuanLy;
+using DTO_QuanLy;
+
+namespace BUS_QuanLy
+{
+    public class BUS_HoaDon
+    {
+        private DAL_HOADON dalHoaDon = new DAL_HOADON();
+
+        public DataTable LayDanhSachHoaDon() => dalHoaDon.LayDanhSachHoaDon();
+        public DataTable XemLichSuThanhToan(int maHD) => dalHoaDon.XemLichSuThanhToan(maHD);
+
+        // 1 Tạo hóa đơn 
+        public string TaoHoaDon(DTO_HOADON hd)
+        {
+            if (hd.MAHOPDONG <= 0)
+                return "Vui lòng chọn mã hợp đồng để tạo hóa đơn!";
+
+            if (hd.TIENNUOC < 0 || hd.TIENDIEN < 0 || hd.TIENPHATSINH < 0)
+                return "Số tiền không được phép là số âm!";
+
+            hd.TRANGTHAITT = TrangThaiThanhToan.ChuaThanhToan;
+            hd.NGAYLAP = DateTime.Now;
+
+            return dalHoaDon.TaoHoaDon(hd) ? "" : "Lỗi hệ thống: Không thể tạo hóa đơn!";
+        }
+
+        // 2 Cập nhật hóa đơn
+        public string CapNhatHoaDon(DTO_HOADON hd)
+        {
+            if (hd.MAHOADON <= 0) return "Mã hóa đơn không hợp lệ!";
+            if (hd.TIENNUOC < 0 || hd.TIENDIEN < 0 || hd.TIENPHATSINH < 0)
+                return "Số tiền không hợp lệ!";
+            if (!Enum.IsDefined(typeof(TrangThaiThanhToan), hd.TRANGTHAITT))
+                return "Trạng thái thanh toán không hợp lệ!";
+
+            return dalHoaDon.CapNhatHoaDon(hd) ? "" : "Cập nhật thất bại!";
+        }
+
+        // 3 Thanh toán
+        public string ThanhToanHoaDon(int maHD, PhuongThucThanhToan phuongThuc)
+        {
+            if (maHD <= 0) return "Mã hóa đơn không hợp lệ!";
+
+            if (!Enum.IsDefined(typeof(PhuongThucThanhToan), phuongThuc))
+            {
+                return "Vui lòng chọn phương thức thanh toán hợp lệ (Tiền mặt, Chuyển khoản hoặc QR)!";
+            }
+
+            return dalHoaDon.ThanhToanHoaDon(maHD, phuongThuc) ? "" : "Thanh toán thất bại!";
+        }
+
+        // 4 Xem lịch sử thanh toán
+        public DataTable XemLichSuThanhToan(int maHopDong)
+        {
+            if (maHopDong <= 0) return null;
+            return dalHoaDon.XemLichSuThanhToan(maHopDong);
+        }
+
+        public DataTable LayHoaDonChuaThanhToan() => dalHoaDon.LayHoaDonChuaThanhToan();
+    }
+}
