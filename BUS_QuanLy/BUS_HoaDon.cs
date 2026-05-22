@@ -9,8 +9,7 @@ namespace BUS_QuanLy
     {
         private DAL_HOADON dalHoaDon = new DAL_HOADON();
 
-        public DataTable LayDanhSachHoaDon() => dalHoaDon.LayDanhSachHoaDon();
-        public DataTable XemLichSuThanhToan(int maHD) => dalHoaDon.XemLichSuThanhToan(maHD);
+       
 
         // 1 Tạo hóa đơn 
         public string TaoHoaDon(DTO_HOADON hd)
@@ -52,13 +51,14 @@ namespace BUS_QuanLy
             return dalHoaDon.ThanhToanHoaDon(maHD, phuongThuc) ? "" : "Thanh toán thất bại!";
         }
 
+        
+        public DataTable LayDanhSachHoaDon() => dalHoaDon.LayDanhSachHoaDon();
         // 4 Xem lịch sử thanh toán
         public DataTable XemLichSuThanhToan(int maHopDong)
         {
-            if (maHopDong <= 0) return null;
+            if (maHopDong <= 0) return new DataTable();
             return dalHoaDon.XemLichSuThanhToan(maHopDong);
         }
 
-        public DataTable LayHoaDonChuaThanhToan() => dalHoaDon.LayHoaDonChuaThanhToan();
     }
 }

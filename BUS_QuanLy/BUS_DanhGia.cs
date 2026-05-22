@@ -9,8 +9,7 @@ namespace BUS_QuanLy
 
     public class BUS_DanhGia
     {
-        private readonly DAL_DanhGia dal = new DAL_DanhGia();
-
+        private DAL_DanhGia dal = new DAL_DanhGia();
         // 1 LẤY DANH SÁCH ĐÁNH GIÁ
         public DataTable GetAll() => dal.GetAll();
 
@@ -41,7 +40,7 @@ namespace BUS_QuanLy
         }
 
         // 3 XÓA ĐÁNH GIÁ
-        public bool XoaDanhGia(int maDG)
+        public string XoaDanhGia(int maDG)
         {
             if (maDG <= 0) return "Mã đánh giá không hợp lệ!";
             return dal.Xoa(maDG) ? "" : "Xóa đánh giá thất bại!";
@@ -51,10 +50,13 @@ namespace BUS_QuanLy
         public DataTable GetDanhGiaVeNguoi(int maNguoiDuocDG)
         {
             if (maNguoiDuocDG <= 0) return new DataTable();
-
-            string sql = "SELECT * FROM DANHGIA WHERE MaNguoiDuocDG = @ma";
-            SqlParameter pr = new SqlParameter("@ma", maNguoiDuocDG);
-            return dal.ExecuteQuery(sql, pr);
+            return dal.GetDanhGiaCuaNguoiDung(maNguoiDuocDG);
+        }
+        // 5 Kiểm tra hợp đồng đã được đánh giá chưa
+        public bool KiemTraDaDanhGia(int maHopDong)
+        {
+            if (maHopDong <= 0) return false;
+            return dal.KiemTraDaDanhGia(maHopDong);
         }
     }
 }

@@ -24,11 +24,18 @@ namespace BUS_QuanLy
             if (string.IsNullOrWhiteSpace(tk.MATKHAU) || tk.MATKHAU.Length < 6)
                 return "Mật khẩu phải từ 6 đến 20 ký tự!";
 
-            if (tk.LOAITK == "NV" && (tk.MANV == null || tk.MAKH != null))
-                return "Tài khoản nhân viên phải có MANV và không có MAKH!";
+            if (tk.LOAITK == LoaiTaiKhoan.NV)
+            {
+                if (tk.MANV == null || tk.MAKH != null)
+                    return "Tài khoản nhân viên phải gắn liền với Mã nhân viên và không có Mã khách hàng!";
+            }
 
-            if (tk.LOAITK == "KH" && (tk.MAKH == null || tk.MANV != null))
-                return "Tài khoản khách hàng phải có MAKH và không có MANV!";
+            // KIỂM TRA ENUM: Ràng buộc loại tài khoản Khách hàng (KH)
+            if (tk.LOAITK == LoaiTaiKhoan.KH)
+            {
+                if (tk.MAKH == null || tk.MANV != null)
+                    return "Tài khoản khách hàng phải gắn liền với Mã khách hàng và không có Mã nhân viên!";
+            }
 
             if (dalTaiKhoan.KiemTraTonTai(tk.TENDANGNHAP))
                 return "Tên đăng nhập này đã được sử dụng!";
@@ -55,12 +62,12 @@ namespace BUS_QuanLy
         // 4 Tìm kiếm tài khoản
         public DataTable TimKiemTaiKhoan(string tuKhoa) => dalTaiKhoan.TimKiemTaiKhoan(tuKhoa);
 
-        public DTO_TAIKHOAN DangNhap(string tenDN, string matKhau)
+        public DataTable KiemTraDangNhap(string tenDN, string matKhau)
         {
             if (string.IsNullOrWhiteSpace(tenDN) || string.IsNullOrWhiteSpace(matKhau))
-                return null;
+               return new DataTable();
 
-            return dalTaiKhoan.DangNhap(tenDN, matKhau);
+            return dalTaiKhoan.KiemTraDangNhap(tenDN, matKhau);
         }
     }
 }

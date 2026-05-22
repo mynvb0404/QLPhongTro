@@ -55,7 +55,7 @@ namespace BUS_QuanLy
             if (dalKhachThue.KiemTraTrungCCCD(kt.CCCD)) return "Số CCCD này đã tồn tại!";
             if (dalKhachThue.KiemTraTrungSDT(kt.SDT)) return "Số điện thoại này đã tồn tại!";
 
-            kt.TRANGTHAITHUE = "Đang thuê";
+            kt.TRANGTHAITHUE = TrangThaiKhachThue.DangThue;
 
             try
             {
@@ -94,6 +94,6 @@ namespace BUS_QuanLy
         public DataTable TimKiemKhachThue(string tuKhoa) => dalKhachThue.TimKiemKhachThue(tuKhoa);
 
         // 5 Xem thông tin người thuê
-        public DataTable XemThongTinNguoiThue(int maKH) => dalKhachThue.XemThongTinNguoiThue(maKH);
+        public DataTable XemThongTinNguoiThue(int maKH) => dalKhachThue.  LayThongTinKhachThue(maKH);
     }
 }

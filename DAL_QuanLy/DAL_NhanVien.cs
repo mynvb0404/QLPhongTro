@@ -87,7 +87,7 @@ namespace DAL_QuanLy
         public bool KiemTraTrungSDT(string sdt)
         {
             string sql = "SELECT COUNT(*) FROM NHANVIEN WHERE SDT = @SDT";
-            DataTable dt = ExecuteQuery(sql, new SqlParameter("@SDT", sdt));
+            DataTable dt = ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@SDT", sdt) });
 
             if (dt != null && dt.Rows.Count > 0)
             {
@@ -100,7 +100,7 @@ namespace DAL_QuanLy
         public bool KiemTraTrungEmail(string email)
         {
             string sql = "SELECT COUNT(*) FROM NHANVIEN WHERE EMAIL = @EMAIL";
-            DataTable dt = ExecuteQuery(sql, new SqlParameter("@EMAIL", email));
+            DataTable dt = ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@EMAIL", email) });
 
             if (dt != null && dt.Rows.Count > 0)
             {
@@ -113,7 +113,7 @@ namespace DAL_QuanLy
         public bool KiemTraNhanVienDangQuanLy(int maNV)
         {
             string sql = "SELECT COUNT(*) FROM KHUVUC WHERE MANV = @MANV";
-            DataTable dt = ExecuteQuery(sql, new SqlParameter("@MANV", maNV));
+            DataTable dt = ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@MANV", maNV) });
 
             if (dt != null && dt.Rows.Count > 0)
             {

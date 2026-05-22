@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using DAL_QuanLy;
+using DTO_QuanLy;
 
 namespace BUS_QuanLy
 {
@@ -30,15 +31,16 @@ namespace BUS_QuanLy
 
         // 4 Báo cáo chất lượng
         public DataTable BaoCaoChatLuong() => dalBaoCao.BaoCaoChatLuong();
-    }
 
     // Lưu một bản ghi báo cáo mới vào DB
         public string LuuBaoCao(DTO_BAOCAO bc)
         {
             if (bc.MANV <= 0)
                 return "Nhân viên lập báo cáo không hợp lệ!";
-            if (string.IsNullOrWhiteSpace(bc.LOAIBC))
-                return "Loại báo cáo không được để trống!";
+            if (!Enum.IsDefined(typeof(LoaiBaoCao), bc.LOAIBC))
+            {
+                return "Loại báo cáo không hợp lệ!";
+            }
 
             if (string.IsNullOrWhiteSpace(bc.NOIDUNGBC))
                 return "Nội dung báo cáo không được để trống!";
@@ -49,6 +51,14 @@ namespace BUS_QuanLy
         }
 
         //  Lấy lịch sử các báo cáo đã lưu
-        public DataTable LayLichSuBaoCao() => dalBaoCao.LayLichSuBaoCao();
+        public DataTable LayDanhSachBaoCao()
+        {
+            DataTable dt = dalBaoCao.LayDanhSachBaoCao();
+
+            // Nếu kết quả từ DAL bị null, trả về một DataTable trống để an toàn cho giao diện
+            if (dt == null) return new DataTable();
+
+            return dt;
+        }
     }
 }

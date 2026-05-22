@@ -38,8 +38,6 @@ namespace DTO_QuanLy
         public DateTime NGAYBATDAUTHUE { get; set; }
 
         public TrangThaiKhachThue TRANGTHAITHUE { get; set; }
-        
-        public string TRANGTHAITHUE { get; set; } = "";
 
         public DTO_KHACHTHUE() { }
 

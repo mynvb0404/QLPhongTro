@@ -20,15 +20,13 @@ namespace BUS_QuanLy
             if (hd.MAPHONG <= 0)
                 return "Không được để trống phòng!";
             hd.NGAYKYHD = DateTime.Now;
-            if (hd.NGAYBATDAU >= hd.NGAYKETTHUC || hd.NGAYKT <= DateTime.Now)
+            if (hd.NGAYKYHD >= hd.NGAYKT || hd.NGAYKT <= DateTime.Now)
                 return "Ngày kết thúc phải sau ngày hiện tại và phải sau ngày bắt đầu!";
             
             if (string.IsNullOrWhiteSpace(hd.THONGTINHD))
                 return "Thông tin hợp đồng không được để trống!";
-            if (hd.GIATHUE <= 0)
-                return "Giá thuê phải lớn hơn 0!";
 
-            hd.TRANGTHAIHOPDONG = "Còn hiệu lực";
+            hd.TRANGTHAIHOPDONG = TrangThaiHopDong.ConHieuLuc;
             return dalHopDong.ThemHopDong(hd) ? "" : "Thêm hợp đồng thất bại!";
         }
 
@@ -37,10 +35,8 @@ namespace BUS_QuanLy
         {
             if (hd.MAHOPDONG <= 0)
                 return "Mã hợp đồng không hợp lệ!";
-            if (hd.NGAYKT <= DateTime.Now || hd.NGAYBATDAU >= hd.NGAYKETTHUC)
+            if (hd.NGAYKT <= DateTime.Now || hd.NGAYKYHD >= hd.NGAYKT)
                 return "Ngày kết thúc phải sau ngày hiện tại và phải sau ngày bắt đầu!";
-            if (hd.GIATHUE <= 0)
-                return "Giá thuê phải lớn hơn 0!";
             if (string.IsNullOrWhiteSpace(hd.THONGTINHD))
                 return "Thông tin hợp đồng không được để trống!";
 

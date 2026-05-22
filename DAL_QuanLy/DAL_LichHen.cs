@@ -35,8 +35,7 @@ namespace DAL_QuanLy
                 new SqlParameter("@MAPHONG",     lh.MAPHONG),
                 new SqlParameter("@THOIGIANHEN", lh.THOIGIANHEN),
                 new SqlParameter("@TRANGTHAIHEN", GetStringTrangThai(lh.TRANGTHAIHEN)),
-                new SqlParameter("@NOIDUNGHEN",
-                    (object)lh.NOIDUNGHEN ?? DBNull.Value)
+                new SqlParameter("@NOIDUNGHEN", lh.NOIDUNGHEN!)
             };
             return ExecuteNonQuery(query, p) > 0;
         }
@@ -60,7 +59,7 @@ namespace DAL_QuanLy
                 new SqlParameter("@MAPHONG",     lh.MAPHONG),
                 new SqlParameter("@THOIGIANHEN", lh.THOIGIANHEN),
                 new SqlParameter("@TRANGTHAIHEN", GetStringTrangThai(lh.TRANGTHAIHEN)),
-                new SqlParameter("@NOIDUNGHEN", (object)lh.NOIDUNGHEN ?? DBNull.Value)
+                new SqlParameter("@NOIDUNGHEN", lh.NOIDUNGHEN!)
             };
             return ExecuteNonQuery(query, p) > 0;
         }
@@ -91,7 +90,7 @@ namespace DAL_QuanLy
                     JOIN PHONG P ON LH.MAPHONG = P.MAPHONG
                     WHERE LH.MALH = @MALH";
 
-            return ExecuteQuery(query, new SqlParameter("@MALH", maLH));
+            return ExecuteQuery(query, new SqlParameter[] { new SqlParameter("@MALH", maLH) });
         }
 
         // 5 Cập nhật trạng thái lịch hẹn

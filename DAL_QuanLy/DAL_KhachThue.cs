@@ -37,15 +37,16 @@ namespace DAL_QuanLy
                 new SqlParameter("@HOKH", kh.HOKH),
                 new SqlParameter("@TENKH", kh.TENKH),
                 new SqlParameter("@NGAYSINH", kh.NGAYSINH.HasValue ? kh.NGAYSINH.Value : (object)DBNull.Value),
-                new SqlParameter("@GIOITINH", GetStringGioiTinh(kh.GIOITINH)),
+                new SqlParameter("@GIOITINH", GetStringGioiTinh(kh.GIOITINH ?? GioiTinh.Nam)),
                 new SqlParameter("@CCCD", kh.CCCD),
                 new SqlParameter("@SDT", kh.SDT),
                 new SqlParameter("@NGAYBATDAUTHUE", kh.NGAYBATDAUTHUE),
                 new SqlParameter("@TRANGTHAITHUE", GetStringTrangThaiThue(kh.TRANGTHAITHUE))
-
+            };
+            
             return ExecuteNonQuery(query, parameters) > 0;
         }
-
+        
         /// Cập nhật thông tin khách thuê theo MAKH
         public bool SuaKhachThue(DTO_KHACHTHUE kh)
         {
@@ -66,7 +67,7 @@ namespace DAL_QuanLy
                 new SqlParameter("@HOKH", kh.HOKH),
                 new SqlParameter("@TENKH", kh.TENKH),
                 new SqlParameter("@NGAYSINH", kh.NGAYSINH.HasValue ? kh.NGAYSINH.Value : (object)DBNull.Value),
-                new SqlParameter("@GIOITINH", GetStringGioiTinh(kh.GIOITINH)),
+                new SqlParameter("@GIOITINH", GetStringGioiTinh(kh.GIOITINH ?? GioiTinh.Nam)),
                 new SqlParameter("@CCCD", kh.CCCD),
                 new SqlParameter("@SDT", kh.SDT),
                 new SqlParameter("@NGAYBATDAUTHUE", kh.NGAYBATDAUTHUE),
@@ -136,7 +137,7 @@ namespace DAL_QuanLy
         {
             string sql = "SELECT COUNT(*) FROM KHACHTHUE WHERE CCCD = @CCCD";
 
-            DataTable dt = ExecuteQuery(sql, new SqlParameter("@CCCD", cccd));
+            DataTable dt = ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@CCCD", cccd) });
 
             if (dt != null && dt.Rows.Count > 0)
             {
@@ -150,7 +151,7 @@ namespace DAL_QuanLy
         {
             string sql = "SELECT COUNT(*) FROM KHACHTHUE WHERE SDT = @SDT";
 
-            DataTable dt = ExecuteQuery(sql, new SqlParameter("@SDT", sdt));
+            DataTable dt = ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@SDT", sdt) });
 
             if (dt != null && dt.Rows.Count > 0)
             {
@@ -164,7 +165,7 @@ namespace DAL_QuanLy
         {
             string sql = "SELECT COUNT(*) FROM HOPDONG WHERE MAKH = @MAKH";
 
-            DataTable dt = ExecuteQuery(sql, new SqlParameter("@MAKH", maKH));
+            DataTable dt = ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@MAKH", maKH) });
 
             if (dt != null && dt.Rows.Count > 0)
             {

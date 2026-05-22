@@ -20,7 +20,7 @@ namespace BUS_QuanLy
         {
             if (maPhong <= 0)
             {
-                return null;
+                return new DataTable();
             }
             return dalPhong.LayThongTinPhong(maPhong);
         }
@@ -53,15 +53,9 @@ namespace BUS_QuanLy
                 return "Số người hiện tại không được là số âm!";
             }
 
-            if (string.IsNullOrWhiteSpace(phong.TRANGTHAIPHONG))
+            if (!Enum.IsDefined(typeof(TinhTrangPhong), phong.TRANGTHAIPHONG))
             {
-                phong.TRANGTHAIPHONG = "Còn trống";
-            }
-            else if (phong.TRANGTHAIPHONG != "Còn trống" &&
-                     phong.TRANGTHAIPHONG != "Đã thuê" &&
-                     phong.TRANGTHAIPHONG != "Cần ở ghép")
-            {
-                return "Trạng thái phòng không hợp lệ! (Chỉ chấp nhận: Còn trống, Đã thuê, Cần ở ghép).";
+                return "Trạng thái phòng không hợp lệ!";
             }
 
             bool kq = dalPhong.ThemPhong(phong);
@@ -95,9 +89,7 @@ namespace BUS_QuanLy
                 return "Diện tích phòng phải lớn hơn 0 m²!";
             }
 
-            if (phong.TRANGTHAIPHONG != "Còn trống" &&
-                phong.TRANGTHAIPHONG != "Đã thuê" &&
-                phong.TRANGTHAIPHONG != "Cần ở ghép")
+            if (!Enum.IsDefined(typeof(TinhTrangPhong), phong.TRANGTHAIPHONG))
             {
                 return "Trạng thái phòng không hợp lệ!";
             }
@@ -111,19 +103,19 @@ namespace BUS_QuanLy
         }
 
         // 5. Cập nhật nhanh trạng thái phòng (Khi ký HĐ/Trả phòng)
-        public string CapNhatTrangThaiPhong(int maPhong, string trangThai)
+        public string CapNhatTrangThaiPhong(int maPhong, TinhTrangPhong TRANGTHAIPHONG)
         {
             if (maPhong <= 0)
             {
                 return "Mã phòng không hợp lệ!";
             }
 
-            if (trangThai != "Còn trống" && trangThai != "Đã thuê" && trangThai != "Cần ở ghép")
+            if (!Enum.IsDefined(typeof(TinhTrangPhong), TRANGTHAIPHONG))
             {
-                return "Trạng thái yêu cầu không hợp lệ!";
+                return "Trạng thái phòng không hợp lệ!";
             }
 
-            bool kq = dalPhong.CapNhatTrangThaiPhong(maPhong, trangThai);
+            bool kq = dalPhong.CapNhatTrangThaiPhong(maPhong, TRANGTHAIPHONG);
             if (kq)
             {
                 return "THÀNH CÔNG";

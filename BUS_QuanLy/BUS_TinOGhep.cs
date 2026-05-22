@@ -15,65 +15,67 @@ namespace BUS_QuanLy
             if (og.MAKH <= 0) return "Mã khách hàng không được để trống!";
             if (og.SONGUOICAN <= 0) return "Số người cần tìm phải lớn hơn 0!";
             if (og.GIACHIA <= 0) return "Giá chia sẻ phải lớn hơn 0!";
-            if (og.NGAYDANG.Date < System.DateTime.Today)
-                return "Ngày đăng không hợp lệ!";
-            string[] gtHopLe = { "Nam", "Nữ" };
-            if (!Array.Exists(gtHopLe, g => g == og.GIOITINH))
+            
+            if (og.GIOITINH != GioiTinh.Nam && og.GIOITINH != GioiTinh.Nu)
                 return "Giới tính yêu cầu không hợp lệ!";
 
             if (string.IsNullOrWhiteSpace(og.MOTA))
                 return "Vui lòng nhập mô tả cho tin đăng!";
 
-            og.TRANGTHAITIN = "Đang tìm";
-            return dalOGhep.ThemTinOGhep(og) ? "" : "Đăng tin thất bại!";
+            og.TRANGTHAITIN = TrangThaiTinOGhep.DangTim;
+            return dalTinOGhep.ThemTinOGhep(og) ? "" : "Đăng tin thất bại!";
         }
 
-        // 2 Tìm kiếm ở ghép theo tiêu chí 
-        public DataTable TimKiemOGhep(string gioiTinh, decimal giaMax, string tuKhoa)
+        // 2. Tìm kiếm tin ở ghép
+        public DataTable TimKiemTinOGhep(string gioiTinh, decimal giaMax, string tuKhoa)
         {
-            // Chuẩn hóa dữ liệu để tránh lỗi query
             string gioiTinhChuan = string.IsNullOrWhiteSpace(gioiTinh) ? "" : gioiTinh.Trim();
             string tuKhoaChuan = string.IsNullOrWhiteSpace(tuKhoa) ? "" : tuKhoa.Trim();
-            decimal giaChuan = giaMax < 0 ? 0 : giaMax; // Đảm bảo giá không âm
+            decimal giaChuan = giaMax < 0 ? 0 : giaMax;
 
-            return dalOGhep.TimKiemOGhep(gioiTinhChuan, giaChuan, tuKhoaChuan);
+            return dalTinOGhep.TimKiemTinOGhep(gioiTinhChuan, giaChuan, tuKhoaChuan); // Sửa: đúng tên hàm DAL
         }
 
-        // 3 Gửi yêu cầu ở ghép
+        // Chưa dùng 
+        // 3. Gửi yêu cầu ở ghép (đăng tin với trạng thái mặc định DangTim)
         public string GuiYeuCauOGhep(DTO_TINOGHEP og)
         {
-            if (string.IsNullOrWhiteSpace(og.MAPHONG) || string.IsNullOrWhiteSpace(og.MAKH))
-                return "Thông tin không đầy đủ!";
-            return dalOGhep.GuiYeuCauOGhep(og) ? "" : "Gửi yêu cầu thất bại!";
+            if (og.MAPHONG <= 0) return "Mã phòng không hợp lệ!"; // Sửa: MAPHONG là int
+            if (og.MAKH <= 0) return "Mã khách hàng không hợp lệ!";
+            og.TRANGTHAITIN = TrangThaiTinOGhep.DangTim;
+            return dalTinOGhep.ThemTinOGhep(og) ? "" : "Gửi yêu cầu thất bại!";
         }
 
         // 4 Xử lý yêu cầu ở ghép
-        public string XuLyYeuCau(int maTin, string trangThai)
+        public string XuLyYeuCau(int maTin, TrangThaiYeuCau trangThai)
         {
-            string[] hopLe = { "Đã duyệt", "Từ chối" };
-            if (!System.Array.Exists(hopLe, t => t == trangThai))
-                return "Trạng thái xử lý không hợp lệ!";
-            return dalOGhep.XuLyYeuCau(maTin, trangThai) ? "" : "Xử lý thất bại!";
+            if (trangThai == TrangThaiYeuCau.ChoDuyet)
+            {
+                return "Vui lòng chọn Duyệt hoặc Từ chối!";
+            }
+            return dalTinOGhep.XuLyYeuCau(maTin, trangThai) ? "" : "Xử lý thất bại!";
         }
 
+      // Phần này dùng 
         // 3 Sửa tin ở ghép
         public string SuaTinOGhep(DTO_TINOGHEP og)
         {
             if (og.MATINOG <= 0) return "Mã tin không hợp lệ!";
-            if (og.SONGUOICAN <= 0 || og.GIACHIA <= 0) return "Dữ liệu số người hoặc giá phải > 0!";
+            if (og.SONGUOICAN <= 0) return "Số người cần phải lớn hơn 0!";
+            if (og.GIACHIA <= 0) return "Giá chia sẻ phải lớn hơn 0!";
             if (string.IsNullOrWhiteSpace(og.MOTA)) return "Mô tả không được để trống!";
 
             return dalTinOGhep.SuaTinOGhep(og) ? "" : "Cập nhật tin thất bại!";
         }
 
         // 4 Cập nhật trạng thái tin (Duyệt/Đóng tin)
-        public string CapNhatTrangThaiTin(int maTin, string trangThai)
+        public string CapNhatTrangThaiTin(int maTin, TrangThaiTinOGhep trangThai)
         {
-            string[] hopLe = { "Đang tìm", "Đã đủ người", "Đã đóng" };
-            if (!Array.Exists(hopLe, t => t == trangThai))
-                return "Trạng thái không hợp lệ!";
-
             if (maTin <= 0) return "Mã tin không hợp lệ!";
+
+            // Sửa: kiểm tra enum hợp lệ thay vì string array
+            if (!Enum.IsDefined(typeof(TrangThaiTinOGhep), trangThai))
+                return "Trạng thái không hợp lệ!";
 
             return dalTinOGhep.CapNhatTrangThaiTin(maTin, trangThai) ? "" : "Cập nhật trạng thái thất bại!";
         }
@@ -81,7 +83,7 @@ namespace BUS_QuanLy
         // 5 Lấy danh sách tin theo phòng
         public DataTable LayDanhSachTinTheoPhong(int maPhong)
         {
-            if (maPhong <= 0) return null;
+            if (maPhong <= 0) return new DataTable();
             return dalTinOGhep.LayDanhSachTinTheoPhong(maPhong);
         }
 
@@ -92,7 +94,7 @@ namespace BUS_QuanLy
                 return "Nội dung đánh giá không được để trống!";
             if (danhGia.Length > 500)
                 return "Nội dung đánh giá không được quá 500 ký tự!";
-            return dalOGhep.DanhGiaOGhep(maTin, danhGia) ? "" : "Gửi đánh giá thất bại!";
+            return dalTinOGhep.DanhGiaOGhep(maTin, danhGia) ? "" : "Gửi đánh giá thất bại!";
         }
     }
 }

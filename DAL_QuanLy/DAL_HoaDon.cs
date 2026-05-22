@@ -19,7 +19,7 @@ namespace DAL_QuanLy
                 case PhuongThucThanhToan.TienMat: return "Tiền mặt";
                 case PhuongThucThanhToan.ChuyenKhoan: return "Chuyển khoản";
                 case PhuongThucThanhToan.QuetMaQR: return "Quét mã QR";
-                default: return null;
+                default: return "";
             }
         }
 

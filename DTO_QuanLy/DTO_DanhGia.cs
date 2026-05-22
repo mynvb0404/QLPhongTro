@@ -8,7 +8,7 @@ namespace DTO_QuanLy
 {
     public class DTO_DanhGia
     {
-      
+
         public int MADG { get; set; }
 
         public int MANGUOIDG { get; set; }
@@ -38,3 +38,4 @@ namespace DTO_QuanLy
         }
     }
 }
+

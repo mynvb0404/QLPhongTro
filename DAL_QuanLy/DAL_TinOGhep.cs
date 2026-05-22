@@ -39,6 +39,24 @@ namespace DAL_QuanLy
             };
             return ExecuteNonQuery(query, p) > 0;
         }
+
+        public bool SuaTinOGhep(DTO_TINOGHEP og)
+        {
+            string query = @"UPDATE TINOGHEP 
+                             SET SONGUOICAN  = @SONGUOICAN,
+                                 GIOITINH   = @GIOITINH,
+                                 GIACHIA    = @GIACHIA,
+                                 MOTA       = @MOTA
+                             WHERE MATINOG = @MATINOG";
+            SqlParameter[] p = {
+                new SqlParameter("@SONGUOICAN", og.SONGUOICAN),
+                new SqlParameter("@GIOITINH",   og.GIOITINH.ToString()),
+                new SqlParameter("@GIACHIA",    og.GIACHIA),
+                new SqlParameter("@MOTA",       og.MOTA),
+                new SqlParameter("@MATINOG",    og.MATINOG)
+            };
+            return ExecuteNonQuery(query, p) > 0;
+        }
         // 2 Tìm kiếm tin ở ghép
         public DataTable TimKiemTinOGhep(string gioiTinh, decimal giaChiaMax, string tuKhoa)
         {
@@ -69,31 +87,66 @@ namespace DAL_QuanLy
             return ExecuteQuery(query, p);
         }
 
-        // 3 Gửi yêu cầu = thêm tin với trạng thái 'Đang tìm'
-        public bool GuiYeuCauOGhep(DTO_OGHEP og)
+        // Chưa dùng  3 Gửi yêu cầu = thêm tin với trạng thái 'Đang tìm'
+        public bool GuiYeuCauOGhep(DTO_TINOGHEP og)
         {
-            og.TRANGTHAI = "Chờ duyệt";
+            og.TRANGTHAIYEUCAU = TrangThaiYeuCau.ChoDuyet;
             return ThemTinOGhep(og);
+        }
+
+        // Trong DAL_TinOGhep.cs
+        public bool XuLyYeuCau(int maTinOGhep, TrangThaiYeuCau trangThai)
+        {
+            string query = "UPDATE YEUCAU SET TRANGTHAIYEUCAU = @TRANGTHAIYEUCAU  WHERE MATINOG = @MATINOG";
+            SqlParameter[] p = {
+              new SqlParameter("@TRANGTHAIYEUCAU", trangThai == TrangThaiYeuCau.DaDuyet ? "Đã duyệt" : "Từ chối"),
+              new SqlParameter("@MATINOG", maTinOGhep)
+             };
+            return ExecuteNonQuery(query, p) > 0;
         }
         // 4 Xử lý yêu cầu — cập nhật trạng thái
         public bool CapNhatTrangThaiTin(int maTinOGhep, TrangThaiTinOGhep trangThai)
         {
             string query = @"UPDATE TINOGHEP 
-                            SET TRANGTHAITIN = @TRANGTHAITIN 
-                            WHERE MATINOG = @MATINOG";
+                             SET TRANGTHAITIN = @TRANGTHAITIN 
+                             WHERE MATINOG = @MATINOG";
             SqlParameter[] p = {
-               new SqlParameter("@TRANGTHAITIN", GetStringTrangThaiTin(trangThai)),
+                new SqlParameter("@TRANGTHAITIN", GetStringTrangThaiTin(trangThai)),
                 new SqlParameter("@MATINOG",      maTinOGhep)
             };
             return ExecuteNonQuery(query, p) > 0;
         }
 
-        // 5 Danh sách người ở ghép theo phòng
-        public DataTable LayDanhSachNguoiOGhep(int maPhong)
+        // 5. Lấy danh sách tin theo phòng 
+        //public DataTable LayDanhSachTinTheoPhong(int maPhong)
+        //{
+        //    string query = @"SELECT * FROM TINOGHEP 
+        //                     WHERE MAPHONG = @MAPHONG";
+        //    SqlParameter[] p = { new SqlParameter("@MAPHONG", maPhong) };
+        //    return ExecuteQuery(query, p);
+        //}
+
+        // 5. Lấy danh sách tin theo phòng (Đã chỉnh sửa để lấy chuỗi chữ hiển thị trực quan)
+        public DataTable LayDanhSachTinTheoPhong(int maPhong)
         {
-            string query = @"SELECT * FROM TINOGHEP 
-                            WHERE MAPHONG = @MAPHONG 
-                              AND TRANGTHAITIN = N'Đã đủ người'";
+            // Sử dụng câu lệnh tối ưu để kết nối thông tin giữa các bảng
+            string query = @"
+        SELECT 
+            T.MATINOG AS [Mã tin], 
+            (P.TENPHONG) AS [Phòng], 
+            (K.HOKH + ' ' + K.TENKH) AS [Khách đăng], 
+            T.SONGUOICAN AS [Số người], 
+            T.GIOITINH AS [Giới tính], 
+            T.GIACHIA AS [Giá chia], 
+            T.TRANGTHAITIN AS [Trạng thái],
+            T.MOTA AS [MoTa],
+            T.MAPHONG AS [MaPhongRaw],
+            T.MAKH AS [MaKHRaw]
+        FROM TINOGHEP T
+        INNER JOIN PHONG P ON T.MAPHONG = P.MAPHONG
+        INNER JOIN KHACHTHUE K ON T.MAKH = K.MAKH
+        WHERE @MAPHONG = 0 OR T.MAPHONG = @MAPHONG";
+
             SqlParameter[] p = { new SqlParameter("@MAPHONG", maPhong) };
             return ExecuteQuery(query, p);
         }
@@ -101,10 +154,10 @@ namespace DAL_QuanLy
         // 6 Đánh giá và phản hồi
         public bool DanhGiaOGhep(int maTin, string danhGia)
         {
-            string query = "UPDATE TINOGHEP SET DANHGIA=@DANHGIA WHERE MATIN=@MATIN";
+            string query = "UPDATE TINOGHEP SET DANHGIA = @DANHGIA WHERE MATINOG = @MATINOG";
             SqlParameter[] p = {
                 new SqlParameter("@DANHGIA", danhGia),
-                new SqlParameter("@MATIN",   maTin)
+                new SqlParameter("@MATINOG", maTin)
             };
             return ExecuteNonQuery(query, p) > 0;
         }

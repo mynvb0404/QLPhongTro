@@ -12,13 +12,13 @@ namespace DAL_QuanLy
 {
     public class DAL_PHONG : DBConnect
     {
-        private string GetStringTrangThai(TrangThaiPhong ttp)
+        private string GetStringTrangThai(TinhTrangPhong ttp)
         {
             switch (ttp)
             {
-                case TrangThaiPhong.ConTrong: return "Còn trống";
-                case TrangThaiPhong.DaThue: return "Đã thuê";
-                case TrangThaiPhong.CanOGhep: return "Cần ở ghép";
+                case TinhTrangPhong.ConTrong: return "Còn trống";
+                case TinhTrangPhong.DaThue: return "Đã thuê";
+                case TinhTrangPhong.CanOGhep: return "Cần ở ghép";
                 default: return "Còn trống";
             }
         }
@@ -106,31 +106,28 @@ namespace DAL_QuanLy
                 parameters.Add(new SqlParameter("@MAXGIA", maxGia.Value));
             }
 
-            bool? oghepFilter = null;
+            //bool? oghepFilter = null;
 
-            if (tinOGhep != null)
-            {
-                if (tinOGhep.TRANGTHAITIN == "Đang tìm")
-                {
-                    oghepFilter = true;
-                }
-            }
+            //if (tinOGhep != null)
+            //{
+            //    if (tinOGhep.TRANGTHAITIN == TrangThaiTinOGhep.DangTim)
+            //}
 
-            if (oghepFilter.HasValue)
-            {
-                if (oghepFilter.Value)
-                {
-                    queryBuilder.Append(" AND TRANGTHAIPHONG = @TRANGTHAIPHONG");
-                    parameters.Add(new SqlParameter("@TRANGTHAIPHONG", "Cần ở ghép"));
-                }
-                else
-                {
-                    queryBuilder.Append(" AND TRANGTHAIPHONG != @TRANGTHAIPHONG");
-                    parameters.Add(new SqlParameter("@TRANGTHAIPHONG", "Cần ở ghép"));
-                }
-            }
+            //if (oghepFilter.HasValue)
+            //{
+            //    if (oghepFilter.Value)
+            //    {
+            //        queryBuilder.Append(" AND TRANGTHAIPHONG = @TRANGTHAIPHONG");
+            //        parameters.Add(new SqlParameter("@TRANGTHAIPHONG", "Cần ở ghép"));
+            //    }
+            //    else
+            //    {
+            //        queryBuilder.Append(" AND TRANGTHAIPHONG != @TRANGTHAIPHONG");
+            //        parameters.Add(new SqlParameter("@TRANGTHAIPHONG", "Cần ở ghép"));
+            //    }
+            //}
 
-            var parametersArray = parameters.Count > 0 ? parameters.ToArray() : null;
+            var parametersArray = parameters.Count > 0 ? parameters.ToArray() : Array.Empty<SqlParameter>();
 
             return ExecuteQuery(queryBuilder.ToString(), parametersArray);
         }
@@ -149,14 +146,14 @@ namespace DAL_QuanLy
         }
 
         // 6 Cập nhật trạng thái phòng 
-        public bool CapNhatTrangThaiPhong(int maPhong, string trangThai)
+        public bool CapNhatTrangThaiPhong(int maPhong, TinhTrangPhong TRANGTHAIPHONG)
         {
             string query = "UPDATE PHONG SET TRANGTHAIPHONG = @TRANGTHAIPHONG WHERE MAPHONG = @MAPHONG";
 
             SqlParameter[] parameters = new SqlParameter[]
             {
                 new SqlParameter("@MAPHONG", maPhong),
-                new SqlParameter("@TRANGTHAIPHONG", GetStringTrangThai(trangThai))
+                new SqlParameter("@TRANGTHAIPHONG", GetStringTrangThai(TRANGTHAIPHONG))
             };
 
             return ExecuteNonQuery(query, parameters) > 0;

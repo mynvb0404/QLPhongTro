@@ -23,7 +23,7 @@ namespace BUS_QuanLy
 
             if (lh.THOIGIANHEN.Date < DateTime.Today)
                 return "Ngày hẹn không được là ngày trong quá khứ!";
-            lh.TRANGTHAIHEN = "Đã đặt";
+            lh.TRANGTHAIHEN = TrangThaiLichHen.DaDat;
 
             return dalLichHen.ThemLichHen(lh) ? "" : "Thêm lịch hẹn thất bại!";
         }
@@ -49,31 +49,33 @@ namespace BUS_QuanLy
         // 4. Xem chi tiết lịch hẹn
         public DataTable XemChiTietLichHen(int maLH)
         {
-            if (maLH <= 0) return null;
+            if (maLH <= 0) return new DataTable();
 
             DataTable dt = dalLichHen.XemChiTietLichHen(maLH);
 
             if (dt == null || dt.Rows.Count == 0)
             {
-                return null;
+                return new DataTable();
             }
 
             return dt;
         }
         // 5 Cập nhật trạng thái lịch hẹn
-        public string CapNhatTrangThai(int maLH, string trangThai)
+        public string CapNhatTrangThai(int maLH, TrangThaiLichHen trangThai)
         {
-            string[] trangThaiHopLe = { "Đã đặt", "Đã hủy", "Hoàn thành" };
-            if (!Array.Exists(trangThaiHopLe, t => t == trangThai))
-                return "Trạng thái không hợp lệ!";
-            if (maLH <= 0) return "Mã lịch hẹn không hợp lệ!";
+            if (maLH <= 0)
+                return "Mã lịch hẹn không hợp lệ!";
 
-            return dalLichHen.CapNhatTrangThai(maLH, trangThai) ? "" : "Cập nhật thất bại!";
+            // 2. Kiểm tra giá trị Enum truyền vào có tồn tại trong định nghĩa không
+            if (!Enum.IsDefined(typeof(TrangThaiLichHen), trangThai))
+                return "Trạng thái không hợp lệ!";
+
+            return dalLichHen.CapNhatTrangThaiLichHen(maLH, trangThai) ? "" : "Cập nhật thất bại!";
         }
 
         public DataTable ThongKeLichHen(int thang, int nam)
         {
-            if (nam < 0) return null;
+            if (nam < 0) return new DataTable();
             return dalLichHen.ThongKeLichHen(thang, nam);
         }
     }

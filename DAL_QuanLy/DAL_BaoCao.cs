@@ -97,5 +97,23 @@ namespace DAL_QuanLy
             string sql = "SELECT * FROM BAOCAO WHERE LOAIBC = N'BaoCaoChatLuong' ORDER BY ThoiGianBC DESC";
             return ExecuteQuery(sql);
         }
+
+        public bool LuuBaoCao(DTO_BAOCAO bc)
+        {
+            // Các tên cột MABC không cần thêm vì nó là IDENTITY (tự tăng)
+            string sql = "INSERT INTO BAOCAO (MANV, LOAIBC, NOIDUNGBC, THOIGIANBC) " +
+                         "VALUES (@manv, @loaibc, @noidung, @thoigian)";
+
+            SqlParameter[] pr = {
+                new SqlParameter("@manv", bc.MANV),
+                // Chuyển Enum (ThongKePhong...) thành chữ để lưu vào NVARCHAR
+                new SqlParameter("@loaibc", bc.LOAIBC.ToString()),
+                new SqlParameter("@noidung", bc.NOIDUNGBC),
+                new SqlParameter("@thoigian", bc.THOIGIANBC)
+            };
+
+            // Thực thi và trả về true nếu số dòng bị tác động > 0
+            return ExecuteNonQuery(sql, pr) > 0;
+        }
     }
 }

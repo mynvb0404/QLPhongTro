@@ -74,7 +74,7 @@ namespace DAL_QuanLy
         public bool KiemTraTonTai(string maKV)
         {
             string sql = "SELECT COUNT(*) FROM KHUVUC WHERE MAKV = @MA";
-            DataTable dt = ExecuteQuery(sql, new SqlParameter("@MA", maKV));
+            DataTable dt = ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@MA", maKV) });
             if (dt != null && dt.Rows.Count > 0)
             {
                 return Convert.ToInt32(dt.Rows[0][0]) > 0;
@@ -86,7 +86,7 @@ namespace DAL_QuanLy
         public bool KiemTraCoPhong(string maKV)
         {
             string sql = "SELECT COUNT(*) FROM PHONG WHERE MAKV = @MA";
-            DataTable dt = ExecuteQuery(sql, new SqlParameter("@MA", maKV));
+            DataTable dt = ExecuteQuery(sql, new SqlParameter[] { new SqlParameter("@MA", maKV) });
             if (dt != null && dt.Rows.Count > 0)
             {
                 return Convert.ToInt32(dt.Rows[0][0]) > 0;
