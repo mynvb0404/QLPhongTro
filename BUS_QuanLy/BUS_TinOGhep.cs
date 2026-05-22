@@ -36,27 +36,6 @@ namespace BUS_QuanLy
             return dalTinOGhep.TimKiemTinOGhep(gioiTinhChuan, giaChuan, tuKhoaChuan); // Sửa: đúng tên hàm DAL
         }
 
-        // Chưa dùng 
-        // 3. Gửi yêu cầu ở ghép (đăng tin với trạng thái mặc định DangTim)
-        public string GuiYeuCauOGhep(DTO_TINOGHEP og)
-        {
-            if (og.MAPHONG <= 0) return "Mã phòng không hợp lệ!"; // Sửa: MAPHONG là int
-            if (og.MAKH <= 0) return "Mã khách hàng không hợp lệ!";
-            og.TRANGTHAITIN = TrangThaiTinOGhep.DangTim;
-            return dalTinOGhep.ThemTinOGhep(og) ? "" : "Gửi yêu cầu thất bại!";
-        }
-
-        // 4 Xử lý yêu cầu ở ghép
-        public string XuLyYeuCau(int maTin, TrangThaiYeuCau trangThai)
-        {
-            if (trangThai == TrangThaiYeuCau.ChoDuyet)
-            {
-                return "Vui lòng chọn Duyệt hoặc Từ chối!";
-            }
-            return dalTinOGhep.XuLyYeuCau(maTin, trangThai) ? "" : "Xử lý thất bại!";
-        }
-
-      // Phần này dùng 
         // 3 Sửa tin ở ghép
         public string SuaTinOGhep(DTO_TINOGHEP og)
         {
@@ -68,7 +47,7 @@ namespace BUS_QuanLy
             return dalTinOGhep.SuaTinOGhep(og) ? "" : "Cập nhật tin thất bại!";
         }
 
-        // 4 Cập nhật trạng thái tin (Duyệt/Đóng tin)
+        // 4 Cập nhật trạng thái tin
         public string CapNhatTrangThaiTin(int maTin, TrangThaiTinOGhep trangThai)
         {
             if (maTin <= 0) return "Mã tin không hợp lệ!";
@@ -85,16 +64,6 @@ namespace BUS_QuanLy
         {
             if (maPhong <= 0) return new DataTable();
             return dalTinOGhep.LayDanhSachTinTheoPhong(maPhong);
-        }
-
-        // 6 Đánh giá và phản hồi
-        public string DanhGiaOGhep(int maTin, string danhGia)
-        {
-            if (string.IsNullOrWhiteSpace(danhGia))
-                return "Nội dung đánh giá không được để trống!";
-            if (danhGia.Length > 500)
-                return "Nội dung đánh giá không được quá 500 ký tự!";
-            return dalTinOGhep.DanhGiaOGhep(maTin, danhGia) ? "" : "Gửi đánh giá thất bại!";
         }
     }
 }

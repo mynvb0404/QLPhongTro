@@ -11,7 +11,6 @@ namespace DTO_QuanLy
         ThongKePhong,   // Thống kê phòng
         ThongKeDoanhThu,  // Thống kê doanh thu
         ThongKeLichHen,   // Thống kê lịch hẹn
-        BaoCaoChatLuong    // Báo cáo chất lượng
     }
     public class DTO_BAOCAO
     {

@@ -14,7 +14,6 @@ namespace DAL_QuanLy
                 case LoaiBaoCao.ThongKePhong: return "Thống kê phòng";
                 case LoaiBaoCao.ThongKeDoanhThu: return "Thống kê doanh thu";
                 case LoaiBaoCao.ThongKeLichHen: return "Thống kê lịch hẹn";
-                case LoaiBaoCao.BaoCaoChatLuong: return "Báo cáo chất lượng";
                 default: return "Khác";
             }
         }
@@ -90,14 +89,6 @@ namespace DAL_QuanLy
             };
             return ExecuteNonQuery(query, p) > 0;
         }
-
-        public DataTable BaoCaoChatLuong()
-        {
-            // Lấy các báo cáo có loại là 'BaoCaoChatLuong' từ bảng BAOCAO
-            string sql = "SELECT * FROM BAOCAO WHERE LOAIBC = N'BaoCaoChatLuong' ORDER BY ThoiGianBC DESC";
-            return ExecuteQuery(sql);
-        }
-
         public bool LuuBaoCao(DTO_BAOCAO bc)
         {
             // Các tên cột MABC không cần thêm vì nó là IDENTITY (tự tăng)

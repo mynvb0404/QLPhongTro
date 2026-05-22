@@ -6,13 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO_QuanLy
 {
-    public enum TrangThaiYeuCau
-    {
-        ChoDuyet,  // Chờ duyệt
-        DaDuyet,   // Đã duyệt
-        TuChoi     // Từ chối
-    }
-    // Enum cho trạng thái tin ở ghép
+  
     public enum TrangThaiTinOGhep
     {
         DangTim,    // Đang tìm
@@ -37,12 +31,11 @@ namespace DTO_QuanLy
 
         public TrangThaiTinOGhep TRANGTHAITIN { get; set; }
 
-        public TrangThaiYeuCau TRANGTHAIYEUCAU { get; set; }
         public DTO_TINOGHEP() { }
 
         public DTO_TINOGHEP(int matinog, int maphong, int makh, int songuoican,
                            GioiTinh gioitinh, decimal giachia,
-                            string mota, TrangThaiTinOGhep trangthaitin, TrangThaiYeuCau trangthaiyeucau)
+                            string mota, TrangThaiTinOGhep trangthaitin)
         {
             MATINOG = matinog;
             MAPHONG = maphong;
@@ -52,7 +45,6 @@ namespace DTO_QuanLy
             GIACHIA = giachia;
             MOTA = mota;
             TRANGTHAITIN = trangthaitin;
-            TRANGTHAIYEUCAU = trangthaiyeucau;
         }
     }
 }

@@ -86,24 +86,7 @@ namespace DAL_QuanLy
 
             return ExecuteQuery(query, p);
         }
-
-        // Chưa dùng  3 Gửi yêu cầu = thêm tin với trạng thái 'Đang tìm'
-        public bool GuiYeuCauOGhep(DTO_TINOGHEP og)
-        {
-            og.TRANGTHAIYEUCAU = TrangThaiYeuCau.ChoDuyet;
-            return ThemTinOGhep(og);
-        }
-
-        // Trong DAL_TinOGhep.cs
-        public bool XuLyYeuCau(int maTinOGhep, TrangThaiYeuCau trangThai)
-        {
-            string query = "UPDATE YEUCAU SET TRANGTHAIYEUCAU = @TRANGTHAIYEUCAU  WHERE MATINOG = @MATINOG";
-            SqlParameter[] p = {
-              new SqlParameter("@TRANGTHAIYEUCAU", trangThai == TrangThaiYeuCau.DaDuyet ? "Đã duyệt" : "Từ chối"),
-              new SqlParameter("@MATINOG", maTinOGhep)
-             };
-            return ExecuteNonQuery(query, p) > 0;
-        }
+       
         // 4 Xử lý yêu cầu — cập nhật trạng thái
         public bool CapNhatTrangThaiTin(int maTinOGhep, TrangThaiTinOGhep trangThai)
         {
@@ -151,15 +134,5 @@ namespace DAL_QuanLy
             return ExecuteQuery(query, p);
         }
 
-        // 6 Đánh giá và phản hồi
-        public bool DanhGiaOGhep(int maTin, string danhGia)
-        {
-            string query = "UPDATE TINOGHEP SET DANHGIA = @DANHGIA WHERE MATINOG = @MATINOG";
-            SqlParameter[] p = {
-                new SqlParameter("@DANHGIA", danhGia),
-                new SqlParameter("@MATINOG", maTin)
-            };
-            return ExecuteNonQuery(query, p) > 0;
-        }
     }
 }

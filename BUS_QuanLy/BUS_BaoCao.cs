@@ -29,9 +29,6 @@ namespace BUS_QuanLy
             return dalBaoCao.ThongKeLichHen(thang, nam);
         }
 
-        // 4 Báo cáo chất lượng
-        public DataTable BaoCaoChatLuong() => dalBaoCao.BaoCaoChatLuong();
-
     // Lưu một bản ghi báo cáo mới vào DB
         public string LuuBaoCao(DTO_BAOCAO bc)
         {
@@ -54,8 +51,6 @@ namespace BUS_QuanLy
         public DataTable LayDanhSachBaoCao()
         {
             DataTable dt = dalBaoCao.LayDanhSachBaoCao();
-
-            // Nếu kết quả từ DAL bị null, trả về một DataTable trống để an toàn cho giao diện
             if (dt == null) return new DataTable();
 
             return dt;
