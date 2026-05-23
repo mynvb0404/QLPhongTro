@@ -1,0 +1,469 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Windows.Forms;
+using BUS_QuanLy;
+using DTO_QuanLy;
+
+namespace GUI_QuanLy
+{
+    public partial class FormQuanLyOGhep : Form
+    {
+        private BUS_TINOGHEP busTinOGhep = new BUS_TINOGHEP();
+        private int _maTinDangChon = -1;
+
+        public FormQuanLyOGhep()
+        {
+            InitializeComponent();
+
+            // Đăng ký event (không cần double-click trong Designer)
+            btnThemTin.Click += btnThemTin_Click;
+            btnSuaTin.Click += btnSuaTin_Click;
+            btnXoaTin.Click += btnXoaTin_Click;
+            btnCNTT.Click += btnCNTT_Click;
+            btnTK.Click += btnTK_Click;
+            dataGridView1.CellClick += new DataGridViewCellEventHandler(dataGridView1_CellClick);
+        }
+
+        // =====================================================================
+        // DỮ LIỆU MẪU — chỉnh sửa cho đúng với DB của bạn
+        // =====================================================================
+
+        // Mỗi phần tử: (MaPhong, TenPhong)
+        private readonly List<(int Ma, string Ten)> _danhSachPhong = new()
+        {
+            (1, "Phòng 101"),
+            (2, "Phòng 102"),
+            (3, "Phòng 201"),
+            (4, "Phòng 202"),
+            (5, "Phòng 301"),
+        };
+
+        // Mỗi phần tử: (MaKH, HoTen)
+        private readonly List<(int Ma, string Ten)> _danhSachKH = new()
+        {
+            (1, "Nguyễn Văn An"),
+            (2, "Trần Thị Bình"),
+            (3, "Lê Văn Cường"),
+            (4, "Phạm Thị Dung"),
+            (5, "Hoàng Văn Em"),
+        };
+
+        // =====================================================================
+        // LOAD FORM
+        // =====================================================================
+        private void FormQuanLyOGhep_Load(object? sender, EventArgs e)
+        {
+            KhoiTaoCboPhong();
+            KhoiTaoCboKhachHang();
+            KhoiTaoCboGioiTinh();
+            KhoiTaoCboTrangThai();
+            KhoiTaoCboTKGioiTinh();
+            KhoiTaoCboTKPhong();
+
+            TaiDuLieuLenGrid(0);
+        }
+
+        // =====================================================================
+        // KHỞI TẠO COMBO BOX
+        // =====================================================================
+
+        private void KhoiTaoCboPhong()
+        {
+            cboMaPhong.Items.Clear();
+            cboMaPhong.Items.Add("-- Chọn phòng --");
+            foreach (var p in _danhSachPhong)
+                cboMaPhong.Items.Add($"{p.Ma} - {p.Ten}");
+            cboMaPhong.SelectedIndex = 0;
+        }
+
+        private void KhoiTaoCboKhachHang()
+        {
+            cboMaKH.Items.Clear();
+            cboMaKH.Items.Add("-- Chọn khách hàng --");
+            foreach (var k in _danhSachKH)
+                cboMaKH.Items.Add($"{k.Ma} - {k.Ten}");
+            cboMaKH.SelectedIndex = 0;
+        }
+
+        private void KhoiTaoCboGioiTinh()
+        {
+            cboGioiTinh.Items.Clear();
+            cboGioiTinh.Items.Add("Nam");
+            cboGioiTinh.Items.Add("Nữ");
+            cboGioiTinh.SelectedIndex = 0;
+        }
+
+        private void KhoiTaoCboTrangThai()
+        {
+            cboTrangThai.Items.Clear();
+            cboTrangThai.Items.Add("Đang tìm");
+            cboTrangThai.Items.Add("Đã đủ người");
+            cboTrangThai.Items.Add("Đã đóng");
+            cboTrangThai.SelectedIndex = 0;
+        }
+
+        private void KhoiTaoCboTKGioiTinh()
+        {
+            comboBox4.Items.Clear();
+            comboBox4.Items.Add("-- Tất cả --");
+            comboBox4.Items.Add("Nam");
+            comboBox4.Items.Add("Nữ");
+            comboBox4.SelectedIndex = 0;
+        }
+
+        private void KhoiTaoCboTKPhong()
+        {
+            comboBox3.Items.Clear();
+            comboBox3.Items.Add("-- Tất cả --");
+            foreach (var p in _danhSachPhong)
+                comboBox3.Items.Add($"{p.Ma} - {p.Ten}");
+            comboBox3.SelectedIndex = 0;
+        }
+
+        // =====================================================================
+        // HELPER: LẤY MA (ID) TỪ ITEM COMBOBOX
+        //   Format item: "1 - Phòng 101"  →  trả về 1
+        // =====================================================================
+        private int LayMaTuComboBox(ComboBox cbo)
+        {
+            if (cbo.SelectedIndex <= 0) return -1; // chưa chọn hoặc chọn dòng đầu
+            string item = cbo.SelectedItem?.ToString() ?? "";
+            // item có dạng "1 - Tên..."
+            string[] parts = item.Split('-');
+            if (int.TryParse(parts[0].Trim(), out int ma)) return ma;
+            return -1;
+        }
+
+        // =====================================================================
+        // TẢI DỮ LIỆU LÊN GRID
+        // =====================================================================
+        private void TaiDuLieuLenGrid(int maPhong)
+        {
+            try
+            {
+                DataTable dt = busTinOGhep.LayDanhSachTinTheoPhong(maPhong);
+                dataGridView1.DataSource = dt;
+                HideColumnIfExists("MoTa");
+                HideColumnIfExists("MaPhongRaw");
+                HideColumnIfExists("MaKHRaw");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải dữ liệu: " + ex.Message, "Lỗi",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void HideColumnIfExists(string colName)
+        {
+            if (dataGridView1.Columns.Contains(colName))
+                dataGridView1.Columns[colName].Visible = false;
+        }
+
+        // =====================================================================
+        // HELPER: ĐỌC DỮ LIỆU TỪ FORM → DTO
+        // =====================================================================
+        private DTO_TINOGHEP DocDuLieuTuForm()
+        {
+            // Mã phòng
+            int maPhong = LayMaTuComboBox(cboMaPhong);
+            if (maPhong <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn phòng!", "Thiếu thông tin",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return null;
+            }
+
+            // Mã khách hàng
+            int maKH = LayMaTuComboBox(cboMaKH);
+            if (maKH <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn khách hàng!", "Thiếu thông tin",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return null;
+            }
+
+            // Số người cần
+            int soNguoi = (int)numericUpDown1.Value;
+
+            // Giới tính
+            GioiTinh gt = (cboGioiTinh.SelectedItem?.ToString() == "Nam")
+                          ? GioiTinh.Nam : GioiTinh.Nu;
+
+            // Giá chia
+            if (!decimal.TryParse(txtGiaChia.Text.Trim(), out decimal giaChia))
+            {
+                MessageBox.Show("Giá chia không hợp lệ! Vui lòng nhập số.",
+                                "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return null;
+            }
+
+            // Mô tả
+            string moTa = txtMoTa.Text.Trim();
+
+            // Trạng thái
+            TrangThaiTinOGhep tt = ChuyenDoiTrangThai(cboTrangThai.SelectedItem?.ToString());
+
+            return new DTO_TINOGHEP(
+                matinog: _maTinDangChon > 0 ? _maTinDangChon : 0,
+                maphong: maPhong,
+                makh: maKH,
+                songuoican: soNguoi,
+                gioitinh: gt,
+                giachia: giaChia,
+                mota: moTa,
+                trangthaitin: tt
+            );
+        }
+
+        // =====================================================================
+        // HELPER: CHUYỂN ĐỔI TRẠNG THÁI STRING → ENUM
+        // =====================================================================
+        private TrangThaiTinOGhep ChuyenDoiTrangThai(string str)
+        {
+            return str switch
+            {
+                "Đã đủ người" => TrangThaiTinOGhep.DaDuNguoi,
+                "Đã đóng" => TrangThaiTinOGhep.DaDong,
+                _ => TrangThaiTinOGhep.DangTim
+            };
+        }
+
+        // =====================================================================
+        // HELPER: ĐẶT LẠI COMBOBOX PHÒNG / KH THEO MÃ
+        // =====================================================================
+        private void ChonComboBoxTheoMa(ComboBox cbo, int ma)
+        {
+            for (int i = 1; i < cbo.Items.Count; i++)
+            {
+                string item = cbo.Items[i].ToString() ?? "";
+                if (item.StartsWith(ma + " -"))
+                {
+                    cbo.SelectedIndex = i;
+                    return;
+                }
+            }
+        }
+
+        // =====================================================================
+        // HELPER: XÓA SẠCH FORM
+        // =====================================================================
+        private void XoaForm()
+        {
+            cboMaPhong.SelectedIndex = 0;
+            cboMaKH.SelectedIndex = 0;
+            numericUpDown1.Value = 0;
+            cboGioiTinh.SelectedIndex = 0;
+            txtGiaChia.Clear();
+            txtMoTa.Clear();
+            cboTrangThai.SelectedIndex = 0;
+            _maTinDangChon = -1;
+        }
+
+        // =====================================================================
+        // BUTTON: THÊM TIN
+        // =====================================================================
+        private void btnThemTin_Click(object? sender, EventArgs e)
+        {
+            DTO_TINOGHEP dto = DocDuLieuTuForm();
+            if (dto == null) return;
+
+            dto.TRANGTHAITIN = TrangThaiTinOGhep.DangTim;
+
+            string ketQua = "";
+            try
+            {
+                ketQua = busTinOGhep.ThemTinOGhep(dto);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Exception: " + ex.Message + "\n\nInner: " + ex.InnerException?.Message,
+                                "Chi tiết lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(ketQua))
+            {
+                MessageBox.Show("Đăng tin thành công!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                XoaForm();
+                TaiDuLieuLenGrid(0);
+            }
+            else
+            {
+                MessageBox.Show("BUS trả về: " + ketQua, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        // =====================================================================
+        // BUTTON: SỬA TIN
+        // =====================================================================
+        private void btnSuaTin_Click(object? sender, EventArgs e)
+        {
+            if (_maTinDangChon <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn một tin từ danh sách để sửa!",
+                                "Chưa chọn tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DTO_TINOGHEP dto = DocDuLieuTuForm();
+            if (dto == null) return;
+
+            string ketQua = busTinOGhep.SuaTinOGhep(dto);
+            if (string.IsNullOrEmpty(ketQua))
+            {
+                MessageBox.Show("Cập nhật tin thành công!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                XoaForm();
+                TaiDuLieuLenGrid(0);
+            }
+            else
+            {
+                MessageBox.Show(ketQua, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        // =====================================================================
+        // BUTTON: XÓA TIN  (xóa mềm → trạng thái "Đã đóng")
+        // =====================================================================
+        private void btnXoaTin_Click(object? sender, EventArgs e)
+        {
+            if (_maTinDangChon <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn một tin từ danh sách để xóa!",
+                                "Chưa chọn tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult confirm = MessageBox.Show(
+                $"Bạn có chắc muốn đóng tin mã {_maTinDangChon}?",
+                "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (confirm == DialogResult.Yes)
+            {
+                string ketQua = busTinOGhep.CapNhatTrangThaiTin(
+                    _maTinDangChon, TrangThaiTinOGhep.DaDong);
+
+                if (string.IsNullOrEmpty(ketQua))
+                {
+                    MessageBox.Show("Đã đóng tin thành công!", "Thông báo",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    XoaForm();
+                    TaiDuLieuLenGrid(0);
+                }
+                else
+                {
+                    MessageBox.Show(ketQua, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
+        // =====================================================================
+        // BUTTON: CẬP NHẬT TRẠNG THÁI
+        // =====================================================================
+        private void btnCNTT_Click(object? sender, EventArgs e)
+        {
+            if (_maTinDangChon <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn một tin từ danh sách!",
+                                "Chưa chọn tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            TrangThaiTinOGhep tt = ChuyenDoiTrangThai(cboTrangThai.SelectedItem?.ToString());
+
+            string ketQua = busTinOGhep.CapNhatTrangThaiTin(_maTinDangChon, tt);
+            if (string.IsNullOrEmpty(ketQua))
+            {
+                MessageBox.Show("Cập nhật trạng thái thành công!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                TaiDuLieuLenGrid(0);
+            }
+            else
+            {
+                MessageBox.Show(ketQua, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        // =====================================================================
+        // BUTTON: TÌM KIẾM
+        // =====================================================================
+        private void btnTK_Click(object? sender, EventArgs e)
+        {
+            string gioiTinh = comboBox4.SelectedIndex > 0
+                              ? comboBox4.SelectedItem.ToString() : "";
+
+            decimal giaMax = 0;
+            if (!string.IsNullOrWhiteSpace(textBox3.Text))
+            {
+                if (!decimal.TryParse(textBox3.Text.Trim(), out giaMax))
+                {
+                    MessageBox.Show("Giá chia tìm kiếm không hợp lệ!",
+                                    "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
+            try
+            {
+                DataTable dt = busTinOGhep.TimKiemTinOGhep(gioiTinh, giaMax, "");
+                dataGridView1.DataSource = dt;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tìm kiếm: " + ex.Message, "Lỗi",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // =====================================================================
+        // DATAGRIDVIEW: CLICK CHỌN HÀNG → ĐỔ DỮ LIỆU LÊN FORM
+        // =====================================================================
+        private void dataGridView1_CellClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+
+            if (!int.TryParse(row.Cells[0].Value?.ToString(), out int maTin)) return;
+            _maTinDangChon = maTin;
+
+            // Phòng (từ cột ẩn MaPhongRaw)
+            if (dataGridView1.Columns.Contains("MaPhongRaw") &&
+                int.TryParse(row.Cells["MaPhongRaw"]?.Value?.ToString(), out int maPhong))
+                ChonComboBoxTheoMa(cboMaPhong, maPhong);
+
+            // Khách hàng (từ cột ẩn MaKHRaw)
+            if (dataGridView1.Columns.Contains("MaKHRaw") &&
+                int.TryParse(row.Cells["MaKHRaw"]?.Value?.ToString(), out int maKH))
+                ChonComboBoxTheoMa(cboMaKH, maKH);
+
+            // Số người
+            if (int.TryParse(row.Cells["Số người"]?.Value?.ToString(), out int soNguoi))
+                numericUpDown1.Value = soNguoi;
+
+            // Giới tính
+            string gt = row.Cells["Giới tính"]?.Value?.ToString() ?? "Nam";
+            int idxGT = cboGioiTinh.FindStringExact(gt);
+            if (idxGT >= 0) cboGioiTinh.SelectedIndex = idxGT;
+
+            // Giá chia
+            txtGiaChia.Text = row.Cells["Giá chia"]?.Value?.ToString() ?? "";
+
+            // Mô tả (cột ẩn)
+            if (dataGridView1.Columns.Contains("MoTa"))
+                txtMoTa.Text = row.Cells["MoTa"]?.Value?.ToString() ?? "";
+
+            // Trạng thái
+            string tt = row.Cells["Trạng thái"]?.Value?.ToString() ?? "Đang tìm";
+            int idxTT = cboTrangThai.FindStringExact(tt);
+            if (idxTT >= 0) cboTrangThai.SelectedIndex = idxTT;
+        }
+
+        // =====================================================================
+        // NUMERIC UP DOWN
+        // =====================================================================
+        private void numericUpDown1_ValueChanged(object? sender, EventArgs e) { }
+    }
+}
