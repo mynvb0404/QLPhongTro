@@ -1,0 +1,365 @@
+namespace GUI_QuanLy
+{
+    partial class FormQuanLyBaoCao
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            gbBC = new GroupBox();
+            btnTKe = new Button();
+            cboTKe = new ComboBox();
+            lbTKe = new Label();
+            pnlPhong = new Panel();
+            lblSoPhong = new Label();
+            label1 = new Label();
+            pnlDThu = new Panel();
+            lblDoanhThu = new Label();
+            label2 = new Label();
+            pnlLichHen = new Panel();
+            lblTLichH = new Label();
+            label3 = new Label();
+            gbLapBC = new GroupBox();
+            btnLuuBC = new Button();
+            txtNDBC = new TextBox();
+            label6 = new Label();
+            label5 = new Label();
+            cbLoaiTK = new ComboBox();
+            label4 = new Label();
+            dtgvQLBC = new DataGridView();
+            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn3 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn4 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn5 = new DataGridViewTextBoxColumn();
+            txtNVBC = new TextBox();
+            gbBC.SuspendLayout();
+            pnlPhong.SuspendLayout();
+            pnlDThu.SuspendLayout();
+            pnlLichHen.SuspendLayout();
+            gbLapBC.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dtgvQLBC).BeginInit();
+            SuspendLayout();
+            // 
+            // gbBC
+            // 
+            gbBC.Controls.Add(btnTKe);
+            gbBC.Controls.Add(cboTKe);
+            gbBC.Controls.Add(lbTKe);
+            gbBC.Location = new Point(12, 13);
+            gbBC.Name = "gbBC";
+            gbBC.Size = new Size(1288, 172);
+            gbBC.TabIndex = 2;
+            gbBC.TabStop = false;
+            gbBC.Text = "Thống kê";
+            // 
+            // btnTKe
+            // 
+            btnTKe.Location = new Point(794, 52);
+            btnTKe.Name = "btnTKe";
+            btnTKe.Size = new Size(250, 81);
+            btnTKe.TabIndex = 8;
+            btnTKe.Text = "Xem thống kê";
+            btnTKe.UseVisualStyleBackColor = true;
+            // 
+            // cboTKe
+            // 
+            cboTKe.FormattingEnabled = true;
+            cboTKe.Location = new Point(231, 52);
+            cboTKe.Name = "cboTKe";
+            cboTKe.Size = new Size(352, 40);
+            cboTKe.TabIndex = 7;
+            // 
+            // lbTKe
+            // 
+            lbTKe.AutoSize = true;
+            lbTKe.Location = new Point(21, 52);
+            lbTKe.Name = "lbTKe";
+            lbTKe.Size = new Size(165, 32);
+            lbTKe.TabIndex = 0;
+            lbTKe.Text = "Loại thống kê:";
+            // 
+            // pnlPhong
+            // 
+            pnlPhong.Controls.Add(lblSoPhong);
+            pnlPhong.Controls.Add(label1);
+            pnlPhong.Location = new Point(12, 272);
+            pnlPhong.Name = "pnlPhong";
+            pnlPhong.Size = new Size(421, 200);
+            pnlPhong.TabIndex = 3;
+            // 
+            // lblSoPhong
+            // 
+            lblSoPhong.AutoSize = true;
+            lblSoPhong.Location = new Point(128, 88);
+            lblSoPhong.Name = "lblSoPhong";
+            lblSoPhong.Size = new Size(40, 32);
+            lblSoPhong.TabIndex = 1;
+            lblSoPhong.Text = "20";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(108, 27);
+            label1.Name = "label1";
+            label1.Size = new Size(177, 32);
+            label1.TabIndex = 0;
+            label1.Text = "Tổng số phòng";
+            // 
+            // pnlDThu
+            // 
+            pnlDThu.Controls.Add(lblDoanhThu);
+            pnlDThu.Controls.Add(label2);
+            pnlDThu.Location = new Point(468, 272);
+            pnlDThu.Name = "pnlDThu";
+            pnlDThu.Size = new Size(400, 200);
+            pnlDThu.TabIndex = 4;
+            // 
+            // lblDoanhThu
+            // 
+            lblDoanhThu.AutoSize = true;
+            lblDoanhThu.Location = new Point(160, 98);
+            lblDoanhThu.Name = "lblDoanhThu";
+            lblDoanhThu.Size = new Size(78, 32);
+            lblDoanhThu.TabIndex = 1;
+            lblDoanhThu.Text = "label4";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(112, 27);
+            label2.Name = "label2";
+            label2.Size = new Size(187, 32);
+            label2.TabIndex = 0;
+            label2.Text = "Tổng doanh thu";
+            // 
+            // pnlLichHen
+            // 
+            pnlLichHen.Controls.Add(lblTLichH);
+            pnlLichHen.Controls.Add(label3);
+            pnlLichHen.Location = new Point(900, 272);
+            pnlLichHen.Name = "pnlLichHen";
+            pnlLichHen.Size = new Size(400, 200);
+            pnlLichHen.TabIndex = 5;
+            // 
+            // lblTLichH
+            // 
+            lblTLichH.AutoSize = true;
+            lblTLichH.Location = new Point(178, 103);
+            lblTLichH.Name = "lblTLichH";
+            lblTLichH.Size = new Size(78, 32);
+            lblTLichH.TabIndex = 1;
+            lblTLichH.Text = "label4";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(134, 27);
+            label3.Name = "label3";
+            label3.Size = new Size(161, 32);
+            label3.TabIndex = 0;
+            label3.Text = "Tổng lịch hẹn";
+            // 
+            // gbLapBC
+            // 
+            gbLapBC.Controls.Add(txtNVBC);
+            gbLapBC.Controls.Add(btnLuuBC);
+            gbLapBC.Controls.Add(txtNDBC);
+            gbLapBC.Controls.Add(label6);
+            gbLapBC.Controls.Add(label5);
+            gbLapBC.Controls.Add(cbLoaiTK);
+            gbLapBC.Controls.Add(label4);
+            gbLapBC.Location = new Point(12, 490);
+            gbLapBC.Name = "gbLapBC";
+            gbLapBC.Size = new Size(1288, 272);
+            gbLapBC.TabIndex = 6;
+            gbLapBC.TabStop = false;
+            gbLapBC.Text = "Báo cáo ";
+            // 
+            // btnLuuBC
+            // 
+            btnLuuBC.Location = new Point(96, 169);
+            btnLuuBC.Name = "btnLuuBC";
+            btnLuuBC.Size = new Size(250, 81);
+            btnLuuBC.TabIndex = 12;
+            btnLuuBC.Text = "Lưu báo cáo";
+            btnLuuBC.UseVisualStyleBackColor = true;
+            // 
+            // txtNDBC
+            // 
+            txtNDBC.Location = new Point(233, 111);
+            txtNDBC.Name = "txtNDBC";
+            txtNDBC.Size = new Size(583, 39);
+            txtNDBC.TabIndex = 11;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(21, 111);
+            label6.Name = "label6";
+            label6.Size = new Size(206, 32);
+            label6.TabIndex = 10;
+            label6.Text = "Nội dung báo cáo";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(43, 58);
+            label5.Name = "label5";
+            label5.Size = new Size(88, 32);
+            label5.TabIndex = 9;
+            label5.Text = "Mã NV";
+            // 
+            // cbLoaiTK
+            // 
+            cbLoaiTK.FormattingEnabled = true;
+            cbLoaiTK.Location = new Point(847, 108);
+            cbLoaiTK.Name = "cbLoaiTK";
+            cbLoaiTK.Size = new Size(352, 40);
+            cbLoaiTK.TabIndex = 7;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(847, 49);
+            label4.Name = "label4";
+            label4.Size = new Size(172, 32);
+            label4.TabIndex = 0;
+            label4.Text = "Loại thống kê :";
+            // 
+            // dtgvQLBC
+            // 
+            dtgvQLBC.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgvQLBC.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtgvQLBC.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3, dataGridViewTextBoxColumn4, dataGridViewTextBoxColumn5 });
+            dtgvQLBC.Location = new Point(12, 768);
+            dtgvQLBC.Name = "dtgvQLBC";
+            dtgvQLBC.ReadOnly = true;
+            dtgvQLBC.RowHeadersWidth = 82;
+            dtgvQLBC.Size = new Size(1288, 372);
+            dtgvQLBC.TabIndex = 7;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            dataGridViewTextBoxColumn1.HeaderText = "Mã BC";
+            dataGridViewTextBoxColumn1.MinimumWidth = 10;
+            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            dataGridViewTextBoxColumn2.HeaderText = "Nhân viên";
+            dataGridViewTextBoxColumn2.MinimumWidth = 10;
+            dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            dataGridViewTextBoxColumn3.HeaderText = "Loại";
+            dataGridViewTextBoxColumn3.MinimumWidth = 10;
+            dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            dataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            dataGridViewTextBoxColumn4.HeaderText = "Nội dung";
+            dataGridViewTextBoxColumn4.MinimumWidth = 10;
+            dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            dataGridViewTextBoxColumn4.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            dataGridViewTextBoxColumn5.HeaderText = "Ngày lập";
+            dataGridViewTextBoxColumn5.MinimumWidth = 10;
+            dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            dataGridViewTextBoxColumn5.ReadOnly = true;
+            // 
+            // txtNVBC
+            // 
+            txtNVBC.Location = new Point(146, 55);
+            txtNVBC.Name = "txtNVBC";
+            txtNVBC.Size = new Size(583, 39);
+            txtNVBC.TabIndex = 13;
+            // 
+            // FormQuanLyBaoCao
+            // 
+            AutoScaleDimensions = new SizeF(13F, 32F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ActiveCaption;
+            ClientSize = new Size(1327, 1176);
+            Controls.Add(dtgvQLBC);
+            Controls.Add(gbLapBC);
+            Controls.Add(pnlLichHen);
+            Controls.Add(pnlDThu);
+            Controls.Add(pnlPhong);
+            Controls.Add(gbBC);
+            Name = "FormQuanLyBaoCao";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Quản lý báo cáo";
+            gbBC.ResumeLayout(false);
+            gbBC.PerformLayout();
+            pnlPhong.ResumeLayout(false);
+            pnlPhong.PerformLayout();
+            pnlDThu.ResumeLayout(false);
+            pnlDThu.PerformLayout();
+            pnlLichHen.ResumeLayout(false);
+            pnlLichHen.PerformLayout();
+            gbLapBC.ResumeLayout(false);
+            gbLapBC.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dtgvQLBC).EndInit();
+            ResumeLayout(false);
+        }
+
+        #endregion
+
+        private GroupBox gbBC;
+        private Button btnTKe;
+        private ComboBox cboTKe;
+        private Label lbTKe;
+        private Panel pnlPhong;
+        private Label lblSoPhong;
+        private Label label1;
+        private Panel pnlDThu;
+        private Label label2;
+        private Panel pnlLichHen;
+        private Label label3;
+        private Label lblDoanhThu;
+        private Label lblTLichH;
+        private GroupBox gbLapBC;
+        private ComboBox cbLoaiTK;
+        private Label label4;
+        private Button btnLuuBC;
+        private TextBox txtNDBC;
+        private Label label6;
+        private Label label5;
+        private DataGridView dtgvQLBC;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private TextBox txtNVBC;
+    }
+}
