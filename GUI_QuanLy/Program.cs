@@ -13,14 +13,6 @@ namespace GUI_QuanLy
         {
             ApplicationConfiguration.Initialize();
             Application.Run(new frmLogin());
-            Application.Run(new frmManageAcc());
-            Application.Run(new frmMenu());
-            Application.Run(new frmArea());
-            Application.Run(new frmRoom());
-            Application.Run(new FormQuanLyOGhep());
-            Application.Run(new FormQuanLyHoaDon());
-            Application.Run(new FormQuanLyBaoCao());
-
         }
     }
 }

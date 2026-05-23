@@ -25,26 +25,83 @@ namespace DAL_QuanLy
         }
 
         /// Thêm khách thuê
-        public bool ThemKhachThue(DTO_KHACHTHUE kh)
+        //public bool ThemKhachThue(DTO_KHACHTHUE kh)
+        //{
+        //    string query = @"INSERT INTO KHACHTHUE
+        //                    (HOKH, TENKH, NGAYSINH, GIOITINH, CCCD, SDT, NGAYBATDAUTHUE, TRANGTHAITHUE)
+        //                    VALUES
+        //                    (@HOKH, @TENKH, @NGAYSINH, @GIOITINH, @CCCD, @SDT, @NGAYBATDAUTHUE, @TRANGTHAITHUE)";
+
+        //    SqlParameter[] parameters = new SqlParameter[]
+        //    {
+        //        new SqlParameter("@HOKH", kh.HOKH),
+        //        new SqlParameter("@TENKH", kh.TENKH),
+        //        new SqlParameter("@NGAYSINH", kh.NGAYSINH.HasValue ? kh.NGAYSINH.Value : (object)DBNull.Value),
+        //        new SqlParameter("@GIOITINH", GetStringGioiTinh(kh.GIOITINH ?? GioiTinh.Nam)),
+        //        new SqlParameter("@CCCD", kh.CCCD),
+        //        new SqlParameter("@SDT", kh.SDT),
+        //        new SqlParameter("@NGAYBATDAUTHUE", kh.NGAYBATDAUTHUE),
+        //        new SqlParameter("@TRANGTHAITHUE", GetStringTrangThaiThue(kh.TRANGTHAITHUE))
+        //    };
+
+        //    return ExecuteNonQuery(query, parameters) > 0;
+        //}
+
+        public bool ThemKhachThue(DTO_KHACHTHUE kh, string tenDangNhap, string matKhau)
         {
-            string query = @"INSERT INTO KHACHTHUE
-                            (HOKH, TENKH, NGAYSINH, GIOITINH, CCCD, SDT, NGAYBATDAUTHUE, TRANGTHAITHUE)
-                            VALUES
-                            (@HOKH, @TENKH, @NGAYSINH, @GIOITINH, @CCCD, @SDT, @NGAYBATDAUTHUE, @TRANGTHAITHUE)";
-
-            SqlParameter[] parameters = new SqlParameter[]
+            using (SqlConnection conn = new SqlConnection(_conn.ConnectionString))
             {
-                new SqlParameter("@HOKH", kh.HOKH),
-                new SqlParameter("@TENKH", kh.TENKH),
-                new SqlParameter("@NGAYSINH", kh.NGAYSINH.HasValue ? kh.NGAYSINH.Value : (object)DBNull.Value),
-                new SqlParameter("@GIOITINH", GetStringGioiTinh(kh.GIOITINH ?? GioiTinh.Nam)),
-                new SqlParameter("@CCCD", kh.CCCD),
-                new SqlParameter("@SDT", kh.SDT),
-                new SqlParameter("@NGAYBATDAUTHUE", kh.NGAYBATDAUTHUE),
-                new SqlParameter("@TRANGTHAITHUE", GetStringTrangThaiThue(kh.TRANGTHAITHUE))
-            };
+                conn.Open();
+                using (SqlTransaction trans = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        string queryKhach = @"INSERT INTO KHACHTHUE 
+                                    (HOKH, TENKH, NGAYSINH, GIOITINH, CCCD, SDT, NGAYBATDAUTHUE, TRANGTHAITHUE)
+                                    OUTPUT INSERTED.MAKH
+                                    VALUES (@HOKH, @TENKH, @NGAYSINH, @GIOITINH, @CCCD, @SDT, @NGAYBATDAUTHUE, @TRANGTHAITHUE)";
 
-            return ExecuteNonQuery(query, parameters) > 0;
+                        int newMaKH = 0;
+                        using (SqlCommand cmdKhach = new SqlCommand(queryKhach, conn, trans))
+                        {
+                            cmdKhach.Parameters.AddWithValue("@HOKH", kh.HOKH);
+                            cmdKhach.Parameters.AddWithValue("@TENKH", kh.TENKH);
+                            cmdKhach.Parameters.AddWithValue("@NGAYSINH", kh.NGAYSINH.HasValue ? kh.NGAYSINH.Value : (object)DBNull.Value);
+                            cmdKhach.Parameters.AddWithValue("@GIOITINH", kh.GIOITINH ?? (object)DBNull.Value);
+                            cmdKhach.Parameters.AddWithValue("@CCCD", kh.CCCD ?? (object)DBNull.Value);
+                            cmdKhach.Parameters.AddWithValue("@SDT", kh.SDT);
+                            cmdKhach.Parameters.AddWithValue("@NGAYBATDAUTHUE", kh.NGAYBATDAUTHUE);
+                            cmdKhach.Parameters.AddWithValue("@TRANGTHAITHUE", kh.TRANGTHAITHUE);
+
+                            newMaKH = Convert.ToInt32(cmdKhach.ExecuteScalar());
+                        }
+
+                        string generatedMATK = "KH" + newMaKH;
+
+                        string queryTaiKhoan = @"INSERT INTO TAIKHOAN (MATK, TENDANGNHAP, MATKHAU, LOAITK, MAKH, MANV) 
+                                         VALUES (@MATK, @Username, @Password, 'KH', @MAKH, NULL)";
+
+                        using (SqlCommand cmdTK = new SqlCommand(queryTaiKhoan, conn, trans))
+                        {
+                            cmdTK.Parameters.AddWithValue("@MATK", generatedMATK);
+                            cmdTK.Parameters.AddWithValue("@Username", tenDangNhap);
+                            cmdTK.Parameters.AddWithValue("@Password", matKhau);
+                            cmdTK.Parameters.AddWithValue("@MAKH", newMaKH);
+
+                            cmdTK.ExecuteNonQuery();
+                        }
+
+                        trans.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();
+                        Console.WriteLine("Lỗi Transaction ThemKhachThue: " + ex.Message);
+                        return false;
+                    }
+                }
+            }
         }
 
         /// Cập nhật thông tin khách thuê theo MAKH

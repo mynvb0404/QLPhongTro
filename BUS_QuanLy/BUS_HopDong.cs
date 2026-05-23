@@ -62,6 +62,19 @@ namespace BUS_QuanLy
         {
             return string.IsNullOrWhiteSpace(tk) ? dalHopDong.LayDanhSachHopDong() : dalHopDong.TimKiemHopDong(tk.Trim());
         }
+        public DataTable LayThongTinHopDong(
+           string MAHOPDONG)
+        {
+            return dalHopDong.LayThongTinHopDong(
+                MAHOPDONG);
+        }
+
+        public DataTable LayHopDongTheoPhong(
+            int MAPHONG)
+        {
+            return dalHopDong.LayHopDongTheoPhong(
+                MAPHONG);
+        }
         public DataTable XemHopDong(int maHD) => dalHopDong.XemHopDong(maHD);
     }
 }

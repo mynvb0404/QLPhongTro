@@ -29,6 +29,37 @@ namespace DAL_QuanLy
                 ORDER BY HD.MAHOPDONG";
             return ExecuteQuery(query);
         }
+        public DataTable LayThongTinHopDong(
+           string MAHOPDONG)
+        {
+            string QUERY =
+            "SELECT * FROM HOPDONG " +
+            "WHERE MAHOPDONG = @MAHOPDONG";
+
+            SqlParameter[] PARAMETERS =
+            {
+                new SqlParameter("@MAHOPDONG",
+                MAHOPDONG)
+            };
+
+            return ExecuteQuery(QUERY, PARAMETERS);
+        }
+
+        public DataTable LayHopDongTheoPhong(
+           int MAPHONG)
+        {
+            string QUERY =
+            "SELECT * FROM HOPDONG " +
+            "WHERE MAPHONG = @MAPHONG";
+
+            SqlParameter[] PARAMETERS =
+            {
+                new SqlParameter("@MAPHONG",
+                MAPHONG)
+            };
+
+            return ExecuteQuery(QUERY, PARAMETERS);
+        }
         // 1 Thêm hợp đồng
         public bool ThemHopDong(DTO_HOPDONG hd)
         {
@@ -46,20 +77,36 @@ namespace DAL_QuanLy
         }
 
         // 2 Sửa thông tin hợp đồng
-        public bool SuaHopDong(DTO_HOPDONG hd)
+        public bool SuaHopDong(DTO_HOPDONG HD)
         {
-            string query = @"UPDATE HOPDONG SET
-                            NGAYKT = @NGAYKT,
-                            TRANGTHAIHOPDONG = @TRANGTHAIHOPDONG,
-                            THONGTINHD = @THONGTINHD
-                            WHERE MAHOPDONG = @MAHOPDONG";
-            SqlParameter[] p = {
-                new SqlParameter("@MAHOPDONG",        hd.MAHOPDONG),
-                new SqlParameter("@NGAYKT",           hd.NGAYKT),
-                new SqlParameter("@TRANGTHAIHOPDONG", GetStringTrangThaiHD(hd.TRANGTHAIHOPDONG)),
-                new SqlParameter("@THONGTINHD",       hd.THONGTINHD)
+            string QUERY =
+            "UPDATE HOPDONG SET " +
+            "MAPHONG = @MAPHONG, " +
+            "MAKH = @MAKH, " +
+            "NGAYKYHD = @NGAYKYHD, " +
+            "NGAYKT = @NGAYKT, " +
+            "TRANGTHAIHOPDONG = @TRANGTHAIHOPDONG, " +
+            "THONGTINHD = @THONGTINHD " +
+            "WHERE MAHOPDONG = @MAHOPDONG";
+
+            SqlParameter[] PARAMETERS =
+            {
+                new SqlParameter("@MAHOPDONG", HD.MAHOPDONG),
+
+                new SqlParameter("@MAPHONG", HD.MAPHONG),
+
+                new SqlParameter("@MAKH", HD.MAKH),
+
+                new SqlParameter("@NGAYKYHD", HD.NGAYKYHD),
+
+                new SqlParameter("@NGAYKT", HD.NGAYKT),
+
+                new SqlParameter("@TRANGTHAIHOPDONG", HD.TRANGTHAIHOPDONG),
+
+                new SqlParameter("@THONGTINHD", HD.THONGTINHD)
             };
-            return ExecuteNonQuery(query, p) > 0;
+
+            return ExecuteNonQuery(QUERY, PARAMETERS) > 0;
         }
 
         // 3 Xóa hợp đồng

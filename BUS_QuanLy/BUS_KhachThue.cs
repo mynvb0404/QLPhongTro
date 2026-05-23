@@ -31,7 +31,7 @@ namespace BUS_QuanLy
 
             try
             {
-                bool IsThanhCong = dalKhachThue.ThemKhachThue(kt);
+                bool IsThanhCong = dalKhachThue.ThemKhachThue(kt, tenDangNhap, matKhau);
 
                 if (IsThanhCong)
                 {

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DTO_QuanLy;
 using GUI_QuanLy;
+using Khách_Hàng;   
+using Lịch_Hẹn;      
+using Hợp_Đồng;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace GUI_QuanLy
@@ -43,7 +46,7 @@ namespace GUI_QuanLy
 
         private void PhanQuyenChucNang()
         {
-            if (roleUser == "KH") 
+            if (roleUser == "KH")
             {
                 btArea.Enabled = false;
                 btAcc.Enabled = false;
@@ -129,6 +132,42 @@ namespace GUI_QuanLy
         {
             ChangeBtnColors((Button)sender);
             openChildForm(new frmArea());
+        }
+        private void btReport_Click(object sender, EventArgs e)
+        {
+            ChangeBtnColors((Button)sender);
+            openChildForm(new FormQuanLyBaoCao());
+        }
+
+        private void btBill_Click(object sender, EventArgs e)
+        {
+            ChangeBtnColors((Button)sender);
+            openChildForm(new FormQuanLyHoaDon());
+        }
+
+
+        private void bPost_Click(object sender, EventArgs e)
+        {
+            ChangeBtnColors((Button)sender);
+            openChildForm(new FormQuanLyOGhep());
+        }
+
+        private void btAppointment_Click(object sender, EventArgs e)
+        {
+            ChangeBtnColors((Button)sender);
+            openChildForm(new frmLichHen());
+        }
+
+        private void btResident_Click(object sender, EventArgs e)
+        {
+            ChangeBtnColors((Button)sender);
+            openChildForm(new frmKhachHang());
+        }
+
+        private void btContract_Click(object sender, EventArgs e)
+        {
+            ChangeBtnColors((Button)sender);
+            openChildForm(new frmHopDong());
         }
     }
 }
