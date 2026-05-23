@@ -180,6 +180,7 @@
             btReport.TabIndex = 8;
             btReport.Text = "Báo cáo thống kê";
             btReport.UseVisualStyleBackColor = true;
+            btReport.Click += btReport_Click;
             // 
             // btBill
             // 
@@ -191,6 +192,7 @@
             btBill.TabIndex = 7;
             btBill.Text = "Hóa đơn và thanh toán";
             btBill.UseVisualStyleBackColor = true;
+            btBill.Click += btBill_Click;
             // 
             // btContract
             // 
@@ -213,6 +215,7 @@
             bPost.TabIndex = 5;
             bPost.Text = "Tin ở ghép";
             bPost.UseVisualStyleBackColor = true;
+            bPost.Click += bPost_Click;
             // 
             // btResident
             // 

@@ -43,7 +43,7 @@ namespace GUI_QuanLy
 
         private void PhanQuyenChucNang()
         {
-            if (roleUser == "KH") 
+            if (roleUser == "KH")
             {
                 btArea.Enabled = false;
                 btAcc.Enabled = false;
@@ -52,11 +52,13 @@ namespace GUI_QuanLy
                 btAppointment.Enabled = false;
             }
         }
+
         private void openChildForm(Form childForm)
         {
             if (activeForm != null)
             {
                 activeForm.Close();
+                activeForm.Dispose();
             }
 
             activeForm = childForm;
@@ -130,5 +132,24 @@ namespace GUI_QuanLy
             ChangeBtnColors((Button)sender);
             openChildForm(new frmArea());
         }
+
+        private void btReport_Click(object sender, EventArgs e)
+        {
+            ChangeBtnColors((Button)sender);
+            openChildForm(new FormQuanLyBaoCao());
+        }
+
+        private void btBill_Click(object sender, EventArgs e)
+        {
+            ChangeBtnColors((Button)sender);
+            openChildForm(new FormQuanLyHoaDon());
+        }
+
+        private void bPost_Click(object sender, EventArgs e)
+        {
+            ChangeBtnColors((Button)sender);
+            openChildForm(new FormQuanLyOGhep());
+        }
+
     }
 }
