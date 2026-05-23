@@ -40,7 +40,16 @@ namespace DAL_QuanLy
 
         public bool SuaPhong(DTO_Phong p)
         {
-            string query = "UPDATE PHONG SET TENPHONG = @TENPHONG, MAKV = @MAKV, GIAPHONG = @GIAPHONG, DIENTICH = @DIENTICH, LOAIPHONG = @LOAIPHONG, TRANGTHAIPHONG = @TRANGTHAIPHONG, SONGUOIHIENTAI = @SONGUOIHIENTAI, NOITHAT = @NOITHAT WHERE MAPHONG = @MAPHONG;";
+            string query = "UPDATE PHONG SET " +
+                   "TENPHONG = ISNULL(@TENPHONG, TENPHONG), " +
+                   "MAKV = ISNULL(@MAKV, MAKV), " +
+                   "GIAPHONG = ISNULL(@GIAPHONG, GIAPHONG), " +
+                   "DIENTICH = ISNULL(@DIENTICH, DIENTICH), " +
+                   "LOAIPHONG = ISNULL(@LOAIPHONG, LOAIPHONG), " +
+                   "TRANGTHAIPHONG = ISNULL(@TRANGTHAIPHONG, TRANGTHAIPHONG), " +
+                   "SONGUOIHIENTAI = ISNULL(@SONGUOIHIENTAI, SONGUOIHIENTAI), " +
+                   "NOITHAT = ISNULL(@NOITHAT, NOITHAT) " +
+                   "WHERE MAPHONG = @MAPHONG;";
 
             SqlParameter[] parameters = new SqlParameter[]
             {

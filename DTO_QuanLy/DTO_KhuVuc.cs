@@ -14,8 +14,7 @@ namespace DTO_QuanLy
 
         public string DCHI { get; set; } = "";
 
-        public int MANV { get; set; }
-
+        public int? MANV { get; set; }
         public DTO_KhuVuc() { }
 
         public DTO_KhuVuc(string makv, string tenkv, string dchi, int manv)

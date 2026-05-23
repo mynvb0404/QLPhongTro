@@ -14,7 +14,7 @@ namespace DTO_QuanLy
 
         public string MAKV { get; set; } = "";
 
-        public decimal GIAPHONG { get; set; }
+        public decimal? GIAPHONG { get; set; }
 
         public double? DIENTICH { get; set; }
 
@@ -22,15 +22,15 @@ namespace DTO_QuanLy
 
         public string TRANGTHAIPHONG { get; set; } = "";
 
-        public int SONGUOIHIENTAI { get; set; }
+        public int? SONGUOIHIENTAI { get; set; }
 
         public string? NOITHAT { get; set; }
 
         public DTO_Phong() { }
 
-        public DTO_Phong(int maphong, string tenphong, string makv, decimal giaphong,
+        public DTO_Phong(int maphong, string tenphong, string makv, decimal? giaphong,
                          double? dientich, string loaiphong, string trangthaiphong,
-                         int songuoihientai, string? noithat)
+                         int? songuoihientai, string? noithat)
         {
             MAPHONG = maphong;
             TENPHONG = tenphong;

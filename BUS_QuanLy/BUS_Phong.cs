@@ -26,7 +26,7 @@ namespace BUS_QuanLy
         }
 
         // 3. Thêm phòng mới
-        public string ThemPhong(DTO_PHONG phong)
+        public string ThemPhong(DTO_Phong phong)
         {
             if (string.IsNullOrWhiteSpace(phong.TENPHONG))
             {
@@ -73,7 +73,7 @@ namespace BUS_QuanLy
         }
 
         // 4. Sửa thông tin phòng
-        public string SuaPhong(DTO_PHONG phong)
+        public string SuaPhong(DTO_Phong phong)
         {
             if (phong.MAPHONG <= 0)
             {
@@ -158,7 +158,7 @@ namespace BUS_QuanLy
         }
 
         // 7. Tìm kiếm và lọc phòng nâng cao
-        public DataTable TimKiemPhong(string maKV, decimal? minGia, decimal? maxGia, DTO_TINOGHEP tinOGhep)
+        public DataTable TimKiemPhong(string maKV, decimal? minGia, decimal? maxGia, DTO_TinOGhep tinOGhep)
         {
             string thamSoMaKV = string.IsNullOrWhiteSpace(maKV) ? null : maKV.Trim();
 

@@ -1,12 +1,11 @@
-CREATE DATABASE QLPHONGTRO;
+﻿CREATE DATABASE QLPHONGTRO;
 GO
 
 USE QLPHONGTRO;
 GO
 
-/* =========================
-   1. BẢNG NHANVIEN
-========================= */
+
+/* ========         BẢNG NHANVIEN  ====*/
 CREATE TABLE NHANVIEN (
     MANV INT IDENTITY(1,1) PRIMARY KEY,
     HONV NVARCHAR(50) NOT NULL,
@@ -17,24 +16,18 @@ CREATE TABLE NHANVIEN (
 );
 GO
 
-/* =========================
-   2. BẢNG KHUVUC
-========================= */
+/* ========         BẢNG KHUVUC  ====*/
 CREATE TABLE KHUVUC (
     MAKV VARCHAR(5) PRIMARY KEY,
     TENKV NVARCHAR(100) NOT NULL,
     DCHI NVARCHAR(100) NOT NULL,
     MANV INT,
 
-    CONSTRAINT FK_KHUVUC_NHANVIEN
-        FOREIGN KEY (MANV)
-        REFERENCES NHANVIEN(MANV)
+    CONSTRAINT FK_KHUVUC_NHANVIEN FOREIGN KEY (MANV) REFERENCES NHANVIEN(MANV)
 );
 GO
 
-/* =========================
-   3. BẢNG PHONG
-========================= */
+/* ========         BẢNG PHONG  ====*/
 CREATE TABLE PHONG (
     MAPHONG INT IDENTITY(1,1) PRIMARY KEY,
     TENPHONG NVARCHAR(50) NOT NULL,
@@ -57,19 +50,15 @@ CREATE TABLE PHONG (
 
     NOITHAT NVARCHAR(200),
 
-    CONSTRAINT FK_PHONG_KHUVUC
-        FOREIGN KEY (MAKV)
-        REFERENCES KHUVUC(MAKV)
+    CONSTRAINT FK_PHONG_KHUVUC FOREIGN KEY (MAKV) REFERENCES KHUVUC(MAKV)
 );
 GO
 
-/* =========================
-   4. BẢNG KHACHTHUE
-========================= */
+/* ========         BẢNG KHACHTHUE  ====*/
 CREATE TABLE KHACHTHUE (
     MAKH INT IDENTITY(1,1) PRIMARY KEY,
 
-    HOKH NVARCHAR(80) NOT NULL,
+    HOKH NVARCHAR(50) NOT NULL,
     TENKH NVARCHAR(20) NOT NULL,
 
     NGAYSINH DATE,
@@ -89,9 +78,7 @@ CREATE TABLE KHACHTHUE (
 );
 GO
 
-/* =========================
-   5. BẢNG TAIKHOAN
-========================= */
+/* ========         BẢNG TAIKHOAN  ====*/
 CREATE TABLE TAIKHOAN (
     MATK VARCHAR(5) PRIMARY KEY,
 
@@ -100,18 +87,14 @@ CREATE TABLE TAIKHOAN (
 
     TENDANGNHAP NVARCHAR(70) NOT NULL UNIQUE,
 
-    MATKHAU VARCHAR(255) NOT NULL,
+    MATKHAU VARCHAR(20) NOT NULL,
 
     LOAITK CHAR(2) NOT NULL
         CHECK (LOAITK IN ('NV', 'KH')),
 
-    CONSTRAINT FK_TAIKHOAN_NHANVIEN
-        FOREIGN KEY (MANV)
-        REFERENCES NHANVIEN(MANV),
+    CONSTRAINT FK_TAIKHOAN_NHANVIEN FOREIGN KEY (MANV) REFERENCES NHANVIEN(MANV),
 
-    CONSTRAINT FK_TAIKHOAN_KHACH
-        FOREIGN KEY (MAKH)
-        REFERENCES KHACHTHUE(MAKH),
+    CONSTRAINT FK_TAIKHOAN_KHACH FOREIGN KEY (MAKH) REFERENCES KHACHTHUE(MAKH),
 
     CONSTRAINT CK_TAIKHOAN_LOAI
         CHECK (
@@ -122,9 +105,7 @@ CREATE TABLE TAIKHOAN (
 );
 GO
 
-/* =========================
-   6. BẢNG LICHHEN
-========================= */
+/* ========         BẢNG LICHHEN ====*/
 CREATE TABLE LICHHEN (
     MALH INT IDENTITY(1,1) PRIMARY KEY,
 
@@ -144,44 +125,15 @@ CREATE TABLE LICHHEN (
 
     THOIGIANCAPNHAT DATETIME,
 
-    CONSTRAINT FK_LICHHEN_KHACH
-        FOREIGN KEY (MAKH)
-        REFERENCES KHACHTHUE(MAKH),
+    CONSTRAINT FK_LICHHEN_KHACH FOREIGN KEY (MAKH) REFERENCES KHACHTHUE(MAKH),
 
-    CONSTRAINT FK_LICHHEN_NV
-        FOREIGN KEY (MANV)
-        REFERENCES NHANVIEN(MANV),
+    CONSTRAINT FK_LICHHEN_NV FOREIGN KEY (MANV) REFERENCES NHANVIEN(MANV),
 
-    CONSTRAINT FK_LICHHEN_PHONG
-        FOREIGN KEY (MAPHONG)
-        REFERENCES PHONG(MAPHONG)
+    CONSTRAINT FK_LICHHEN_PHONG FOREIGN KEY (MAPHONG) REFERENCES PHONG(MAPHONG)
 );
 GO
 
-/* =========================
-   7. BẢNG HOITHOAI
-========================= */
-CREATE TABLE HOITHOAI (
-    MAHT INT IDENTITY(1,1) PRIMARY KEY,
-
-    MAKH INT NOT NULL,
-    MANV INT NOT NULL,
-
-    THOIGIANTAOHT DATETIME NOT NULL DEFAULT GETDATE(),
-
-    CONSTRAINT FK_HOITHOAI_KHACH
-        FOREIGN KEY (MAKH)
-        REFERENCES KHACHTHUE(MAKH),
-
-    CONSTRAINT FK_HOITHOAI_NV
-        FOREIGN KEY (MANV)
-        REFERENCES NHANVIEN(MANV)
-);
-GO
-
-/* =========================
-   8. BẢNG TINOGHEP
-========================= */
+/* ========         BẢNG TINOGHEP  ====*/
 CREATE TABLE TINOGHEP (
     MATINOG INT IDENTITY(1,1) PRIMARY KEY,
 
@@ -203,21 +155,15 @@ CREATE TABLE TINOGHEP (
         CHECK (TRANGTHAITIN IN
         (N'Đang tìm', N'Đã đủ người', N'Đã đóng')),
 
-    CONSTRAINT FK_TINOGHEP_PHONG
-        FOREIGN KEY (MAPHONG)
-        REFERENCES PHONG(MAPHONG),
+    CONSTRAINT FK_TINOGHEP_PHONG FOREIGN KEY (MAPHONG) REFERENCES PHONG(MAPHONG),
 
-    CONSTRAINT FK_TINOGHEP_KHACH
-        FOREIGN KEY (MAKH)
-        REFERENCES KHACHTHUE(MAKH)
+    CONSTRAINT FK_TINOGHEP_KHACH FOREIGN KEY (MAKH) REFERENCES KHACHTHUE(MAKH)
 );
 GO
 
-/* =========================
-   9. BẢNG HOPDONG
-========================= */
+/* ========         BẢNG HOPDONG ====*/
 CREATE TABLE HOPDONG (
-    MAHOPDONG INT IDENTITY(1,1) PRIMARY KEY,
+    MAHOPDONG NVARCHAR(5) PRIMARY KEY,
 
     MAPHONG INT NOT NULL,
     MAKH INT NOT NULL,
@@ -232,23 +178,17 @@ CREATE TABLE HOPDONG (
 
     THONGTINHD NVARCHAR(200) NOT NULL,
 
-    CONSTRAINT FK_HOPDONG_PHONG
-        FOREIGN KEY (MAPHONG)
-        REFERENCES PHONG(MAPHONG),
+    CONSTRAINT FK_HOPDONG_PHONG FOREIGN KEY (MAPHONG) REFERENCES PHONG(MAPHONG),
 
-    CONSTRAINT FK_HOPDONG_KHACH
-        FOREIGN KEY (MAKH)
-        REFERENCES KHACHTHUE(MAKH)
+    CONSTRAINT FK_HOPDONG_KHACH FOREIGN KEY (MAKH) REFERENCES KHACHTHUE(MAKH)
 );
 GO
 
-/* =========================
-   10. BẢNG HOADON
-========================= */
+/* ========         BẢNG HOADON  ====*/
 CREATE TABLE HOADON (
     MAHOADON INT IDENTITY(1,1) PRIMARY KEY,
 
-    MAHOPDONG INT NOT NULL,
+    MAHOPDONG NVARCHAR(5) NOT NULL,
 
     NGAYLAP DATETIME NOT NULL DEFAULT GETDATE(),
 
@@ -267,26 +207,99 @@ CREATE TABLE HOADON (
         CHECK (TRANGTHAITT IN
         (N'Đã thanh toán', N'Chưa thanh toán')),
 
-    CONSTRAINT FK_HOADON_HD
-        FOREIGN KEY (MAHOPDONG)
-        REFERENCES HOPDONG(MAHOPDONG)
+    NGAYTHANHTOAN DATETIME NULL,
+
+    PHUONGTHUCTT NVARCHAR(50) NULL 
+        CHECK (PHUONGTHUCTT IN (N'Tiền mặt', N'Chuyển khoản', N'Quét mã QR')),
+    CONSTRAINT FK_HOADON_HD FOREIGN KEY (MAHOPDONG) REFERENCES HOPDONG(MAHOPDONG)
 );
 GO
 
-/* =========================
-   11. BẢNG BAOCAO
-========================= */
+/* ========         BẢNG BAOCAO  ====*/
+
 CREATE TABLE BAOCAO (
     MABC INT IDENTITY(1,1) PRIMARY KEY,
 
-    MAKH INT NOT NULL,
+    MANV INT NOT NULL,
+
+    LOAIBC NVARCHAR(50) NOT NULL,
 
     NOIDUNGBC NVARCHAR(200) NOT NULL,
 
     THOIGIANBC DATETIME NOT NULL DEFAULT GETDATE(),
-
-    CONSTRAINT FK_BAOCAO_KHACH
-        FOREIGN KEY (MAKH)
-        REFERENCES KHACHTHUE(MAKH)
+	CHECK (LOAIBC IN (N'Thống kê phòng', N'Thống kê doanh thu', N'Thống kê lịch hẹn')),
+    CONSTRAINT FK_BAOCAO_NV FOREIGN KEY (MANV) REFERENCES NHANVIEN(MANV)
 );
+GO
+
+/* ======= NHANVIEN ======= */
+INSERT INTO NHANVIEN (HONV, TENNV, SDT, EMAIL, CHUCVU) VALUES 
+(N'Nguyễn Văn', N'Hùng', '0912345678', 'hung.nv@gmail.com', N'Quản lý'),
+(N'Trần Thị', N'Hoa', '0987654321', 'hoa.tt@gmail.com', N'Nhân viên'),
+(N'Lê Hoàng', N'Nam', '0933445566', 'nam.lh@gmail.com', N'Nhân viên'),
+(N'Lê Nhựt', N'Đăng', '0934584566', 'dang.ln@gmail.com', N'Nhân viên');
+GO
+
+/*  ======== KHUVUC ======= */
+INSERT INTO KHUVUC (MAKV, TENKV, DCHI, MANV) VALUES 
+('KV001', N'Khu vực Quận 1', N'123 Nguyễn Huệ, Phường Bến Nghé, Quận 1', 2),
+('KV002', N'Khu vực Bình Thạnh', N'456 Điện Biên Phủ, Phường 25, Bình Thạnh', 3),
+('KV003', N'Khu vực Thủ Đức', N'789 Võ Văn Ngân, Linh Chiểu, Thủ Đức', 4);
+GO
+
+/*  ======== PHONG ======= */
+INSERT INTO PHONG (TENPHONG, MAKV, GIAPHONG, DIENTICH, LOAIPHONG, TRANGTHAIPHONG, SONGUOIHIENTAI, NOITHAT) VALUES 
+(N'Phòng 101', 'KV001', 5000000.00, 25.5, N'Phòng đơn cao cấp', N'Đã thuê', 1, N'Giường, tủ quần áo, máy lạnh'),
+(N'Phòng 102', 'KV001', 7000000.00, 35.0, N'Phòng đôi', N'Còn trống', 0, N'Đầy đủ nội thất'),
+(N'Phòng 201', 'KV002', 4000000.00, 20.0, N'Phòng tiêu chuẩn', N'Cần ở ghép', 1, N'Giường, quạt trần'),
+(N'Phòng 301', 'KV003', 3500000.00, 18.0, N'Phòng giá rẻ', N'Đã thuê', 2, N'Trống');
+GO
+
+/*  ======== KHACHTHUE ======= */
+INSERT INTO KHACHTHUE (HOKH, TENKH, NGAYSINH, GIOITINH, CCCD, SDT, NGAYBATDAUTHUE, TRANGTHAITHUE) VALUES 
+(N'Phạm Minh', N'Tuấn', '2001-05-15', N'Nam', '012345678901', '0901112223', '2026-01-01', N'Đang thuê'),
+(N'Lê Thị', N'Mai', '2003-08-20', N'Nữ', '012345678902', '0904445556', '2026-02-15', N'Đang thuê'),
+(N'Hoàng Văn', N'Đông', '1999-11-02', N'Nam', '012345678903', '0907778889', '2025-06-01', N'Đã trả phòng');
+GO
+
+/*  ======== TAIKHOAN ======= */
+INSERT INTO TAIKHOAN (MATK, MANV, MAKH, TENDANGNHAP, MATKHAU, LOAITK) VALUES 
+('NV001', 1, NULL, 'hung_manager', 'hung01234', 'NV'),
+('NV002', 2, NULL, 'hoa_support', 'hoa01234', 'NV');
+
+INSERT INTO TAIKHOAN (MATK, MANV, MAKH, TENDANGNHAP, MATKHAU, LOAITK) VALUES 
+('KH003', NULL, 1, 'tuan_khach', 'tuan01234', 'KH'),
+('KH004', NULL, 2, 'mai_khach', 'mai01234', 'KH');
+GO
+
+/*  ======== LICHHEN ======= */
+INSERT INTO LICHHEN (MAKH, MANV, MAPHONG, THOIGIANHEN, TRANGTHAIHEN, NOIDUNGHEN, THOIGIANTAO) VALUES 
+(1, 2, 2, '2026-05-25 09:30:00', N'Đã đặt', N'Xem phòng 102 chung cư Quận 1', GETDATE()),
+(2, 2, 3, '2026-05-20 15:00:00', N'Hoàn thành', N'Xem phòng ở ghép Bình Thạnh', '2026-05-19 10:00:00');
+GO
+
+/*  ======== TINOGHEP ======= */
+INSERT INTO TINOGHEP (MAPHONG, MAKH, SONGUOICAN, GIOITINH, GIACHIA, MOTA, TRANGTHAITIN) VALUES 
+(3, 2, 1, N'Nữ', 2000000.00, N'Tìm bạn nữ ở ghép, sạch sẽ, không chung chủ.', N'Đang tìm');
+GO
+
+/*  ======== HOPDONG ======= */
+INSERT INTO HOPDONG (MAHOPDONG, MAPHONG, MAKH, NGAYKYHD, NGAYKT, TRANGTHAIHOPDONG, THONGTINHD) VALUES 
+('HD001', 2, 1, '2026-01-01', '2027-01-01', N'Còn hiệu lực', N'Hợp đồng thuê phòng 101 hạn 1 năm'),
+('HD002', 4, 2, '2026-02-15', '2026-08-15', N'Còn hiệu lực', N'Hợp đồng ngắn hạn 6 tháng');
+GO
+
+/*  ======== HOADON ======= */
+INSERT INTO HOADON (MAHOPDONG, NGAYLAP, TIENNUOC, TIENDIEN, TIENPHATSINH, TRANGTHAITT) VALUES 
+('HD001', '2026-05-01', 150000.00, 450000.00, 0.00, N'Đã thanh toán'),
+('HD001', '2026-05-22', 120000.00, 520000.00, 50000.00, N'Chưa thanh toán'),
+('HD002', '2026-05-05', 100000.00, 300000.00, 0.00, N'Đã thanh toán');
+GO
+
+/*  ======== BAOCAO ======= */
+INSERT INTO BAOCAO (MANV, LOAIBC, NOIDUNGBC, THOIGIANBC) VALUES 
+(1, N'Thống kê doanh thu', N'Báo cáo doanh thu tháng 04/2026: Tổng thu 12,500,000 VND, đạt 95% chỉ tiêu.', '2026-05-01 08:30:00'),
+(2, N'Thống kê phòng', N'Báo cáo tình trạng phòng: 2 phòng đã thuê, 1 phòng trống, 1 phòng đang tìm người ở ghép.', '2026-05-15 17:00:00'),
+(1, N'Thống kê lịch hẹn', N'Thống kê lịch hẹn tuần 2 tháng 5: Tổng 5 lịch hẹn, 4 hoàn thành, 1 đã hủy.', '2026-05-18 10:15:00'),
+(2, N'Thống kê doanh thu', N'Báo cáo phát sinh tiền điện nước vượt mức trung bình tại Khu vực Bình Thạnh (KV002).', GETDATE());
 GO

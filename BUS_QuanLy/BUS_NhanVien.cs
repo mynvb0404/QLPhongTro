@@ -17,42 +17,38 @@ namespace BUS_QuanLy
         }
 
         // 2. Chức năng Thêm Nhân Viên mới
-        public string ThemNhanVien(DTO_NHANVIEN nv)
+        public string ThemNhanVien(DTO_NhanVien nv, string tenDN, string matKhau)
         {
-            // Không được để trống Họ và Tên nhân viên
-            if (string.IsNullOrWhiteSpace(nv.HONV) || string.IsNullOrWhiteSpace(nv.TENNV))
+            DAL_TaiKhoan dalTaiKhoan = new DAL_TaiKhoan();
+            try
             {
-                return "Họ và tên nhân viên không được để trống!";
-            }
+                int maNVVuaTao = dalNhanVien.ThemNhanVien(nv);
 
-            // Kiểm tra định dạng Số điện thoại
-            if (!string.IsNullOrWhiteSpace(nv.SDT))
-            {
-                if (!Regex.IsMatch(nv.SDT, @"^[0-9]{10,11}$"))
+                if (maNVVuaTao > 0)
                 {
-                    return "Số điện thoại không hợp lệ! (Phải từ 10 - 11 chữ số).";
-                }
-            }
 
-            //Kiểm tra định dạng Email
-            if (!string.IsNullOrWhiteSpace(nv.EMAIL))
-            {
-                if (!Regex.IsMatch(nv.EMAIL, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
-                {
-                    return "Định dạng Email không hợp lệ!";
-                }
-            }
+                    DTO_TaiKhoan tkNew = new DTO_TaiKhoan()
+                    {
+                        TENDANGNHAP = tenDN,
+                        MATKHAU = matKhau,
+                        LOAITK = "NV",
+                        MANV = maNVVuaTao
+                    };
 
-            bool kq = dalNhanVien.ThemNhanVien(nv);
-            if (kq)
-            {
-                return "THÀNH CÔNG";
+                    bool kqTaiKhoan = dalTaiKhoan.SuaTaiKhoan(tkNew);
+
+                    return kqTaiKhoan ? "THÀNH CÔNG" : "Thêm nhân viên thành công nhưng khởi tạo tài khoản thất bại!";
+                }
+
+                return "Lỗi hệ thống: Không thể thêm thông tin nhân viên!";
             }
-            return "Thất bại: Lỗi hệ thống khi thêm dữ liệu!";
+            catch (Exception ex)
+            {
+                return "Lỗi kết nối CSDL: " + ex.Message;
+            }
         }
-
-        // 3. Chức năng Sửa thông tin Nhân Viên
-        public string SuaNhanVien(DTO_NHANVIEN nv)
+        //3. Sửa nhân viên
+        public string SuaNhanVien(DTO_NhanVien nv)
         {
             if (nv.MANV <= 0)
             {
