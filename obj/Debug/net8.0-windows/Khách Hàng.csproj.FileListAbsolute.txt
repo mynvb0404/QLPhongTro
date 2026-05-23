@@ -1,0 +1,65 @@
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Khách Hàng.exe
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Khách Hàng.deps.json
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Khách Hàng.runtimeconfig.json
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Khách Hàng.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Khách Hàng.pdb
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.Bcl.Cryptography.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.Data.SqlClient.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.Data.SqlClient.Extensions.Abstractions.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.Data.SqlClient.Internal.Logging.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.Extensions.Caching.Memory.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.Extensions.Options.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.Extensions.Primitives.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.IdentityModel.Abstractions.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.IdentityModel.Logging.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.IdentityModel.Protocols.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.IdentityModel.Tokens.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\Microsoft.SqlServer.Server.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\System.Configuration.ConfigurationManager.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\System.Diagnostics.EventLog.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\System.IdentityModel.Tokens.Jwt.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\System.Security.Cryptography.Pkcs.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\cs\Microsoft.Data.SqlClient.resources.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\de\Microsoft.Data.SqlClient.resources.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\es\Microsoft.Data.SqlClient.resources.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\fr\Microsoft.Data.SqlClient.resources.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\it\Microsoft.Data.SqlClient.resources.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\ja\Microsoft.Data.SqlClient.resources.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\ko\Microsoft.Data.SqlClient.resources.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\pl\Microsoft.Data.SqlClient.resources.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\pt-BR\Microsoft.Data.SqlClient.resources.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\ru\Microsoft.Data.SqlClient.resources.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\tr\Microsoft.Data.SqlClient.resources.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\zh-Hans\Microsoft.Data.SqlClient.resources.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\zh-Hant\Microsoft.Data.SqlClient.resources.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\runtimes\unix\lib\net8.0\Microsoft.Data.SqlClient.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\Microsoft.Data.SqlClient.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\BUS_QuanLy.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\DAL_QuanLy.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\DTO_QuanLy.dll
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\BUS_QuanLy.pdb
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\DAL_QuanLy.pdb
+D:\LTCSDL\Khách Hàng\bin\Debug\net8.0-windows\DTO_QuanLy.pdb
+D:\LTCSDL\Khách Hàng\obj\Debug\net8.0-windows\Khách Hàng.csproj.AssemblyReference.cache
+D:\LTCSDL\Khách Hàng\obj\Debug\net8.0-windows\Khách_Hàng.frmKhachHang.resources
+D:\LTCSDL\Khách Hàng\obj\Debug\net8.0-windows\Khách Hàng.csproj.GenerateResource.cache
+D:\LTCSDL\Khách Hàng\obj\Debug\net8.0-windows\Khách Hàng.GeneratedMSBuildEditorConfig.editorconfig
+D:\LTCSDL\Khách Hàng\obj\Debug\net8.0-windows\Khách Hàng.AssemblyInfoInputs.cache
+D:\LTCSDL\Khách Hàng\obj\Debug\net8.0-windows\Khách Hàng.AssemblyInfo.cs
+D:\LTCSDL\Khách Hàng\obj\Debug\net8.0-windows\Khách Hàng.csproj.CoreCompileInputs.cache
+D:\LTCSDL\Khách Hàng\obj\Debug\net8.0-windows\Khách Hàng.csproj.Up2Date
+D:\LTCSDL\Khách Hàng\obj\Debug\net8.0-windows\Khách Hàng.dll
+D:\LTCSDL\Khách Hàng\obj\Debug\net8.0-windows\refint\Khách Hàng.dll
+D:\LTCSDL\Khách Hàng\obj\Debug\net8.0-windows\Khách Hàng.pdb
+D:\LTCSDL\Khách Hàng\obj\Debug\net8.0-windows\Khách Hàng.genruntimeconfig.cache
+D:\LTCSDL\Khách Hàng\obj\Debug\net8.0-windows\ref\Khách Hàng.dll
