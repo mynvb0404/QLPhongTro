@@ -1,0 +1,268 @@
+using System;
+using System.Data;
+using System.Windows.Forms;
+using DTO_QuanLy;
+using BUS_QuanLy;
+
+namespace GUI_QuanLy
+{
+    public partial class FormQuanLyHoaDon : Form
+    {
+        private BUS_HoaDon busHoaDon = new BUS_HoaDon();
+        private int maHoaDonDangChon = 0;
+
+        public FormQuanLyHoaDon()
+        {
+            InitializeComponent();
+        }
+
+        // ============================================================
+        //  LOAD FORM
+        // ============================================================
+        private void FormQuanLyHoaDoncs_Load(object sender, EventArgs e)
+        {
+            LoadComboBoxHopDong();
+            LoadComboBoxTrangThai();
+            LoadDanhSachHoaDon();
+
+        }
+
+        // ============================================================
+        //  HÀM HỖ TRỢ
+        // ============================================================
+
+        // Load hợp đồng còn hiệu lực vào ComboBox
+        private void LoadComboBoxHopDong()
+        {
+            try
+            {
+                BUS_HopDong busHD = new BUS_HopDong();
+                DataTable dt = busHD.LayHopDongConHieuLuc();
+                cboMaHopDong.DataSource = dt;
+                cboMaHopDong.DisplayMember = "MAHOPDONG";
+                cboMaHopDong.ValueMember = "MAHOPDONG";
+            }
+            catch
+            {
+                cboMaHopDong.Items.Clear();
+            }
+        }
+
+        private void LoadComboBoxTrangThai()
+        {
+            cboTrangThai.Items.Clear();
+            cboTrangThai.Items.Add("Chưa thanh toán");
+            cboTrangThai.Items.Add("Đã thanh toán");
+            cboTrangThai.SelectedIndex = 0;
+        }
+
+        private void LoadDanhSachHoaDon()
+        {
+
+            dgvHoaDon.AutoGenerateColumns = true;
+
+            DataTable dt = busHoaDon.LayDanhSachHoaDon();
+            dgvHoaDon.DataSource = dt;
+
+            // Đặt tên cột tiếng Việt
+            SetCol("MAHOADON", "Mã HĐ");
+            SetCol("MAHOPDONG", "Mã hợp đồng");
+            SetCol("NGAYLAP", "Ngày lập");
+            SetCol("TIENNUOC", "Tiền nước");
+            SetCol("TIENDIEN", "Tiền điện");
+            SetCol("TIENPHATSINH", "Tiền PS");
+            SetCol("TONGTIEN", "Tổng tiền");
+            SetCol("TRANGTHAITT", "Trạng thái");
+            SetCol("NGAYTHANHTOAN", "Ngày TT");
+            SetCol("PHUONGTHUCTT", "Phương thức");
+        }
+
+        private void SetCol(string colName, string header)
+        {
+            if (dgvHoaDon.Columns.Contains(colName))
+                dgvHoaDon.Columns[colName].HeaderText = header;
+        }
+
+        private DTO_HOADON DocDuLieuTuForm()
+        {
+            DTO_HOADON hd = new DTO_HOADON();
+            hd.MAHOADON = maHoaDonDangChon;
+
+            // MAHOPDONG là string (NVARCHAR "HD001")
+            hd.MAHOPDONG = cboMaHopDong.SelectedValue?.ToString() ?? cboMaHopDong.Text.Trim();
+
+            decimal.TryParse(txtTienNuoc.Text.Trim(), out decimal nuoc);
+            decimal.TryParse(txtTienDien.Text.Trim(), out decimal dien);
+            decimal.TryParse(txtTienPhatSinh.Text.Trim(), out decimal ps);
+
+            hd.TIENNUOC = nuoc;
+            hd.TIENDIEN = dien;
+            hd.TIENPHATSINH = ps;
+            // TONGTIEN là computed column trong SQL, tự tính — mình chỉ hiển thị
+            hd.TONGTIEN = nuoc + dien + ps;
+            txtTongTien.Text = hd.TONGTIEN.ToString("N0") + " đ";
+
+            hd.TRANGTHAITT = cboTrangThai.SelectedIndex == 1
+                ? TrangThaiThanhToan.DaThanhToan
+                : TrangThaiThanhToan.ChuaThanhToan;
+
+            return hd;
+        }
+
+        private void ThongBao(string loi, string tieuDe = "Thông báo")
+        {
+            if (string.IsNullOrEmpty(loi))
+                MessageBox.Show("Thao tác thành công!", tieuDe,
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+                MessageBox.Show(loi, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void XoaTrang()
+        {
+            if (cboMaHopDong.Items.Count > 0)
+                cboMaHopDong.SelectedIndex = 0;
+            txtTienNuoc.Clear();
+            txtTienDien.Clear();
+            txtTienPhatSinh.Clear();
+            txtTongTien.Clear();
+            cboTrangThai.SelectedIndex = 0;
+            maHoaDonDangChon = 0;
+        }
+
+        // ============================================================
+        //  NÚT: TẠO HÓA ĐƠN
+        // ============================================================
+        private void btnTaoHoaDon_Click(object sender, EventArgs e)
+        {
+            DTO_HOADON hd = DocDuLieuTuForm();
+            string loi = busHoaDon.TaoHoaDon(hd);
+            ThongBao(loi, "Tạo hóa đơn");
+            if (string.IsNullOrEmpty(loi)) { LoadDanhSachHoaDon(); XoaTrang(); }
+        }
+
+        // ============================================================
+        //  NÚT: CẬP NHẬT HÓA ĐƠN
+        // ============================================================
+        private void btnCapNhatHoaDon_Click(object sender, EventArgs e)
+        {
+            if (maHoaDonDangChon <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn một hóa đơn từ danh sách!",
+                    "Chưa chọn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            DTO_HOADON hd = DocDuLieuTuForm();
+            string loi = busHoaDon.CapNhatHoaDon(hd);
+            ThongBao(loi, "Cập nhật hóa đơn");
+            if (string.IsNullOrEmpty(loi)) { LoadDanhSachHoaDon(); XoaTrang(); }
+        }
+
+        // ============================================================
+        //  NÚT: XÓA
+        // ============================================================
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            if (maHoaDonDangChon <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn một hóa đơn từ danh sách!",
+                    "Chưa chọn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var confirm = MessageBox.Show(
+                $"Bạn có chắc muốn xóa hóa đơn #{maHoaDonDangChon}?\n" +
+                "Chỉ nên xóa hóa đơn chưa thanh toán.",
+                "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (confirm == DialogResult.Yes)
+            {
+                string loi = busHoaDon.XoaHoaDon(maHoaDonDangChon);
+                ThongBao(loi, "Xóa hóa đơn");
+                if (string.IsNullOrEmpty(loi)) { LoadDanhSachHoaDon(); XoaTrang(); }
+            }
+        }
+
+        // ============================================================
+        //  NÚT: CẬP NHẬT TRẠNG THÁI (Thanh toán)
+        // ============================================================
+        private void btnCapNhatTrangThai_Click(object sender, EventArgs e)
+        {
+            if (maHoaDonDangChon <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn một hóa đơn từ danh sách!",
+                    "Chưa chọn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            DTO_HOADON hd = DocDuLieuTuForm();
+            string loi = busHoaDon.CapNhatHoaDon(hd);
+            ThongBao(loi, "Cập nhật hóa đơn");
+            if (string.IsNullOrEmpty(loi)) { LoadDanhSachHoaDon(); XoaTrang(); }
+        
+        }
+
+        // ============================================================
+        //  NÚT: DANH SÁCH HÓA ĐƠN (làm mới)
+        // ============================================================
+        private void btnDanhSachHoaDon_Click(object sender, EventArgs e)
+        {
+            LoadDanhSachHoaDon();
+            XoaTrang();
+        }
+
+        // ============================================================
+        //  CLICK DÒNG TRÊN DATAGRIDVIEW → điền lên form
+        // ============================================================
+        private void dgvHoaDon_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            DataGridViewRow row = dgvHoaDon.Rows[e.RowIndex];
+
+            if (row.Cells["MAHOADON"]?.Value != null)
+                int.TryParse(row.Cells["MAHOADON"].Value.ToString(), out maHoaDonDangChon);
+
+            // MAHOPDONG là string
+            if (row.Cells["MAHOPDONG"]?.Value != null)
+            {
+                string maHD = row.Cells["MAHOPDONG"].Value.ToString();
+                cboMaHopDong.SelectedValue = maHD;
+                if (cboMaHopDong.SelectedValue == null)
+                    cboMaHopDong.Text = maHD;
+            }
+
+            if (row.Cells["TIENNUOC"]?.Value != null)
+                txtTienNuoc.Text = row.Cells["TIENNUOC"].Value.ToString();
+
+            if (row.Cells["TIENDIEN"]?.Value != null)
+                txtTienDien.Text = row.Cells["TIENDIEN"].Value.ToString();
+
+            if (row.Cells["TIENPHATSINH"]?.Value != null)
+                txtTienPhatSinh.Text = row.Cells["TIENPHATSINH"].Value.ToString();
+
+            if (row.Cells["TONGTIEN"]?.Value != null)
+                txtTongTien.Text = Convert.ToDecimal(row.Cells["TONGTIEN"].Value).ToString("N0") + " đ";
+
+            if (row.Cells["TRANGTHAITT"]?.Value != null)
+            {
+                string tt = row.Cells["TRANGTHAITT"].Value.ToString();
+                cboTrangThai.SelectedIndex = tt == "Đã thanh toán" ? 1 : 0;
+            }
+        }
+
+        // ============================================================
+        //  TỰ TÍNH TỔNG TIỀN KHI NHẬP
+        // ============================================================
+        private void TinhTongTien()
+        {
+            decimal.TryParse(txtTienNuoc.Text, out decimal nuoc);
+            decimal.TryParse(txtTienDien.Text, out decimal dien);
+            decimal.TryParse(txtTienPhatSinh.Text, out decimal ps);
+            txtTongTien.Text = (nuoc + dien + ps).ToString("N0") + " đ";
+        }
+
+        private void txtTienNuoc_TextChanged(object sender, EventArgs e) => TinhTongTien();
+        private void txtTienDien_TextChanged(object sender, EventArgs e) => TinhTongTien();
+        private void txtTienPhatSinh_TextChanged(object sender, EventArgs e) => TinhTongTien();
+    }
+}
