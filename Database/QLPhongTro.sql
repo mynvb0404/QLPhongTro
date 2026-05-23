@@ -233,11 +233,21 @@ CREATE TABLE BAOCAO (
 GO
 
 /* ======= NHANVIEN ======= */
-INSERT INTO NHANVIEN (HONV, TENNV, SDT, EMAIL, CHUCVU) VALUES 
+INSERT INTO NHANVIEN (HONV, TENNV, SDT, EMAIL, CHUCVU) VALUES  
 (N'Nguyễn Văn', N'Hùng', '0912345678', 'hung.nv@gmail.com', N'Quản lý'),
 (N'Trần Thị', N'Hoa', '0987654321', 'hoa.tt@gmail.com', N'Nhân viên'),
 (N'Lê Hoàng', N'Nam', '0933445566', 'nam.lh@gmail.com', N'Nhân viên'),
-(N'Lê Nhựt', N'Đăng', '0934584566', 'dang.ln@gmail.com', N'Nhân viên');
+(N'Lê Nhựt', N'Đăng', '0934584566', 'dang.ln@gmail.com', N'Nhân viên'),
+(N'Nguyễn Văn', N'An', '0901234567', 'an.nguyen@email.com', N'Quản lý'),
+(N'Trần Thị', N'Bình', '0912345679', 'binh.tran@email.com', N'Nhân viên'),
+(N'Lê Hoàng', N'Cường', '0923456789', 'cuong.le@email.com', N'Nhân viên'),
+(N'Phạm Minh', N'Dũng', '0934567890', 'dung.pham@email.com', N'Nhân viên'),
+(N'Hoàng Thu', N'Thảo', '0945678901', 'thao.hoang@email.com', N'Quản lý'),
+(N'Vũ Tiến', N'Đạt', '0956789012', 'dat.vu@email.com', N'Nhân viên'),
+(N'Phan Thanh', N'Hà', '0967890123', 'ha.phan@email.com', N'Nhân viên'),
+(N'Đặng Văn', N'Hùng', '0978901234', 'hung.dang@email.com', N'Quản lý'),
+(N'Bùi Thị', N'Mai', '0989012345', 'mai.bui@email.com', N'Nhân viên'),
+(N'Đỗ Anh', N'Tuấn', '0990123456', 'tuan.do@email.com', N'Nhân viên');
 GO
 
 /*  ======== KHUVUC ======= */
@@ -251,31 +261,67 @@ GO
 INSERT INTO PHONG (TENPHONG, MAKV, GIAPHONG, DIENTICH, LOAIPHONG, TRANGTHAIPHONG, SONGUOIHIENTAI, NOITHAT) VALUES 
 (N'Phòng 101', 'KV001', 5000000.00, 25.5, N'Phòng đơn cao cấp', N'Đã thuê', 1, N'Giường, tủ quần áo, máy lạnh'),
 (N'Phòng 102', 'KV001', 7000000.00, 35.0, N'Phòng đôi', N'Còn trống', 0, N'Đầy đủ nội thất'),
+(N'Phòng 103', 'KV001', 5500000.00, 26.0, N'Phòng đơn cao cấp', N'Đã thuê', 1, N'Giường, tủ, điều hòa, tủ lạnh'),
 (N'Phòng 201', 'KV002', 4000000.00, 20.0, N'Phòng tiêu chuẩn', N'Cần ở ghép', 1, N'Giường, quạt trần'),
-(N'Phòng 301', 'KV003', 3500000.00, 18.0, N'Phòng giá rẻ', N'Đã thuê', 2, N'Trống');
+(N'Phòng 202', 'KV002', 4200000.00, 22.0, N'Phòng tiêu chuẩn', N'Đã thuê', 2, N'Giường đôi, quạt trần'),
+(N'Phòng 301', 'KV003', 3500000.00, 18.0, N'Phòng giá rẻ', N'Đã thuê', 2, N'Trống'),
+(N'Phòng 302', 'KV003', 3800000.00, 20.0, N'Phòng giá rẻ', N'Còn trống', 0, N'Trống');
 GO
 
 /*  ======== KHACHTHUE ======= */
 INSERT INTO KHACHTHUE (HOKH, TENKH, NGAYSINH, GIOITINH, CCCD, SDT, NGAYBATDAUTHUE, TRANGTHAITHUE) VALUES 
 (N'Phạm Minh', N'Tuấn', '2001-05-15', N'Nam', '012345678901', '0901112223', '2026-01-01', N'Đang thuê'),
 (N'Lê Thị', N'Mai', '2003-08-20', N'Nữ', '012345678902', '0904445556', '2026-02-15', N'Đang thuê'),
-(N'Hoàng Văn', N'Đông', '1999-11-02', N'Nam', '012345678903', '0907778889', '2025-06-01', N'Đã trả phòng');
+(N'Hoàng Văn', N'Đông', '1999-11-02', N'Nam', '012345678903', '0907778889', '2025-06-01', N'Đã trả phòng'),
+(N'Trần Thu', N'Hà', '1998-07-22', N'Nữ', '002098005678', '0912223334', '2025-02-15 14:00:00', N'Đang thuê'),
+(N'Lê Minh', N'Khôi', '2000-11-05', N'Nam', '003200009012', '0923334445', '2025-03-01 09:15:00', N'Đã trả phòng'),
+(N'Phạm Hải', N'Yến', '1993-01-28', N'Nữ', '004093003456', '0934445556', '2025-04-20 10:45:00', N'Đang thuê'),
+(N'Hoàng Quốc', N'Bảo', '1997-09-14', N'Nam', '005097007890', '0945556667', '2024-12-01 16:20:00', N'Đã trả phòng'),
+(N'Vũ Hồng', N'Ngọc', '2002-05-19', N'Nữ', '006202002345', '0956667778', '2025-05-05 11:00:00', N'Đang thuê'),
+(N'Phan Văn', N'Đức', '1991-08-31', N'Nam', '007091006789', '0967778889', '2025-01-20 13:10:00', N'Đang thuê'),
+(N'Đặng Minh', N'Anh', '1999-12-25', N'Khác', '008099001122', '0978889990', '2025-03-18 15:35:00', N'Đang thuê'),
+(N'Bùi Tuyết', N'Mai', '1994-04-03', N'Nữ', '009094005566', '0989990001', '2025-02-28 17:00:00', N'Đã trả phòng'),
+(N'Ngô Tiến', N'Tùng', '1996-10-10', N'Nam', '010096009900', '0990001112', GETDATE(), N'Đang thuê');
 GO
 
 /*  ======== TAIKHOAN ======= */
 INSERT INTO TAIKHOAN (MATK, MANV, MAKH, TENDANGNHAP, MATKHAU, LOAITK) VALUES 
 ('NV001', 1, NULL, 'hung_manager', 'hung01234', 'NV'),
-('NV002', 2, NULL, 'hoa_support', 'hoa01234', 'NV');
+('NV002', 2, NULL, 'hoa_support', 'hoa01234', 'NV'),
+('NV003', 3, NULL, 'AnNguyenVan', '12345678', 'NV'),
+('NV004', 4, NULL, 'BinhTranThi',  '12345678', 'NV'),
+('NV005', 5, NULL, 'CuongLeHoang', '12345678', 'NV');
 
 INSERT INTO TAIKHOAN (MATK, MANV, MAKH, TENDANGNHAP, MATKHAU, LOAITK) VALUES 
-('KH003', NULL, 1, 'tuan_khach', 'tuan01234', 'KH'),
-('KH004', NULL, 2, 'mai_khach', 'mai01234', 'KH');
+('KH001', NULL, 1, 'tuan_khach', 'tuan01234', 'KH'),
+('KH002', NULL, 2, 'mai_khach', 'mai01234', 'KH'),
+('KH003', NULL, 3, N'0923334445', '12345678', 'KH'),
+('KH004', NULL, 4, N'0934445556', '12345678', 'KH'),
+('KH005', NULL, 5, N'0945556667', '12345678', 'KH'),
+('KH006', NULL, 6, N'0956667778', '12345678', 'KH'),
+('KH007', NULL, 7, N'0967778889', '12345678', 'KH'),
+('KH008', NULL, 8, N'0978889990', '12345678', 'KH'),
+('KH009', NULL, 9, N'0989990001', '12345678', 'KH'),
+('KH010', NULL, 10, N'0990001112', '12345678', 'KH');
 GO
 
 /*  ======== LICHHEN ======= */
-INSERT INTO LICHHEN (MAKH, MANV, MAPHONG, THOIGIANHEN, TRANGTHAIHEN, NOIDUNGHEN, THOIGIANTAO) VALUES 
-(1, 2, 2, '2026-05-25 09:30:00', N'Đã đặt', N'Xem phòng 102 chung cư Quận 1', GETDATE()),
-(2, 2, 3, '2026-05-20 15:00:00', N'Hoàn thành', N'Xem phòng ở ghép Bình Thạnh', '2026-05-19 10:00:00');
+INSERT INTO LICHHEN (MAKH, MANV, MAPHONG, THOIGIANHEN, TRANGTHAIHEN, NOIDUNGHEN, THOIGIANTAO, THOIGIANCAPNHAT) VALUES 
+(4, 3, 5, '2026-03-01 09:00:00', N'Hoàn thành', N'Khách xem phòng 103 và chốt ký hợp đồng luôn', '2026-02-28 14:00:00', '2026-03-01 10:30:00'),
+(6, 4, 6, '2026-03-14 16:30:00', N'Hoàn thành', N'Khách xem phòng 202 khu Bình Thạnh', '2026-03-13 08:15:00', '2026-03-14 17:15:00'),
+(8, 2, 3, '2026-03-28 10:00:00', N'Hoàn thành', N'Khách muốn ở ghép phòng 201', '2026-03-27 11:20:00', '2026-03-28 11:00:00');
+
+INSERT INTO LICHHEN (MAKH, MANV, MAPHONG, THOIGIANHEN, TRANGTHAIHEN, NOIDUNGHEN, THOIGIANTAO, THOIGIANCAPNHAT) VALUES 
+(5, 3, 2, '2026-04-10 14:00:00', N'Đã hủy', N'Khách báo bận đột xuất, hẹn dịp khác', '2026-04-09 15:30:00', '2026-04-10 11:00:00'),
+(9, 4, 1, '2026-05-02 09:30:00', N'Đã hủy', N'Phòng 101 đã được thuê trước khi khách đến xem', '2026-05-01 16:00:00', '2026-05-02 08:00:00');
+
+INSERT INTO LICHHEN (MAKH, MANV, MAPHONG, THOIGIANHEN, TRANGTHAIHEN, NOIDUNGHEN, THOIGIANTAO, THOIGIANCAPNHAT) VALUES 
+(10, 2, 2, '2026-05-26 10:00:00', N'Đã đặt', N'Dẫn khách xem phòng đôi 102 Quận 1', GETDATE(), NULL),
+(11, 3, 7, '2026-05-28 15:30:00', N'Đã đặt', N'Khách muốn xem phòng trống mới 302 Thủ Đức', GETDATE(), NULL),
+(12, 4, 3, '2026-05-30 09:00:00', N'Đã đặt', N'Khách xem phòng 201 để tìm người ở ghép', GETDATE(), NULL),
+(3,  2, 2, '2026-06-02 14:00:00', N'Đã đặt', N'Khách cũ muốn xem phòng đổi sang phòng rộng hơn', GETDATE(), NULL),
+(7,  3, 6, '2026-06-05 16:00:00', N'Đã đặt', N'Hẹn khách bàn giao lại phòng 202 thanh lý hợp đồng', GETDATE(), NULL);
+GO
 GO
 
 /*  ======== TINOGHEP ======= */
@@ -286,14 +332,29 @@ GO
 /*  ======== HOPDONG ======= */
 INSERT INTO HOPDONG (MAHOPDONG, MAPHONG, MAKH, NGAYKYHD, NGAYKT, TRANGTHAIHOPDONG, THONGTINHD) VALUES 
 ('HD001', 2, 1, '2026-01-01', '2027-01-01', N'Còn hiệu lực', N'Hợp đồng thuê phòng 101 hạn 1 năm'),
-('HD002', 4, 2, '2026-02-15', '2026-08-15', N'Còn hiệu lực', N'Hợp đồng ngắn hạn 6 tháng');
+('HD002', 4, 2, '2026-02-15', '2026-08-15', N'Còn hiệu lực', N'Hợp đồng ngắn hạn 6 tháng'),
+('HD003', 5, 4, '2026-03-01', '2027-03-01', N'Còn hiệu lực', N'Hợp đồng thuê phòng 103 - Cọc 1 tháng'),
+('HD004', 6, 6, '2026-03-15', '2026-09-15', N'Còn hiệu lực', N'Hợp đồng phòng 202 hạn 6 tháng'),
+('HD005', 3, 8, '2026-04-01', '2026-10-01', N'Còn hiệu lực', N'Hợp đồng ở ghép phòng 201');
 GO
 
 /*  ======== HOADON ======= */
-INSERT INTO HOADON (MAHOPDONG, NGAYLAP, TIENNUOC, TIENDIEN, TIENPHATSINH, TRANGTHAITT) VALUES 
-('HD001', '2026-05-01', 150000.00, 450000.00, 0.00, N'Đã thanh toán'),
-('HD001', '2026-05-22', 120000.00, 520000.00, 50000.00, N'Chưa thanh toán'),
-('HD002', '2026-05-05', 100000.00, 300000.00, 0.00, N'Đã thanh toán');
+INSERT INTO HOADON (MAHOPDONG, NGAYLAP, TIENNUOC, TIENDIEN, TIENPHATSINH, TRANGTHAITT, NGAYTHANHTOAN, PHUONGTHUCTT) VALUES 
+('HD001', '2026-03-01', 120000.00, 380000.00, 50000.00, N'Đã thanh toán', '2026-03-04', N'Chuyển khoản'),
+('HD002', '2026-03-05', 90000.00,  280000.00, 0.00,     N'Đã thanh toán', '2026-03-05', N'Tiền mặt');
+
+INSERT INTO HOADON (MAHOPDONG, NGAYLAP, TIENNUOC, TIENDIEN, TIENPHATSINH, TRANGTHAITT, NGAYTHANHTOAN, PHUONGTHUCTT) VALUES 
+('HD001', '2026-04-01', 130000.00, 410000.00, 0.00,     N'Đã thanh toán', '2026-04-05', N'Quét mã QR'),
+('HD002', '2026-04-05', 95000.00,  310000.00, 0.00,     N'Đã thanh toán', '2026-04-06', N'Chuyển khoản'),
+('HD003', '2026-04-05', 150000.00, 520000.00, 100000.00,N'Đã thanh toán', '2026-04-07', N'Chuyển khoản'),
+('HD004', '2026-04-15', 180000.00, 490000.00, 0.00,     N'Đã thanh toán', '2026-04-17', N'Quét mã QR');
+
+INSERT INTO HOADON (MAHOPDONG, NGAYLAP, TIENNUOC, TIENDIEN, TIENPHATSINH, TRANGTHAITT, NGAYTHANHTOAN, PHUONGTHUCTT) VALUES 
+('HD001', '2026-05-01', 150000.00, 450000.00, 0.00, N'Đã thanh toán','2026-05-05', N'Chuyển khoản'),
+('HD002', '2026-05-05', 100000.00, 300000.00, 0.00, N'Đã thanh toán','2026-05-09', N'Tiền mặt'),
+('HD003', '2026-05-05', 160000.00, 580000.00, 0.00,     N'Đã thanh toán', '2026-05-08', N'Chuyển khoản'),
+('HD004', '2026-05-15', 190000.00, 510000.00, 30000.00, N'Chưa thanh toán', NULL, NULL),
+('HD005', '2026-05-15', 80000.00,  220000.00, 0.00,     N'Chưa thanh toán', NULL, NULL);
 GO
 
 /*  ======== BAOCAO ======= */
