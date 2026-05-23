@@ -18,6 +18,10 @@ namespace DAL_QuanLy
             }
         }
 
+        private string GetStringGioiTinh(GioiTinh gt)
+        {
+            return gt == GioiTinh.Nam ? "Nam" : "Nữ";
+        }
         public DataTable LayDanhSachTinOGhep()
         {
             return ExecuteQuery("SELECT * FROM TINOGHEP");
@@ -32,7 +36,8 @@ namespace DAL_QuanLy
                 new SqlParameter("@MAPHONG",     og.MAPHONG),
                 new SqlParameter("@MAKH",        og.MAKH),
                 new SqlParameter("@SONGUOICAN",  og.SONGUOICAN),
-                new SqlParameter("@GIOITINH",    og.GIOITINH.ToString()),
+                new SqlParameter("@GIOITINH", GetStringGioiTinh(og.GIOITINH)),
+
                 new SqlParameter("@GIACHIA",     og.GIACHIA),
                 new SqlParameter("@MOTA",        og.MOTA),
                 new SqlParameter("@TRANGTHAITIN", GetStringTrangThaiTin(og.TRANGTHAITIN))
@@ -50,7 +55,7 @@ namespace DAL_QuanLy
                              WHERE MATINOG = @MATINOG";
             SqlParameter[] p = {
                 new SqlParameter("@SONGUOICAN", og.SONGUOICAN),
-                new SqlParameter("@GIOITINH",   og.GIOITINH.ToString()),
+                new SqlParameter("@GIOITINH", GetStringGioiTinh(og.GIOITINH)),
                 new SqlParameter("@GIACHIA",    og.GIACHIA),
                 new SqlParameter("@MOTA",       og.MOTA),
                 new SqlParameter("@MATINOG",    og.MATINOG)
@@ -58,9 +63,8 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(query, p) > 0;
         }
         // 2 Tìm kiếm tin ở ghép
-        public DataTable TimKiemTinOGhep(string gioiTinh, decimal giaChiaMax, string tuKhoa)
+        public DataTable TimKiemTinOGhep(int maPhong, string gioiTinh, decimal giaChiaMax, int soNguoi, string tuKhoa)
         {
-            // Sử dụng JOIN để lấy Tên phòng từ bảng PHONG và Tên khách từ bảng KHACHTHUE
             string query = @"SELECT 
                         T.MATINOG, 
                         P.TENPHONG, 
@@ -74,18 +78,24 @@ namespace DAL_QuanLy
                     INNER JOIN PHONG P ON T.MAPHONG = P.MAPHONG
                     INNER JOIN KHACHTHUE K ON T.MAKH = K.MAKH
                     WHERE T.TRANGTHAITIN = N'Đang tìm'
+                      AND (@MAPHONG = 0 OR T.MAPHONG = @MAPHONG)
                       AND (@GIOITINH = '' OR T.GIOITINH = @GIOITINH)
                       AND (@GIACHAMAX = 0 OR T.GIACHIA <= @GIACHAMAX)
+                      AND (@SONGUOI = 0 OR T.SONGUOICAN = @SONGUOI)
                       AND (@TUKHOA = '' OR T.MOTA LIKE @TUKHOA)";
 
             SqlParameter[] p = {
-        new SqlParameter("@GIOITINH", gioiTinh ?? ""),
+        new SqlParameter("@MAPHONG",   maPhong),
+        new SqlParameter("@GIOITINH",  gioiTinh ?? ""),
         new SqlParameter("@GIACHAMAX", giaChiaMax),
-        new SqlParameter("@TUKHOA", string.IsNullOrEmpty(tuKhoa) ? "" : "%" + tuKhoa + "%")
+        new SqlParameter("@SONGUOI",   soNguoi),
+        new SqlParameter("@TUKHOA",    string.IsNullOrEmpty(tuKhoa) ? "" : "%" + tuKhoa + "%")
     };
 
             return ExecuteQuery(query, p);
         }
+
+      
        
         // 4 Xử lý yêu cầu — cập nhật trạng thái
         public bool CapNhatTrangThaiTin(int maTinOGhep, TrangThaiTinOGhep trangThai)
@@ -100,31 +110,23 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(query, p) > 0;
         }
 
-        // 5. Lấy danh sách tin theo phòng 
-        //public DataTable LayDanhSachTinTheoPhong(int maPhong)
-        //{
-        //    string query = @"SELECT * FROM TINOGHEP 
-        //                     WHERE MAPHONG = @MAPHONG";
-        //    SqlParameter[] p = { new SqlParameter("@MAPHONG", maPhong) };
-        //    return ExecuteQuery(query, p);
-        //}
+        // 5 Lấy danh sách tin theo phòng
 
-        // 5. Lấy danh sách tin theo phòng (Đã chỉnh sửa để lấy chuỗi chữ hiển thị trực quan)
+
         public DataTable LayDanhSachTinTheoPhong(int maPhong)
         {
-            // Sử dụng câu lệnh tối ưu để kết nối thông tin giữa các bảng
             string query = @"
         SELECT 
-            T.MATINOG AS [Mã tin], 
-            (P.TENPHONG) AS [Phòng], 
-            (K.HOKH + ' ' + K.TENKH) AS [Khách đăng], 
-            T.SONGUOICAN AS [Số người], 
-            T.GIOITINH AS [Giới tính], 
-            T.GIACHIA AS [Giá chia], 
-            T.TRANGTHAITIN AS [Trạng thái],
-            T.MOTA AS [MoTa],
-            T.MAPHONG AS [MaPhongRaw],
-            T.MAKH AS [MaKHRaw]
+            T.MATINOG,
+            P.TENPHONG,
+            (K.HOKH + ' ' + K.TENKH) AS HOTENKHACH,
+            T.SONGUOICAN,
+            T.GIOITINH,
+            T.GIACHIA,
+            T.TRANGTHAITIN,
+            T.MOTA,
+            T.MAPHONG  AS MaPhongRaw,
+            T.MAKH     AS MaKHRaw
         FROM TINOGHEP T
         INNER JOIN PHONG P ON T.MAPHONG = P.MAPHONG
         INNER JOIN KHACHTHUE K ON T.MAKH = K.MAKH

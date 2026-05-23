@@ -30,11 +30,26 @@
         {
             tabControl1 = new TabControl();
             Tab = new TabPage();
-            groupBox1 = new GroupBox();
+            dataGridView1 = new DataGridView();
+            gbTK = new GroupBox();
+            btnTK = new Button();
+            comboBox4 = new ComboBox();
+            textBox3 = new TextBox();
+            comboBox3 = new ComboBox();
+            numericUpDown3 = new NumericUpDown();
+            label11 = new Label();
+            label12 = new Label();
+            label13 = new Label();
+            label14 = new Label();
+            gbQLT = new GroupBox();
+            btnCNTT = new Button();
+            btnXoaTin = new Button();
             txtGiaChia = new TextBox();
             cboTrangThai = new ComboBox();
+            btnSuaTin = new Button();
             cboGioiTinh = new ComboBox();
             txtMoTa = new TextBox();
+            btnThemTin = new Button();
             numericUpDown1 = new NumericUpDown();
             cboMaKH = new ComboBox();
             cboMaPhong = new ComboBox();
@@ -45,79 +60,201 @@
             label3 = new Label();
             lbMaKH = new Label();
             lbMaPhong = new Label();
-            tabPage2 = new TabPage();
-            tabPage1 = new TabPage();
-            tabPage3 = new TabPage();
-            tabPage4 = new TabPage();
-            tabPage5 = new TabPage();
-            btnThemTin = new Button();
-            btnSuaTin = new Button();
-            btnXoaTin = new Button();
-            btnCNTT = new Button();
-            dgvDSTin = new DataGridView();
-            ColumMt = new DataGridViewTextBoxColumn();
-            Column1 = new DataGridViewTextBoxColumn();
-            Column2 = new DataGridViewTextBoxColumn();
-            Column3 = new DataGridViewTextBoxColumn();
-            Column4 = new DataGridViewTextBoxColumn();
-            Column5 = new DataGridViewTextBoxColumn();
-            Column6 = new DataGridViewTextBoxColumn();
-            panel1 = new Panel();
+            Column7 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn3 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn4 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn5 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn6 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn7 = new DataGridViewTextBoxColumn();
             tabControl1.SuspendLayout();
             Tab.SuspendLayout();
-            groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            gbTK.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
+            gbQLT.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dgvDSTin).BeginInit();
-            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
             // 
             tabControl1.Controls.Add(Tab);
-            tabControl1.Controls.Add(tabPage2);
-            tabControl1.Controls.Add(tabPage1);
-            tabControl1.Controls.Add(tabPage3);
-            tabControl1.Controls.Add(tabPage4);
-            tabControl1.Controls.Add(tabPage5);
-            tabControl1.Location = new Point(40, 35);
+            tabControl1.Dock = DockStyle.Fill;
+            tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1508, 380);
+            tabControl1.Size = new Size(1571, 1174);
             tabControl1.TabIndex = 0;
             // 
             // Tab
             // 
-            Tab.Controls.Add(groupBox1);
+            Tab.BackColor = SystemColors.ActiveCaption;
+            Tab.Controls.Add(dataGridView1);
+            Tab.Controls.Add(gbTK);
+            Tab.Controls.Add(gbQLT);
             Tab.Location = new Point(8, 46);
             Tab.Name = "Tab";
             Tab.Padding = new Padding(3);
-            Tab.Size = new Size(1492, 326);
+            Tab.Size = new Size(1555, 1120);
             Tab.TabIndex = 0;
             Tab.Text = "Đăng và quản lý tin ở ghép";
-            Tab.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
+            // dataGridView1
             // 
-            groupBox1.Controls.Add(txtGiaChia);
-            groupBox1.Controls.Add(cboTrangThai);
-            groupBox1.Controls.Add(cboGioiTinh);
-            groupBox1.Controls.Add(txtMoTa);
-            groupBox1.Controls.Add(numericUpDown1);
-            groupBox1.Controls.Add(cboMaKH);
-            groupBox1.Controls.Add(cboMaPhong);
-            groupBox1.Controls.Add(label7);
-            groupBox1.Controls.Add(label6);
-            groupBox1.Controls.Add(label5);
-            groupBox1.Controls.Add(label4);
-            groupBox1.Controls.Add(label3);
-            groupBox1.Controls.Add(lbMaKH);
-            groupBox1.Controls.Add(lbMaPhong);
-            groupBox1.Location = new Point(26, 22);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(1423, 279);
-            groupBox1.TabIndex = 0;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Đăng và quản lý tin ở ghép";
+            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3, dataGridViewTextBoxColumn4, dataGridViewTextBoxColumn5, dataGridViewTextBoxColumn6, dataGridViewTextBoxColumn7 });
+            dataGridView1.Location = new Point(31, 676);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.ReadOnly = true;
+            dataGridView1.RowHeadersWidth = 82;
+            dataGridView1.Size = new Size(1436, 372);
+            dataGridView1.TabIndex = 5;
+            // 
+            // gbTK
+            // 
+            gbTK.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            gbTK.Controls.Add(btnTK);
+            gbTK.Controls.Add(comboBox4);
+            gbTK.Controls.Add(textBox3);
+            gbTK.Controls.Add(comboBox3);
+            gbTK.Controls.Add(numericUpDown3);
+            gbTK.Controls.Add(label11);
+            gbTK.Controls.Add(label12);
+            gbTK.Controls.Add(label13);
+            gbTK.Controls.Add(label14);
+            gbTK.Location = new Point(26, 487);
+            gbTK.Name = "gbTK";
+            gbTK.Size = new Size(1423, 183);
+            gbTK.TabIndex = 7;
+            gbTK.TabStop = false;
+            gbTK.Text = "Tìm kiếm ở ghép";
+            // 
+            // btnTK
+            // 
+            btnTK.Location = new Point(530, 118);
+            btnTK.Name = "btnTK";
+            btnTK.Size = new Size(150, 46);
+            btnTK.TabIndex = 16;
+            btnTK.Text = "Tìm kiếm";
+            btnTK.UseVisualStyleBackColor = true;
+            // 
+            // comboBox4
+            // 
+            comboBox4.FormattingEnabled = true;
+            comboBox4.Location = new Point(157, 123);
+            comboBox4.Name = "comboBox4";
+            comboBox4.Size = new Size(257, 40);
+            comboBox4.TabIndex = 15;
+            // 
+            // textBox3
+            // 
+            textBox3.Location = new Point(545, 47);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(380, 39);
+            textBox3.TabIndex = 14;
+            // 
+            // comboBox3
+            // 
+            comboBox3.FormattingEnabled = true;
+            comboBox3.Location = new Point(157, 50);
+            comboBox3.Name = "comboBox3";
+            comboBox3.Size = new Size(257, 40);
+            comboBox3.TabIndex = 12;
+            // 
+            // numericUpDown3
+            // 
+            numericUpDown3.Location = new Point(1172, 43);
+            numericUpDown3.Name = "numericUpDown3";
+            numericUpDown3.Size = new Size(112, 39);
+            numericUpDown3.TabIndex = 9;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(21, 123);
+            label11.Name = "label11";
+            label11.Size = new Size(110, 32);
+            label11.TabIndex = 6;
+            label11.Text = "Giới tính:";
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new Point(440, 47);
+            label12.Name = "label12";
+            label12.Size = new Size(103, 32);
+            label12.TabIndex = 5;
+            label12.Text = "Giá chia:";
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(21, 50);
+            label13.Name = "label13";
+            label13.Size = new Size(83, 32);
+            label13.TabIndex = 3;
+            label13.Text = "Phòng";
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new Point(951, 52);
+            label14.Name = "label14";
+            label14.Size = new Size(159, 32);
+            label14.TabIndex = 2;
+            label14.Text = "Số người cần:";
+            // 
+            // gbQLT
+            // 
+            gbQLT.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            gbQLT.Controls.Add(btnCNTT);
+            gbQLT.Controls.Add(btnXoaTin);
+            gbQLT.Controls.Add(txtGiaChia);
+            gbQLT.Controls.Add(cboTrangThai);
+            gbQLT.Controls.Add(btnSuaTin);
+            gbQLT.Controls.Add(cboGioiTinh);
+            gbQLT.Controls.Add(txtMoTa);
+            gbQLT.Controls.Add(btnThemTin);
+            gbQLT.Controls.Add(numericUpDown1);
+            gbQLT.Controls.Add(cboMaKH);
+            gbQLT.Controls.Add(cboMaPhong);
+            gbQLT.Controls.Add(label7);
+            gbQLT.Controls.Add(label6);
+            gbQLT.Controls.Add(label5);
+            gbQLT.Controls.Add(label4);
+            gbQLT.Controls.Add(label3);
+            gbQLT.Controls.Add(lbMaKH);
+            gbQLT.Controls.Add(lbMaPhong);
+            gbQLT.Location = new Point(3, 3);
+            gbQLT.Name = "gbQLT";
+            gbQLT.Size = new Size(1549, 1114);
+            gbQLT.TabIndex = 0;
+            gbQLT.TabStop = false;
+            gbQLT.Text = "Đăng và quản lý tin ở ghép";
+            // 
+            // btnCNTT
+            // 
+            btnCNTT.BackColor = SystemColors.ButtonHighlight;
+            btnCNTT.Location = new Point(846, 300);
+            btnCNTT.Name = "btnCNTT";
+            btnCNTT.Size = new Size(204, 81);
+            btnCNTT.TabIndex = 0;
+            btnCNTT.Text = "Cập nhật trạng thái";
+            btnCNTT.UseVisualStyleBackColor = false;
+            // 
+            // btnXoaTin
+            // 
+            btnXoaTin.BackColor = SystemColors.ButtonHighlight;
+            btnXoaTin.Location = new Point(586, 300);
+            btnXoaTin.Name = "btnXoaTin";
+            btnXoaTin.Size = new Size(204, 81);
+            btnXoaTin.TabIndex = 3;
+            btnXoaTin.Text = "Xóa tin";
+            btnXoaTin.UseVisualStyleBackColor = false;
+            btnXoaTin.Click += btnXoaTin_Click;
             // 
             // txtGiaChia
             // 
@@ -134,6 +271,16 @@
             cboTrangThai.Size = new Size(310, 40);
             cboTrangThai.TabIndex = 13;
             // 
+            // btnSuaTin
+            // 
+            btnSuaTin.BackColor = SystemColors.ButtonHighlight;
+            btnSuaTin.Location = new Point(352, 300);
+            btnSuaTin.Name = "btnSuaTin";
+            btnSuaTin.Size = new Size(204, 81);
+            btnSuaTin.TabIndex = 4;
+            btnSuaTin.Text = "Sửa tin";
+            btnSuaTin.UseVisualStyleBackColor = false;
+            // 
             // cboGioiTinh
             // 
             cboGioiTinh.FormattingEnabled = true;
@@ -148,6 +295,17 @@
             txtMoTa.Name = "txtMoTa";
             txtMoTa.Size = new Size(1170, 39);
             txtMoTa.TabIndex = 10;
+            // 
+            // btnThemTin
+            // 
+            btnThemTin.BackColor = SystemColors.ButtonHighlight;
+            btnThemTin.Location = new Point(81, 300);
+            btnThemTin.Name = "btnThemTin";
+            btnThemTin.Size = new Size(204, 81);
+            btnThemTin.TabIndex = 1;
+            btnThemTin.Text = "Thêm tin";
+            btnThemTin.UseVisualStyleBackColor = false;
+            btnThemTin.Click += btnThemTin_Click;
             // 
             // numericUpDown1
             // 
@@ -236,182 +394,89 @@
             lbMaPhong.TabIndex = 0;
             lbMaPhong.Text = "Mã phòng:";
             // 
-            // tabPage2
+            // Column7
             // 
-            tabPage2.Location = new Point(8, 46);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(1492, 326);
-            tabPage2.TabIndex = 1;
-            tabPage2.Text = "Tìm kiếm";
-            tabPage2.UseVisualStyleBackColor = true;
+            Column7.MinimumWidth = 10;
+            Column7.Name = "Column7";
+            Column7.Width = 200;
             // 
-            // tabPage1
+            // dataGridViewTextBoxColumn1
             // 
-            tabPage1.Location = new Point(8, 46);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Size = new Size(1492, 326);
-            tabPage1.TabIndex = 2;
-            tabPage1.Text = "Gửi yêu cầu ";
-            tabPage1.UseVisualStyleBackColor = true;
+            dataGridViewTextBoxColumn1.DataPropertyName = "MATINOG";
+            dataGridViewTextBoxColumn1.HeaderText = "Mã tin";
+            dataGridViewTextBoxColumn1.MinimumWidth = 10;
+            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            dataGridViewTextBoxColumn1.ReadOnly = true;
             // 
-            // tabPage3
+            // dataGridViewTextBoxColumn2
             // 
-            tabPage3.Location = new Point(8, 46);
-            tabPage3.Name = "tabPage3";
-            tabPage3.Size = new Size(1492, 326);
-            tabPage3.TabIndex = 3;
-            tabPage3.Text = "Xử lý yêu cầu";
-            tabPage3.UseVisualStyleBackColor = true;
+            dataGridViewTextBoxColumn2.DataPropertyName = "TENPHONG";
+            dataGridViewTextBoxColumn2.HeaderText = "Phòng ";
+            dataGridViewTextBoxColumn2.MinimumWidth = 10;
+            dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            dataGridViewTextBoxColumn2.ReadOnly = true;
             // 
-            // tabPage4
+            // dataGridViewTextBoxColumn3
             // 
-            tabPage4.Location = new Point(8, 46);
-            tabPage4.Name = "tabPage4";
-            tabPage4.Size = new Size(1492, 326);
-            tabPage4.TabIndex = 4;
-            tabPage4.Text = "Danh sách ở ghép";
-            tabPage4.UseVisualStyleBackColor = true;
+            dataGridViewTextBoxColumn3.DataPropertyName = "HOTENKHACH";
+            dataGridViewTextBoxColumn3.HeaderText = "Khách hàng";
+            dataGridViewTextBoxColumn3.MinimumWidth = 10;
+            dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            dataGridViewTextBoxColumn3.ReadOnly = true;
             // 
-            // tabPage5
+            // dataGridViewTextBoxColumn4
             // 
-            tabPage5.Location = new Point(8, 46);
-            tabPage5.Name = "tabPage5";
-            tabPage5.Size = new Size(1492, 326);
-            tabPage5.TabIndex = 5;
-            tabPage5.Text = "Đánh giá";
-            tabPage5.UseVisualStyleBackColor = true;
+            dataGridViewTextBoxColumn4.DataPropertyName = "SONGUOICAN";
+            dataGridViewTextBoxColumn4.HeaderText = "Số người";
+            dataGridViewTextBoxColumn4.MinimumWidth = 10;
+            dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            dataGridViewTextBoxColumn4.ReadOnly = true;
             // 
-            // btnThemTin
+            // dataGridViewTextBoxColumn5
             // 
-            btnThemTin.Location = new Point(55, 457);
-            btnThemTin.Name = "btnThemTin";
-            btnThemTin.Size = new Size(150, 46);
-            btnThemTin.TabIndex = 1;
-            btnThemTin.Text = "Thêm tin";
-            btnThemTin.UseVisualStyleBackColor = true;
-            btnThemTin.Click += btnThemTin_Click;
+            dataGridViewTextBoxColumn5.DataPropertyName = "GIOITINH";
+            dataGridViewTextBoxColumn5.HeaderText = "Giới tính";
+            dataGridViewTextBoxColumn5.MinimumWidth = 10;
+            dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            dataGridViewTextBoxColumn5.ReadOnly = true;
             // 
-            // btnSuaTin
+            // dataGridViewTextBoxColumn6
             // 
-            btnSuaTin.Location = new Point(247, 457);
-            btnSuaTin.Name = "btnSuaTin";
-            btnSuaTin.Size = new Size(150, 46);
-            btnSuaTin.TabIndex = 2;
-            btnSuaTin.Text = "Sửa tin";
-            btnSuaTin.UseVisualStyleBackColor = true;
+            dataGridViewTextBoxColumn6.DataPropertyName = "GIACHIA";
+            dataGridViewTextBoxColumn6.HeaderText = "Giá chia";
+            dataGridViewTextBoxColumn6.MinimumWidth = 10;
+            dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            dataGridViewTextBoxColumn6.ReadOnly = true;
             // 
-            // btnXoaTin
+            // dataGridViewTextBoxColumn7
             // 
-            btnXoaTin.Location = new Point(438, 457);
-            btnXoaTin.Name = "btnXoaTin";
-            btnXoaTin.Size = new Size(150, 46);
-            btnXoaTin.TabIndex = 3;
-            btnXoaTin.Text = "Xóa tin";
-            btnXoaTin.UseVisualStyleBackColor = true;
-            // 
-            // btnCNTT
-            // 
-            btnCNTT.Location = new Point(632, 457);
-            btnCNTT.Name = "btnCNTT";
-            btnCNTT.Size = new Size(150, 46);
-            btnCNTT.TabIndex = 4;
-            btnCNTT.Text = "Cập nhật TT";
-            btnCNTT.UseVisualStyleBackColor = true;
-            // 
-            // dgvDSTin
-            // 
-            dgvDSTin.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvDSTin.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDSTin.Columns.AddRange(new DataGridViewColumn[] { ColumMt, Column1, Column2, Column3, Column4, Column5, Column6 });
-            dgvDSTin.Location = new Point(11, 87);
-            dgvDSTin.Name = "dgvDSTin";
-            dgvDSTin.ReadOnly = true;
-            dgvDSTin.RowHeadersWidth = 82;
-            dgvDSTin.Size = new Size(1483, 235);
-            dgvDSTin.TabIndex = 5;
-            dgvDSTin.CellClick += dgvDSTin_CellClick;
-            // 
-            // ColumMt
-            // 
-            ColumMt.HeaderText = "Mã tin";
-            ColumMt.MinimumWidth = 10;
-            ColumMt.Name = "ColumMt";
-            ColumMt.ReadOnly = true;
-            // 
-            // Column1
-            // 
-            Column1.HeaderText = "Phòng ";
-            Column1.MinimumWidth = 10;
-            Column1.Name = "Column1";
-            Column1.ReadOnly = true;
-            // 
-            // Column2
-            // 
-            Column2.HeaderText = "Khách hàng";
-            Column2.MinimumWidth = 10;
-            Column2.Name = "Column2";
-            Column2.ReadOnly = true;
-            // 
-            // Column3
-            // 
-            Column3.HeaderText = "Số người";
-            Column3.MinimumWidth = 10;
-            Column3.Name = "Column3";
-            Column3.ReadOnly = true;
-            // 
-            // Column4
-            // 
-            Column4.HeaderText = "Giới tính";
-            Column4.MinimumWidth = 10;
-            Column4.Name = "Column4";
-            Column4.ReadOnly = true;
-            // 
-            // Column5
-            // 
-            Column5.HeaderText = "Giá chia";
-            Column5.MinimumWidth = 10;
-            Column5.Name = "Column5";
-            Column5.ReadOnly = true;
-            // 
-            // Column6
-            // 
-            Column6.HeaderText = "Trạng thái";
-            Column6.MinimumWidth = 10;
-            Column6.Name = "Column6";
-            Column6.ReadOnly = true;
-            // 
-            // panel1
-            // 
-            panel1.Controls.Add(dgvDSTin);
-            panel1.Location = new Point(29, 436);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(1519, 355);
-            panel1.TabIndex = 6;
+            dataGridViewTextBoxColumn7.DataPropertyName = "TRANGTHAITIN";
+            dataGridViewTextBoxColumn7.HeaderText = "Trạng thái";
+            dataGridViewTextBoxColumn7.MinimumWidth = 10;
+            dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            dataGridViewTextBoxColumn7.ReadOnly = true;
             // 
             // FormQuanLyOGhep
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(1560, 803);
-            Controls.Add(btnCNTT);
-            Controls.Add(btnXoaTin);
-            Controls.Add(btnSuaTin);
-            Controls.Add(btnThemTin);
+            BackColor = SystemColors.ActiveCaption;
+            ClientSize = new Size(1571, 1174);
             Controls.Add(tabControl1);
-            Controls.Add(panel1);
             Name = "FormQuanLyOGhep";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Quản lý ở ghép";
             Load += FormQuanLyOGhep_Load;
             tabControl1.ResumeLayout(false);
             Tab.ResumeLayout(false);
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            gbTK.ResumeLayout(false);
+            gbTK.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
+            gbQLT.ResumeLayout(false);
+            gbQLT.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dgvDSTin).EndInit();
-            panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -419,9 +484,7 @@
 
         private TabControl tabControl1;
         private TabPage Tab;
-        private TabPage tabPage2;
-        private TabPage tabPage1;
-        private GroupBox groupBox1;
+        private GroupBox gbQLT;
         private Label label7;
         private Label label6;
         private Label label5;
@@ -429,28 +492,35 @@
         private Label label3;
         private Label lbMaKH;
         private Label lbMaPhong;
-        private TabPage tabPage3;
-        private TabPage tabPage4;
-        private TabPage tabPage5;
         private NumericUpDown numericUpDown1;
         private ComboBox cboMaKH;
         private ComboBox cboMaPhong;
         private TextBox txtMoTa;
-        private Button btnThemTin;
-        private Button btnSuaTin;
-        private Button btnXoaTin;
-        private Button btnCNTT;
-        private DataGridView dgvDSTin;
-        private Panel panel1;
-        private DataGridViewTextBoxColumn ColumMt;
-        private DataGridViewTextBoxColumn Column1;
-        private DataGridViewTextBoxColumn Column2;
-        private DataGridViewTextBoxColumn Column3;
-        private DataGridViewTextBoxColumn Column4;
-        private DataGridViewTextBoxColumn Column5;
-        private DataGridViewTextBoxColumn Column6;
         private TextBox txtGiaChia;
         private ComboBox cboTrangThai;
         private ComboBox cboGioiTinh;
+        private DataGridViewTextBoxColumn Column7;
+        private Button btnXoaTin;
+        private Button btnThemTin;
+        private Button btnSuaTin;
+        private Button btnCNTT;
+        private GroupBox gbTK;
+        private TextBox textBox3;
+        private ComboBox comboBox3;
+        private NumericUpDown numericUpDown3;
+        private Label label11;
+        private Label label12;
+        private Label label13;
+        private Label label14;
+        private Button btnTK;
+        private ComboBox comboBox4;
+        private DataGridView dataGridView1;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
     }
 }

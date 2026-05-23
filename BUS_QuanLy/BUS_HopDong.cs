@@ -10,8 +10,11 @@ namespace BUS_QuanLy
         private DAL_HOPDONG dalHopDong = new DAL_HOPDONG();
 
         public DataTable LayDanhSachHopDong() => dalHopDong.LayDanhSachHopDong();
-        
 
+        public DataTable LayHopDongConHieuLuc()
+        {
+            return dalHopDong.LayHopDongConHieuLuc();
+        }
         // 1 Thêm hợp đồng
         public string ThemHopDong(DTO_HOPDONG hd)
         {

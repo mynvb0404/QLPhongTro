@@ -11,7 +11,9 @@ namespace GUI_QuanLy
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new FormQuanLyOGhep());
+           Application.Run(new FormQuanLyOGhep());
+            Application.Run(new FormQuanLyHoaDon());
+            Application.Run(new FormQuanLyBaoCao());
         }
     }
 }

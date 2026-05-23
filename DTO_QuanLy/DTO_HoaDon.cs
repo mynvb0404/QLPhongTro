@@ -23,8 +23,8 @@ namespace DTO_QuanLy
     {
         public int MAHOADON { get; set; }
 
-        public int MAHOPDONG { get; set; }
-
+        public string MAHOPDONG { get; set; }
+     
         public DateTime NGAYLAP { get; set; }
 
         public decimal TIENNUOC { get; set; }
@@ -44,7 +44,7 @@ namespace DTO_QuanLy
 
         public DTO_HOADON() { }
 
-        public DTO_HOADON(int mahoadon, int mahopdong, DateTime ngaylap,
+        public DTO_HOADON(int mahoadon, string mahopdong, DateTime ngaylap,
                           decimal tiennuoc, decimal tiendien,
                           decimal tienphatsinh, decimal tongtien,
                           TrangThaiThanhToan trangthaitt, DateTime? ngaythanhtoan,

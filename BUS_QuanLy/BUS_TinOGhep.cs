@@ -27,13 +27,11 @@ namespace BUS_QuanLy
         }
 
         // 2. Tìm kiếm tin ở ghép
-        public DataTable TimKiemTinOGhep(string gioiTinh, decimal giaMax, string tuKhoa)
+        public DataTable TimKiemTinOGhep(int maPhong, string gioiTinh, decimal giaMax, int soNguoi)
         {
             string gioiTinhChuan = string.IsNullOrWhiteSpace(gioiTinh) ? "" : gioiTinh.Trim();
-            string tuKhoaChuan = string.IsNullOrWhiteSpace(tuKhoa) ? "" : tuKhoa.Trim();
             decimal giaChuan = giaMax < 0 ? 0 : giaMax;
-
-            return dalTinOGhep.TimKiemTinOGhep(gioiTinhChuan, giaChuan, tuKhoaChuan); // Sửa: đúng tên hàm DAL
+            return dalTinOGhep.TimKiemTinOGhep(maPhong, gioiTinhChuan, giaChuan, soNguoi, "");
         }
 
         // 3 Sửa tin ở ghép

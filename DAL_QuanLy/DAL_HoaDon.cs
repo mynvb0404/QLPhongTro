@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using Microsoft.Data.SqlClient;
 using DTO_QuanLy;
 
@@ -8,9 +7,7 @@ namespace DAL_QuanLy
     public class DAL_HOADON : DBConnect
     {
         private string GetStringTrangThaiTT(TrangThaiThanhToan tt)
-        {
-            return tt == TrangThaiThanhToan.DaThanhToan ? "Đã thanh toán" : "Chưa thanh toán";
-        }
+            => tt == TrangThaiThanhToan.DaThanhToan ? "Đã thanh toán" : "Chưa thanh toán";
 
         private string GetStringPhuongThucTT(PhuongThucThanhToan pt)
         {
@@ -23,88 +20,97 @@ namespace DAL_QuanLy
             }
         }
 
+        // Lấy toàn bộ hóa đơn
         public DataTable LayDanhSachHoaDon()
         {
             return ExecuteQuery("SELECT * FROM HOADON ORDER BY NGAYLAP DESC");
         }
 
-        // 1 Tạo hóa đơn
+        // 1. Tạo hóa đơn
         public bool TaoHoaDon(DTO_HOADON hd)
         {
-            string query = @"INSERT INTO HOADON (MAHOPDONG, NGAYLAP, TIENNUOC, TIENDIEN, TIENPHATSINH, TONGTIEN, TRANGTHAITT)
-                             VALUES (@MAHOPDONG, GETDATE(), @TIENNUOC, @TIENDIEN, @TIENPHATSINH, @TONGTIEN, @TRANGTHAITT)";
+            string query = @"
+                INSERT INTO HOADON 
+                    (MAHOPDONG, NGAYLAP, TIENNUOC, TIENDIEN, TIENPHATSINH, TRANGTHAITT)
+                VALUES 
+                    (@MAHOPDONG, GETDATE(), @TIENNUOC, @TIENDIEN, @TIENPHATSINH, @TRANGTHAITT)";
 
             SqlParameter[] p = {
                 new SqlParameter("@MAHOPDONG",    hd.MAHOPDONG),
                 new SqlParameter("@TIENNUOC",     hd.TIENNUOC),
                 new SqlParameter("@TIENDIEN",     hd.TIENDIEN),
                 new SqlParameter("@TIENPHATSINH", hd.TIENPHATSINH),
-                new SqlParameter("@TONGTIEN",     hd.TONGTIEN),
                 new SqlParameter("@TRANGTHAITT",  GetStringTrangThaiTT(hd.TRANGTHAITT))
             };
             return ExecuteNonQuery(query, p) > 0;
         }
 
-        // 2 Cập nhật hóa đơn
+        // 2. Cập nhật hóa đơn
         public bool CapNhatHoaDon(DTO_HOADON hd)
         {
-            string query = @"UPDATE HOADON SET
-                            TIENNUOC = @TIENNUOC,
-                            TIENDIEN = @TIENDIEN,
-                            TIENPHATSINH = @TIENPHATSINH,
-                            TONGTIEN = @TONGTIEN,
-                            TRANGTHAITT = @TRANGTHAITT
-                            WHERE MAHOADON = @MAHOADON";
+            string query = @"
+                UPDATE HOADON SET
+                    TIENNUOC     = @TIENNUOC,
+                    TIENDIEN     = @TIENDIEN,
+                    TIENPHATSINH = @TIENPHATSINH,
+                    TRANGTHAITT  = @TRANGTHAITT
+                WHERE MAHOADON = @MAHOADON";
+
             SqlParameter[] p = {
                 new SqlParameter("@MAHOADON",     hd.MAHOADON),
                 new SqlParameter("@TIENNUOC",     hd.TIENNUOC),
                 new SqlParameter("@TIENDIEN",     hd.TIENDIEN),
                 new SqlParameter("@TIENPHATSINH", hd.TIENPHATSINH),
-                new SqlParameter("@TONGTIEN",     hd.TONGTIEN),
                 new SqlParameter("@TRANGTHAITT",  GetStringTrangThaiTT(hd.TRANGTHAITT))
             };
             return ExecuteNonQuery(query, p) > 0;
         }
-
-        // 3 Thanh toán hóa đơn
-        public bool ThanhToanHoaDon(int maHoaDon, PhuongThucThanhToan pt)
+        public bool CapNhatTrangThaiHoaDon(int maHD, TrangThaiThanhToan trangThai)
         {
-            string query = @"UPDATE HOADON 
-                            SET TRANGTHAITT = N'Đã thanh toán', 
-                                NGAYTHANHTOAN = GETDATE(), 
-                                PHUONGTHUCTT = @PHUONGTHUCTT
-                            WHERE MAHOADON = @MAHOADON";
+            string query = "UPDATE HOADON SET TRANGTHAITT = @TrangThai WHERE MAHOADON = @MaHD";
 
             SqlParameter[] p = {
-                new SqlParameter("@MAHOADON", maHoaDon),
+        new SqlParameter("@MaHD",     maHD),
+
+        new SqlParameter("@TrangThai", GetStringTrangThaiTT(trangThai))
+        };
+
+            return ExecuteNonQuery(query, p) > 0;
+        }
+        // 3. Thanh toán hóa đơn 
+        public bool ThanhToanHoaDon(int maHoaDon, PhuongThucThanhToan pt)
+        {
+            string query = @"
+                UPDATE HOADON SET
+                    TRANGTHAITT   = N'Đã thanh toán',
+                    NGAYTHANHTOAN = GETDATE(),
+                    PHUONGTHUCTT  = @PHUONGTHUCTT
+                WHERE MAHOADON = @MAHOADON";
+
+            SqlParameter[] p = {
+                new SqlParameter("@MAHOADON",    maHoaDon),
                 new SqlParameter("@PHUONGTHUCTT", GetStringPhuongThucTT(pt))
             };
             return ExecuteNonQuery(query, p) > 0;
         }
 
-        // 4 Xem lịch sử thanh toán 
-        public DataTable XemLichSuThanhToan(int maHopDong)
+        // 4. Xóa hóa đơn
+        public bool XoaHoaDon(int maHoaDon)
         {
-            string query = @"SELECT * FROM HOADON 
-                            WHERE MAHOPDONG = @MAHOPDONG 
-                            ORDER BY NGAYLAP DESC";
-            SqlParameter[] p = { new SqlParameter("@MAHOPDONG", maHopDong) };
-            return ExecuteQuery(query, p);
-        }
-
-        // 5 Cập nhật trạng thái hóa đơn
-        public bool CapNhatTrangThaiHoaDon(int maHoaDon, TrangThaiThanhToan trangThai)
-        {
-            string query = @"UPDATE HOADON 
-                            SET TRANGTHAITT = @TRANGTHAITT 
-                            WHERE MAHOADON = @MAHOADON";
-            SqlParameter[] p = {
-                new SqlParameter("@TRANGTHAITT", GetStringTrangThaiTT(trangThai)),
-                new SqlParameter("@MAHOADON",    maHoaDon)
-            };
+            string query = "DELETE FROM HOADON WHERE MAHOADON = @MAHOADON";
+            SqlParameter[] p = { new SqlParameter("@MAHOADON", maHoaDon) };
             return ExecuteNonQuery(query, p) > 0;
         }
 
-
+        // 5. Xem lịch sử theo hợp đồng
+        public DataTable XemLichSuThanhToan(string maHopDong)
+        {
+            string query = @"
+                SELECT * FROM HOADON 
+                WHERE MAHOPDONG = @MAHOPDONG 
+                ORDER BY NGAYLAP DESC";
+            SqlParameter[] p = { new SqlParameter("@MAHOPDONG", maHopDong) };
+            return ExecuteQuery(query, p);
+        }
     }
 }

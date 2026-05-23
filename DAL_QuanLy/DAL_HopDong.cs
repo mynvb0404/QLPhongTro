@@ -17,6 +17,18 @@ namespace DAL_QuanLy
             return ExecuteQuery("SELECT * FROM HOPDONG");
         }
 
+        public DataTable LayHopDongConHieuLuc()
+        {
+            string query = @"
+                SELECT 
+                    HD.MAHOPDONG,
+                    HD.MAHOPDONG + N' - Phòng ' + P.TENPHONG AS HIENTHIHD
+                FROM HOPDONG HD
+                INNER JOIN PHONG P ON HD.MAPHONG = P.MAPHONG
+                WHERE HD.TRANGTHAIHOPDONG = N'Còn hiệu lực'
+                ORDER BY HD.MAHOPDONG";
+            return ExecuteQuery(query);
+        }
         // 1 Thêm hợp đồng
         public bool ThemHopDong(DTO_HOPDONG hd)
         {
