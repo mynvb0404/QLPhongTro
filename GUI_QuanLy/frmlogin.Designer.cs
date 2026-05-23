@@ -79,17 +79,16 @@
             // 
             // lbUserName
             // 
-            lbUserName.AutoSize = true;
-            lbUserName.Location = new Point(40, 169);
+            lbUserName.Location = new Point(41, 169);
             lbUserName.Name = "lbUserName";
             lbUserName.Size = new Size(50, 20);
             lbUserName.TabIndex = 12;
-            lbUserName.Text = "label2";
+            lbUserName.Text = "Tên đăng nhập";
             // 
             // pictureBox2
             // 
             pictureBox2.BackColor = SystemColors.ButtonHighlight;
-            pictureBox2.Image = GUI_QuanLy.Properties.Resources._lock;
+            pictureBox2.Image = Properties.Resources._lock;
             pictureBox2.Location = new Point(434, 262);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(27, 27);
@@ -217,7 +216,7 @@
             Name = "frmLogin";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Đăng nhập";
-            Load += frmLogin_Load;
+            Activated += frmLogin_Activated;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();

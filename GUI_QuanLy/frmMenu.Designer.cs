@@ -96,7 +96,7 @@
             lbEmail.Name = "lbEmail";
             lbEmail.Size = new Size(229, 30);
             lbEmail.TabIndex = 1;
-            lbEmail.Text = "label6";
+            lbEmail.Text = "Email";
             // 
             // lbFullName
             // 
@@ -105,7 +105,7 @@
             lbFullName.Name = "lbFullName";
             lbFullName.Size = new Size(236, 30);
             lbFullName.TabIndex = 0;
-            lbFullName.Text = "label5";
+            lbFullName.Text = "Tên người dùng";
             // 
             // label3
             // 

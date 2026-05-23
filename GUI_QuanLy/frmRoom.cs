@@ -233,9 +233,9 @@ namespace GUI_QuanLy
         {
             idSelected = 0;
             txtName.Clear();
-            txtPrice.Text = "0";
-            txtS.Text = "0";
-            txtPopulation.Text = "0";
+            txtPrice.Clear();
+            txtS.Clear();
+            txtPopulation.Clear();
             txtFuniture.Clear();
 
             if (cboArea.Items.Count > 0) cboArea.SelectedIndex = 0;

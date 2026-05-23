@@ -22,10 +22,6 @@ namespace GUI_QuanLy
             InitializeComponent();
         }
 
-        private void lbUsername_Click(object sender, EventArgs e)
-        {
-        }
-
         private void cboRole_SelectedIndexChanged(object sender, EventArgs e)
         {
             txtUsername.Clear();
@@ -41,11 +37,6 @@ namespace GUI_QuanLy
                 lbUserName.Text = "Số điện thoại";
                 txtUsername.PlaceholderText = "Nhập số điện thoại";
             }
-        }
-
-        private void frmLogin_Load(object sender, EventArgs e)
-        {
-            cboRole.SelectedIndex = 0;
         }
 
         private void btLogin_Click(object sender, EventArgs e)
@@ -135,6 +126,12 @@ namespace GUI_QuanLy
             };
 
             mainMenu.Show();
+        }
+
+        private void frmLogin_Activated(object sender, EventArgs e)
+        {
+            txtUsername.Clear();
+            txtPassword.Clear();
         }
     }
 }
