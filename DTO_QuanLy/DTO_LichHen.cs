@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace DTO_QuanLy
 {
-    public class DTO_LichHen
+    public enum TrangThaiLichHen
+    {
+        DaDat,      // Đã đặt
+        DaHuy,      // Đã hủy
+        HoanThanh   // Hoàn thành
+    }
+
+    public class DTO_LICHHEN
     {
         public int MALH { get; set; }
 
@@ -18,7 +25,7 @@ namespace DTO_QuanLy
 
         public DateTime THOIGIANHEN { get; set; }
 
-        public string TRANGTHAIHEN { get; set; } = "";
+        public TrangThaiLichHen TRANGTHAIHEN { get; set; }
 
         public string? NOIDUNGHEN { get; set; }
 
@@ -26,10 +33,10 @@ namespace DTO_QuanLy
 
         public DateTime? THOIGIANCAPNHAT { get; set; }
 
-        public DTO_LichHen() { }
+        public DTO_LICHHEN() { }
 
-        public DTO_LichHen(int malh, int makh, int manv, int maphong,
-                           DateTime thoigianhen, string trangthaihen,
+        public DTO_LICHHEN(int malh, int makh, int manv, int maphong,
+                           DateTime thoigianhen, TrangThaiLichHen trangthaihen,
                            string? noidunghen, DateTime thoigiantao,
                            DateTime? thoigiancapnhat)
         {

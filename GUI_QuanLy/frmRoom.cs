@@ -123,14 +123,15 @@ namespace GUI_QuanLy
                 decimal giaPhong = string.IsNullOrWhiteSpace(txtPrice.Text) ? 0 : Convert.ToDecimal(txtPrice.Text.Trim());
                 double? dienTich = string.IsNullOrWhiteSpace(txtS.Text) ? null : (double?)Convert.ToDouble(txtS.Text.Trim());
                 int soNguoi = string.IsNullOrWhiteSpace(txtPopulation.Text) ? 0 : Convert.ToInt32(txtPopulation.Text.Trim());
-                DTO_Phong p = new DTO_Phong(
+                DTO_PHONG p = new DTO_PHONG(
                     0,
                     txtName.Text.Trim(),
                     cboArea.SelectedValue?.ToString() ?? "",
                     giaPhong,
                     dienTich,
                     cboType.SelectedItem?.ToString() ?? "",
-                    cboStatus.SelectedItem?.ToString() ?? "",
+                    //cboStatus.SelectedItem?.ToString() ?? "",
+                    TinhTrangPhong.ConTrong,
                     soNguoi,
                     txtFuniture.Text.Trim()
                 );
@@ -173,16 +174,16 @@ namespace GUI_QuanLy
                 string loaiPhong = (cboType.SelectedItem == null || string.IsNullOrWhiteSpace(cboType.SelectedItem.ToString())) ? null : cboType.SelectedItem.ToString();
                 string trangThai = (cboStatus.SelectedItem == null || string.IsNullOrWhiteSpace(cboStatus.SelectedItem.ToString())) ? null : cboStatus.SelectedItem.ToString();
                 string noiThat = string.IsNullOrWhiteSpace(txtFuniture.Text) ? null : txtFuniture.Text.Trim();
-                
-                DTO_Phong p = new DTO_Phong(
+
+                DTO_PHONG p = new DTO_PHONG(
                     idSelected,
                     tenPhong,
                     maKV,
-                    giaPhong,
+                    giaPhong ?? 0,
                     dienTich,
                     loaiPhong,
-                    trangThai,
-                    soNguoi,
+                     Enum.TryParse(trangThai, out TinhTrangPhong tt) ? tt : TinhTrangPhong.ConTrong,  
+                    soNguoi ?? 0,
                     noiThat
                 );
 
@@ -263,17 +264,22 @@ namespace GUI_QuanLy
 
             decimal? maxGia = null;
 
-            DTO_TinOGhep tin = new DTO_TinOGhep();
+            DTO_TINOGHEP tin = new DTO_TINOGHEP();
             if (cboStatus.SelectedItem?.ToString() == "Cần ở ghép")
             {
-                tin.TRANGTHAITIN = "Đang tìm";
+                tin.TRANGTHAITIN = TrangThaiTinOGhep.DangTim;
             }
             else
             {
-                tin.TRANGTHAITIN = "Đóng";
+                tin.TRANGTHAITIN = TrangThaiTinOGhep.DaDong;
             }
 
             dgvRoom.DataSource = busPhong.TimKiemPhong(maKV, minGia, maxGia, tin);
+        }
+
+        private void frmRoom_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

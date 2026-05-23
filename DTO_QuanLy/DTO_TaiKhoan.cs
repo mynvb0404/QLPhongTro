@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace DTO_QuanLy
 {
-    public class DTO_TaiKhoan
+    public enum LoaiTaiKhoan
+    {
+        NV, // Nhân viên
+        KH  // Khách hàng
+    }
+
+    public class DTO_TAIKHOAN
     {
         public string MATK { get; set; } = "";
 
@@ -18,12 +24,12 @@ namespace DTO_QuanLy
 
         public string MATKHAU { get; set; } = "";
 
-        public string LOAITK { get; set; } = "";
+        public LoaiTaiKhoan LOAITK { get; set; }
 
-        public DTO_TaiKhoan() { }
+        public DTO_TAIKHOAN() { }
 
-        public DTO_TaiKhoan(string matk, int? manv, int? makh,
-                            string tendangnhap, string matkhau, string loaitk)
+        public DTO_TAIKHOAN(string matk, int? manv, int? makh,
+                            string tendangnhap, string matkhau, LoaiTaiKhoan loaitk)
         {
             MATK = matk;
             MANV = manv;

@@ -10,18 +10,28 @@ using Microsoft.Data.SqlClient;
 
 namespace DAL_QuanLy
 {
-    public class DAL_Phong : DBConnect
+    public class DAL_PHONG : DBConnect
     {
+        private string GetStringTrangThai(TinhTrangPhong ttp)
+        {
+            switch (ttp)
+            {
+                case TinhTrangPhong.ConTrong: return "Còn trống";
+                case TinhTrangPhong.DaThue: return "Đã thuê";
+                case TinhTrangPhong.CanOGhep: return "Cần ở ghép";
+                default: return "Còn trống";
+            }
+        }
         //Lấy toàn bộ danh sách phòng
         public DataTable LayDanhSachPhong()
         {
             string query = "SELECT * FROM PHONG";
             return ExecuteQuery(query, null);
         }
-
-        public bool ThemPhong(DTO_Phong p)
+        // 1 Thêm phòng
+        public bool ThemPhong(DTO_PHONG p)
         {
-            string query = "INSERT INTO PHONG (TENPHONG, MAKV, GIAPHONG, DIENTICH, LOAIPHONG, TRANGTHAIPHONG, SONGUOIHIENTAI, NOITHAT) VALUES (@TENPHONG, @MAKV, @GIAPHONG, @DIENTICH, @LOAIPHONG, @TRANGTHAIPHONG, @SONGUOIHIENTAI, @NOITHAT);";
+            string query = "INSERT INTO PHONG (TENPHONG, MAKV, GIAPHONG, DIENTICH, LOAIPHONG, TRANGTHAIPHONG, SONGUOIHIENTAI, NOITHAT) VALUES (@MAPHONG, @MAKV, @GIAPHONG, @DIENTICH, @LOAIPHONG, @TRANGTHAIPHONG, @SONGUOIHIENTAI, @NOITHAT);";
 
             SqlParameter[] parameters = new SqlParameter[]
             {
@@ -30,7 +40,7 @@ namespace DAL_QuanLy
                 new SqlParameter("@GIAPHONG", p.GIAPHONG == 0 ? (object)DBNull.Value : p.GIAPHONG),
                 new SqlParameter("@DIENTICH", p.DIENTICH == null ? (object)DBNull.Value : p.DIENTICH),
                 new SqlParameter("@LOAIPHONG", p.LOAIPHONG ?? (object)DBNull.Value),
-                new SqlParameter("@TRANGTHAIPHONG", p.TRANGTHAIPHONG ?? (object)DBNull.Value),
+                new SqlParameter("@TRANGTHAIPHONG", GetStringTrangThai(p.TRANGTHAIPHONG)),
                 new SqlParameter("@SONGUOIHIENTAI", p.SONGUOIHIENTAI),
                 new SqlParameter("@NOITHAT", p.NOITHAT ?? (object)DBNull.Value)
             };
@@ -38,18 +48,10 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(query, parameters) > 0;
         }
 
-        public bool SuaPhong(DTO_Phong p)
+        // 2 Sửa phòng 
+        public bool SuaPhong(DTO_PHONG p)
         {
-            string query = "UPDATE PHONG SET " +
-                   "TENPHONG = ISNULL(@TENPHONG, TENPHONG), " +
-                   "MAKV = ISNULL(@MAKV, MAKV), " +
-                   "GIAPHONG = ISNULL(@GIAPHONG, GIAPHONG), " +
-                   "DIENTICH = ISNULL(@DIENTICH, DIENTICH), " +
-                   "LOAIPHONG = ISNULL(@LOAIPHONG, LOAIPHONG), " +
-                   "TRANGTHAIPHONG = ISNULL(@TRANGTHAIPHONG, TRANGTHAIPHONG), " +
-                   "SONGUOIHIENTAI = ISNULL(@SONGUOIHIENTAI, SONGUOIHIENTAI), " +
-                   "NOITHAT = ISNULL(@NOITHAT, NOITHAT) " +
-                   "WHERE MAPHONG = @MAPHONG;";
+            string query = "UPDATE PHONG SET TENPHONG = @TENPHONG, MAKV = @MAKV, GIAPHONG = @GIAPHONG, DIENTICH = @DIENTICH, LOAIPHONG = @LOAIPHONG, TRANGTHAIPHONG = @TRANGTHAIPHONG, SONGUOIHIENTAI = @SONGUOIHIENTAI, NOITHAT = @NOITHAT WHERE MAPHONG = @MAPHONG;";
 
             SqlParameter[] parameters = new SqlParameter[]
             {
@@ -59,7 +61,7 @@ namespace DAL_QuanLy
                 new SqlParameter("@GIAPHONG", p.GIAPHONG),
                 new SqlParameter("@DIENTICH", p.DIENTICH == null ? (object)DBNull.Value : p.DIENTICH),
                 new SqlParameter("@LOAIPHONG", p.LOAIPHONG ?? (object)DBNull.Value),
-                new SqlParameter("@TRANGTHAIPHONG", p.TRANGTHAIPHONG ?? (object)DBNull.Value),
+               new SqlParameter("@TRANGTHAIPHONG", GetStringTrangThai(p.TRANGTHAIPHONG)),
                 new SqlParameter("@SONGUOIHIENTAI", p.SONGUOIHIENTAI),
                 new SqlParameter("@NOITHAT", p.NOITHAT ?? (object)DBNull.Value)
             };
@@ -67,6 +69,7 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(query, parameters) > 0;
         }
 
+        // 3 Xóa phòng  
         public bool XoaPhong(int id)
         {
             string query = "DELETE FROM PHONG WHERE MAPHONG = @MAPHONG";
@@ -79,7 +82,8 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(query, parameters) > 0;
         }
 
-        public DataTable TimKiemPhong(string? maKV = null, decimal? minGia = null, decimal? maxGia = null, DTO_TinOGhep tinOGhep = null)
+        // 4 Tìm kiếm phòng 
+        public DataTable TimKiemPhong(string? maKV = null, decimal? minGia = null, decimal? maxGia = null, DTO_TINOGHEP tinOGhep = null)
         {
             var queryBuilder = new StringBuilder("SELECT * FROM PHONG WHERE 1=1");
             var parameters = new List<SqlParameter>();
@@ -102,35 +106,33 @@ namespace DAL_QuanLy
                 parameters.Add(new SqlParameter("@MAXGIA", maxGia.Value));
             }
 
-            bool? oghepFilter = null;
+            //bool? oghepFilter = null;
 
-            if (tinOGhep != null)
-            {
-                if (tinOGhep.TRANGTHAITIN == "Đang tìm")
-                {
-                    oghepFilter = true;
-                }
-            }
+            //if (tinOGhep != null)
+            //{
+            //    if (tinOGhep.TRANGTHAITIN == TrangThaiTinOGhep.DangTim)
+            //}
 
-            if (oghepFilter.HasValue)
-            {
-                if (oghepFilter.Value)
-                {
-                    queryBuilder.Append(" AND TRANGTHAIPHONG = @TRANGTHAIPHONG");
-                    parameters.Add(new SqlParameter("@TRANGTHAIPHONG", "Cần ở ghép"));
-                }
-                else
-                {
-                    queryBuilder.Append(" AND TRANGTHAIPHONG != @TRANGTHAIPHONG");
-                    parameters.Add(new SqlParameter("@TRANGTHAIPHONG", "Cần ở ghép"));
-                }
-            }
+            //if (oghepFilter.HasValue)
+            //{
+            //    if (oghepFilter.Value)
+            //    {
+            //        queryBuilder.Append(" AND TRANGTHAIPHONG = @TRANGTHAIPHONG");
+            //        parameters.Add(new SqlParameter("@TRANGTHAIPHONG", "Cần ở ghép"));
+            //    }
+            //    else
+            //    {
+            //        queryBuilder.Append(" AND TRANGTHAIPHONG != @TRANGTHAIPHONG");
+            //        parameters.Add(new SqlParameter("@TRANGTHAIPHONG", "Cần ở ghép"));
+            //    }
+            //}
 
-            var parametersArray = parameters.Count > 0 ? parameters.ToArray() : null;
+            var parametersArray = parameters.Count > 0 ? parameters.ToArray() : Array.Empty<SqlParameter>();
 
             return ExecuteQuery(queryBuilder.ToString(), parametersArray);
         }
 
+        // 5 Xem thông tin phòng 
         public DataTable LayThongTinPhong(int maPhong)
         {
             string query = "SELECT * FROM PHONG WHERE MAPHONG = @MAPHONG";
@@ -143,14 +145,15 @@ namespace DAL_QuanLy
             return ExecuteQuery(query, parameters);
         }
 
-        public bool CapNhatTrangThaiPhong(int maPhong, string trangThai)
+        // 6 Cập nhật trạng thái phòng 
+        public bool CapNhatTrangThaiPhong(int maPhong, TinhTrangPhong TRANGTHAIPHONG)
         {
             string query = "UPDATE PHONG SET TRANGTHAIPHONG = @TRANGTHAIPHONG WHERE MAPHONG = @MAPHONG";
 
             SqlParameter[] parameters = new SqlParameter[]
             {
                 new SqlParameter("@MAPHONG", maPhong),
-                new SqlParameter("@TRANGTHAIPHONG", trangThai)
+                new SqlParameter("@TRANGTHAIPHONG", GetStringTrangThai(TRANGTHAIPHONG))
             };
 
             return ExecuteNonQuery(query, parameters) > 0;

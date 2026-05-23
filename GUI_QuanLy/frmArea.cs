@@ -66,7 +66,7 @@ namespace GUI_QuanLy
         {
             int.TryParse(txtEmp.Text.Trim(), out int maNV);
 
-            DTO_KhuVuc kv = new DTO_KhuVuc()
+            DTO_KHUVUC kv = new DTO_KHUVUC()
             {
                 MAKV = txtMa.Text.Trim(),
                 TENKV = txtName.Text.Trim(),
@@ -98,7 +98,7 @@ namespace GUI_QuanLy
 
             int.TryParse(txtEmp.Text.Trim(), out int maNV);
 
-            DTO_KhuVuc kv = new DTO_KhuVuc()
+            DTO_KHUVUC kv = new DTO_KHUVUC()
             {
                 MAKV = txtMa.Text.Trim(),
                 TENKV = txtName.Text.Trim(),

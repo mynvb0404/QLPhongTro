@@ -9,11 +9,11 @@ namespace BUS_QuanLy
 {
     public class BUS_KhachThue
     {
-        private DAL_KhachHang dalKhachThue = new DAL_KhachHang();
+        private DAL_KHACHTHUE dalKhachThue = new DAL_KHACHTHUE();
 
         public DataTable LayDanhSachKhachHang() => dalKhachThue.LayDanhSachKhachThue();
 
-        public string ThemKhachThue(DTO_KhachHang kt, string tenDangNhap, string matKhau)
+        public string ThemKhachThue(DTO_KHACHTHUE kt, string tenDangNhap, string matKhau)
         {
             if (string.IsNullOrWhiteSpace(kt.HOKH) || string.IsNullOrWhiteSpace(kt.TENKH))
                 return "Họ và Tên khách thuê không được để trống!";
@@ -26,13 +26,29 @@ namespace BUS_QuanLy
                 return "Số điện thoại này đã tồn tại trên hệ thống!";
 
             if (!kt.NGAYSINH.HasValue) kt.NGAYSINH = DateTime.Now.AddYears(-20);
-            if (string.IsNullOrEmpty(kt.TRANGTHAITHUE)) kt.TRANGTHAITHUE = "Đang thuê";
+            kt.TRANGTHAITHUE = TrangThaiKhachThue.DangThue;
             if (kt.NGAYBATDAUTHUE == DateTime.MinValue) kt.NGAYBATDAUTHUE = DateTime.Today;
 
             try
             {
-                bool IsThanhCong = dalKhachThue.ThemKhachThue(kt, tenDangNhap, matKhau);
+                bool IsThanhCong = dalKhachThue.ThemKhachThue(kt);
 
+                if (IsThanhCong)
+                {
+                    // Tạo tài khoản cho khách thuê sau khi thêm thành công
+                    DTO_TAIKHOAN tkNew = new DTO_TAIKHOAN()
+                    {
+                        TENDANGNHAP = tenDangNhap,
+                        MATKHAU = matKhau,
+                        LOAITK = LoaiTaiKhoan.KH,  // Khách hàng
+                        MAKH = kt.MAKH,
+                    };
+
+                    DAL_TaiKhoan dalTaiKhoan = new DAL_TaiKhoan();
+                    dalTaiKhoan.ThemTaiKhoan(tkNew);
+                    return "THÀNH CÔNG!";
+
+                }
                 return IsThanhCong ? "THÀNH CÔNG" : "Thêm khách thuê và khởi tạo tài khoản thất bại!";
             }
             catch (Exception ex)
@@ -40,7 +56,7 @@ namespace BUS_QuanLy
                 return "Lỗi kết nối CSDL: " + ex.Message;
             }
         }
-        public string SuaKhachThue(DTO_KhachHang kt)
+        public string SuaKhachThue(DTO_KHACHTHUE kt)
         {
             if (kt.MAKH <= 0) return "Mã khách thuê không hợp lệ!";
             if (string.IsNullOrWhiteSpace(kt.HOKH) || string.IsNullOrWhiteSpace(kt.TENKH))

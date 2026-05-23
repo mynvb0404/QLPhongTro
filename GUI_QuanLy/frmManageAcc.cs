@@ -173,13 +173,13 @@ namespace GUI_QuanLy
             }
             else // KHÁCH THUÊ
             {
-                DTO_KhachHang kh = new DTO_KhachHang()
+                DTO_KHACHTHUE kh = new DTO_KHACHTHUE()
                 {
                     HOKH = txtFirstName.Text.Trim(),
                     TENKH = txtName.Text.Trim(),
                     SDT = txtPhoneNumber.Text.Trim(),
                     NGAYBATDAUTHUE = DateTime.Today,
-                    TRANGTHAITHUE = "Đang thuê"
+                    TRANGTHAITHUE = TrangThaiKhachThue.DangThue,
                 };
 
                 string ketQua = busKhachHang.ThemKhachThue(kh, tenDangNhapMacDinh, matKhauMacDinh);
@@ -222,11 +222,11 @@ namespace GUI_QuanLy
                     CHUCVU = "Nhân viên"
                 };
                 string ketQuaNV = busNhanVien.SuaNhanVien(nv);
-                DTO_TaiKhoan tkNV = new DTO_TaiKhoan()
+                DTO_TAIKHOAN tkNV = new DTO_TAIKHOAN()
                 {
                     TENDANGNHAP = txtUserName.Text.Trim(),
                     MATKHAU = txtPassword.Text.Trim(),
-                    LOAITK = "NV",
+                    LOAITK = LoaiTaiKhoan.NV,
                     MANV = idSelected
                 };
                 string ketQuaTK = busTaiKhoan.SuaTaiKhoan(tkNV);
@@ -241,7 +241,7 @@ namespace GUI_QuanLy
             }
             else
             {
-                DTO_KhachHang kh = new DTO_KhachHang()
+                DTO_KHACHTHUE kh = new DTO_KHACHTHUE()
                 {
                     MAKH = idSelected,
                     HOKH = txtFirstName.Text.Trim(),
@@ -249,11 +249,11 @@ namespace GUI_QuanLy
                     SDT = txtPhoneNumber.Text.Trim()
                 };
                 string ketQuaKH = busKhachHang.SuaKhachThue(kh);
-                DTO_TaiKhoan tkKH = new DTO_TaiKhoan()
+                DTO_TAIKHOAN tkKH = new DTO_TAIKHOAN()
                 {
                     TENDANGNHAP = txtUserName.Text.Trim(),
                     MATKHAU = txtPassword.Text.Trim(),
-                    LOAITK = "KH",
+                    LOAITK = LoaiTaiKhoan.KH,
                     MAKH = idSelected
                 };
                 string ketQuaTK = busTaiKhoan.SuaTaiKhoan(tkKH);

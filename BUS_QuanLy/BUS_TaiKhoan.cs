@@ -13,7 +13,7 @@ namespace BUS_QuanLy
         public DataTable LayDanhSachTaiKhoan() => dalTaiKhoan.LayDanhSachTaiKhoan();
 
         // 1. Thêm tài khoản
-        public string ThemTaiKhoan(DTO_TaiKhoan tk)
+        public string ThemTaiKhoan(DTO_TAIKHOAN tk)
         {
             if (string.IsNullOrWhiteSpace(tk.TENDANGNHAP))
                 return "Tên đăng nhập không được để trống!";
@@ -24,11 +24,18 @@ namespace BUS_QuanLy
             if (string.IsNullOrWhiteSpace(tk.MATKHAU) || tk.MATKHAU.Length < 6)
                 return "Mật khẩu phải từ 6 đến 20 ký tự!";
 
-            if (tk.LOAITK == "NV" && (tk.MANV == null || tk.MAKH != null))
-                return "Tài khoản nhân viên phải có MANV và không có MAKH!";
+            if (tk.LOAITK == LoaiTaiKhoan.NV)
+            {
+                if (tk.MANV == null || tk.MAKH != null)
+                    return "Tài khoản nhân viên phải gắn liền với Mã nhân viên và không có Mã khách hàng!";
+            }
 
-            if (tk.LOAITK == "KH" && (tk.MAKH == null || tk.MANV != null))
-                return "Tài khoản khách hàng phải có MAKH và không có MANV!";
+            // KIỂM TRA ENUM: Ràng buộc loại tài khoản Khách hàng (KH)
+            if (tk.LOAITK == LoaiTaiKhoan.KH)
+            {
+                if (tk.MAKH == null || tk.MANV != null)
+                    return "Tài khoản khách hàng phải gắn liền với Mã khách hàng và không có Mã nhân viên!";
+            }
 
             if (dalTaiKhoan.KiemTraTonTai(tk.TENDANGNHAP))
                 return "Tên đăng nhập này đã được sử dụng!";
@@ -37,7 +44,7 @@ namespace BUS_QuanLy
         }
 
         // 2. Sửa tài khoản
-        public string SuaTaiKhoan(DTO_TaiKhoan tk)
+        public string SuaTaiKhoan(DTO_TAIKHOAN tk)
         {
             // 1. Kiểm tra dữ liệu đầu vào cơ bản
             if (string.IsNullOrWhiteSpace(tk.TENDANGNHAP))
@@ -50,11 +57,19 @@ namespace BUS_QuanLy
                 return "Mật khẩu chỉnh sửa phải từ 6 ký tự trở lên!";
 
             // 2. Kiểm tra tính hợp lệ của ID đi kèm tài khoản
-            if (tk.LOAITK == "NV" && tk.MANV == null)
-                return "Tài khoản nhân viên phải đi kèm với Mã nhân viên (MANV)!";
+            if (tk.LOAITK == LoaiTaiKhoan.NV)
+            {
+                if (tk.MANV == null || tk.MAKH != null)
+                    return "Tài khoản nhân viên phải gắn liền với Mã nhân viên và không có Mã khách hàng!";
+            }
 
-            if (tk.LOAITK == "KH" && tk.MAKH == null)
-                return "Tài khoản khách hàng phải đi kèm với Mã khách hàng (MAKH)!";
+
+            if (tk.LOAITK == LoaiTaiKhoan.KH)
+            {
+                if (tk.MAKH == null || tk.MANV != null)
+                    return "Tài khoản khách hàng phải gắn liền với Mã khách hàng và không có Mã nhân viên!";
+            }
+            ;
 
             // 3. Gọi xuống DAL để thực thi
             return dalTaiKhoan.SuaTaiKhoan(tk) ? "THÀNH CÔNG" : "Cập nhật tài khoản thất bại!";
@@ -72,7 +87,7 @@ namespace BUS_QuanLy
         public DataTable TimKiemTaiKhoan(string tuKhoa) => dalTaiKhoan.TimKiemTaiKhoan(tuKhoa);
 
         // 5. Hàm Đăng Nhập chuẩn hóa trả về đối tượng DTO
-        public DTO_TaiKhoan DangNhap(string tenDN, string matKhau)
+        public DTO_TAIKHOAN DangNhap(string tenDN, string matKhau)
         {
             if (string.IsNullOrWhiteSpace(tenDN) || string.IsNullOrWhiteSpace(matKhau))
                 return null;

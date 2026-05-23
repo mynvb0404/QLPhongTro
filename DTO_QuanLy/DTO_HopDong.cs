@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace DTO_QuanLy
 {
-    public class DTO_HopDong
+    public enum TrangThaiHopDong
+    {
+        ConHieuLuc, // Còn hiệu lực
+        HetHieuLuc  // Hết hiệu lực
+    }
+
+    public class DTO_HOPDONG
     {
         public int MAHOPDONG { get; set; }
 
@@ -18,15 +24,15 @@ namespace DTO_QuanLy
 
         public DateTime NGAYKT { get; set; }
 
-        public string TRANGTHAIHOPDONG { get; set; } = "";
+        public TrangThaiHopDong TRANGTHAIHOPDONG { get; set; }
 
         public string THONGTINHD { get; set; } = "";
 
-        public DTO_HopDong() { }
+        public DTO_HOPDONG() { }
 
-        public DTO_HopDong(int mahopdong, int maphong, int makh,
+        public DTO_HOPDONG(int mahopdong, int maphong, int makh,
                            DateTime ngaykyhd, DateTime ngaykt,
-                           string trangthaihopdong, string thongtinhd)
+                           TrangThaiHopDong trangthaihopdong, string thongtinhd)
         {
             MAHOPDONG = mahopdong;
             MAPHONG = maphong;

@@ -6,7 +6,20 @@ using System.Threading.Tasks;
 
 namespace DTO_QuanLy
 {
-    public class DTO_KhachHang
+    public enum GioiTinh
+    {
+        Nam,
+        Nu
+    }
+
+    //  Enum cho trạng thái thuê
+    public enum TrangThaiKhachThue
+    {
+        DangThue,   // Đang thuê
+        DaTraPhong   // Đã trả phòng
+    }
+
+    public class DTO_KHACHTHUE
     {
         public int MAKH { get; set; }
 
@@ -16,7 +29,7 @@ namespace DTO_QuanLy
 
         public DateTime? NGAYSINH { get; set; }
 
-        public string? GIOITINH { get; set; }
+        public GioiTinh? GIOITINH { get; set; }
 
         public string CCCD { get; set; } = "";
 
@@ -24,13 +37,13 @@ namespace DTO_QuanLy
 
         public DateTime NGAYBATDAUTHUE { get; set; }
 
-        public string TRANGTHAITHUE { get; set; } = "";
+        public TrangThaiKhachThue TRANGTHAITHUE { get; set; }
 
-        public DTO_KhachHang() { }
+        public DTO_KHACHTHUE() { }
 
-        public DTO_KhachHang(int makh, string hokh, string tenkh, DateTime? ngaysinh,
-                             string? gioitinh, string cccd, string sdt,
-                             DateTime ngaybatdauthue, string trangthaithue)
+        public DTO_KHACHTHUE(int makh, string hokh, string tenkh, DateTime? ngaysinh,
+                             GioiTinh? gioitinh, string cccd, string sdt,
+                             DateTime ngaybatdauthue, TrangThaiKhachThue trangthaithue)
         {
             MAKH = makh;
             HOKH = hokh;

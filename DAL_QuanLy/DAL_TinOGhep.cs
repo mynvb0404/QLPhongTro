@@ -1,108 +1,140 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using DTO_QuanLy;
 
 namespace DAL_QuanLy
 {
-    public class DAL_TinOGhep : DBConnect
+    public class DAL_TINOGHEP : DBConnect
     {
-        public bool DangTinOGhep(DTO_TinOGhep TIN)
+        private string GetStringTrangThaiTin(TrangThaiTinOGhep tt)
         {
-            string QUERY = "INSERT INTO TINOGHEP(MAPHONG, MAKH, SONGUOICAN, GIOITINH, GIACHIA, MOTA, TRANGTHAITIN) VALUES (@MAPHONG, @MAKH, @SONGUOICAN, @GIOITINH, @GIACHIA, @MOTA, @TRANGTHAITIN)";
-            SqlParameter[] PARAMETERS = new SqlParameter[]
+            switch (tt)
             {
-                new SqlParameter("@MAPHONG", TIN.MAPHONG),
-                new SqlParameter("@MAKH", TIN.MAKH),
-                new SqlParameter("@SONGUOICAN", TIN.SONGUOICAN),
-                new SqlParameter("@GIOITINH", TIN.GIOITINH),
-                new SqlParameter("@GIACHIA", TIN.GIACHIA),
-                new SqlParameter("@MOTA", TIN.MOTA),
-                new SqlParameter("@TRANGTHAITIN", TIN.TRANGTHAITIN)
-            };
-            return ExecuteNonQuery(QUERY, PARAMETERS) > 0;
+                case TrangThaiTinOGhep.DangTim: return "Đang tìm";
+                case TrangThaiTinOGhep.DaDuNguoi: return "Đã đủ người";
+                case TrangThaiTinOGhep.DaDong: return "Đã đóng";
+                default: return "Đang tìm";
+            }
         }
 
-        public bool SuaTinOGhep(DTO_TinOGhep TIN)
+        private string GetStringGioiTinh(GioiTinh gt)
         {
-            string QUERY = "UPDATE TINOGHEP SET SONGUOICAN=@SONGUOICAN, GIOITINH=@GIOITINH, GIACHIA=@GIACHIA, MOTA=@MOTA, TRANGTHAITIN=@TRANGTHAITIN WHERE MATINOG=@MATINOG";
-            SqlParameter[] PARAMETERS = new SqlParameter[]
-            {
-                new SqlParameter("@MATINOG", TIN.MATINOG),
-                new SqlParameter("@SONGUOICAN", TIN.SONGUOICAN),
-                new SqlParameter("@GIOITINH", TIN.GIOITINH),
-                new SqlParameter("@GIACHIA", TIN.GIACHIA),
-                new SqlParameter("@MOTA", TIN.MOTA),
-                new SqlParameter("@TRANGTHAITIN", TIN.TRANGTHAITIN)
-            };
-            return ExecuteNonQuery(QUERY, PARAMETERS) > 0;
+            return gt == GioiTinh.Nam ? "Nam" : "Nữ";
+        }
+        public DataTable LayDanhSachTinOGhep()
+        {
+            return ExecuteQuery("SELECT * FROM TINOGHEP");
         }
 
-        public DataTable TimKiemTinOGhep(string TIEUCHI)
+        //1 Đăng tin ở ghép
+        public bool ThemTinOGhep(DTO_TINOGHEP og)
         {
-            string QUERY = "SELECT * FROM TINOGHEP WHERE GIOITINH LIKE @TC OR MOTA LIKE @TC OR TRANGTHAITIN LIKE @TC";
-            SqlParameter[] PARAMETERS = new SqlParameter[]
-            {
-                new SqlParameter("@TC", "%" + TIEUCHI + "%")
+            string query = @"INSERT INTO TINOGHEP (MAPHONG, MAKH, SONGUOICAN, GIOITINH, GIACHIA, MOTA, TRANGTHAITIN)
+                             VALUES (@MAPHONG, @MAKH, @SONGUOICAN, @GIOITINH, @GIACHIA, @MOTA, @TRANGTHAITIN)";
+            SqlParameter[] p = {
+                new SqlParameter("@MAPHONG",     og.MAPHONG),
+                new SqlParameter("@MAKH",        og.MAKH),
+                new SqlParameter("@SONGUOICAN",  og.SONGUOICAN),
+                new SqlParameter("@GIOITINH", GetStringGioiTinh(og.GIOITINH)),
+
+                new SqlParameter("@GIACHIA",     og.GIACHIA),
+                new SqlParameter("@MOTA",        og.MOTA),
+                new SqlParameter("@TRANGTHAITIN", GetStringTrangThaiTin(og.TRANGTHAITIN))
             };
-            return ExecuteQuery(QUERY, PARAMETERS);
+            return ExecuteNonQuery(query, p) > 0;
         }
 
-        public bool GUI_QuanLyYeuCauOGhep(int MATINOG, int MAKH_GUI_QuanLy)
+        public bool SuaTinOGhep(DTO_TINOGHEP og)
         {
-            string QUERY = "INSERT INTO YEUCAUOGHEP(MATINOG, MAKH_GUI_QuanLy, TRANGTHAI) VALUES (@MATINOG, @MAKH_GUI_QuanLy, N'Chờ duyệt')";
-            SqlParameter[] PARAMETERS = new SqlParameter[]
-            {
-                new SqlParameter("@MATINOG", MATINOG),
-                new SqlParameter("@MAKH_GUI_QuanLy", MAKH_GUI_QuanLy)
+            string query = @"UPDATE TINOGHEP 
+                             SET SONGUOICAN  = @SONGUOICAN,
+                                 GIOITINH   = @GIOITINH,
+                                 GIACHIA    = @GIACHIA,
+                                 MOTA       = @MOTA
+                             WHERE MATINOG = @MATINOG";
+            SqlParameter[] p = {
+                new SqlParameter("@SONGUOICAN", og.SONGUOICAN),
+                new SqlParameter("@GIOITINH", GetStringGioiTinh(og.GIOITINH)),
+                new SqlParameter("@GIACHIA",    og.GIACHIA),
+                new SqlParameter("@MOTA",       og.MOTA),
+                new SqlParameter("@MATINOG",    og.MATINOG)
             };
-            return ExecuteNonQuery(QUERY, PARAMETERS) > 0;
+            return ExecuteNonQuery(query, p) > 0;
+        }
+        // 2 Tìm kiếm tin ở ghép
+        public DataTable TimKiemTinOGhep(int maPhong, string gioiTinh, decimal giaChiaMax, int soNguoi, string tuKhoa)
+        {
+            string query = @"SELECT 
+                        T.MATINOG, 
+                        P.TENPHONG, 
+                        (K.HOKH + ' ' + K.TENKH) AS HOTENKHACH, 
+                        T.SONGUOICAN, 
+                        T.GIOITINH, 
+                        T.GIACHIA, 
+                        T.MOTA, 
+                        T.TRANGTHAITIN
+                    FROM TINOGHEP T
+                    INNER JOIN PHONG P ON T.MAPHONG = P.MAPHONG
+                    INNER JOIN KHACHTHUE K ON T.MAKH = K.MAKH
+                    WHERE T.TRANGTHAITIN = N'Đang tìm'
+                      AND (@MAPHONG = 0 OR T.MAPHONG = @MAPHONG)
+                      AND (@GIOITINH = '' OR T.GIOITINH = @GIOITINH)
+                      AND (@GIACHAMAX = 0 OR T.GIACHIA <= @GIACHAMAX)
+                      AND (@SONGUOI = 0 OR T.SONGUOICAN = @SONGUOI)
+                      AND (@TUKHOA = '' OR T.MOTA LIKE @TUKHOA)";
+
+            SqlParameter[] p = {
+        new SqlParameter("@MAPHONG",   maPhong),
+        new SqlParameter("@GIOITINH",  gioiTinh ?? ""),
+        new SqlParameter("@GIACHAMAX", giaChiaMax),
+        new SqlParameter("@SONGUOI",   soNguoi),
+        new SqlParameter("@TUKHOA",    string.IsNullOrEmpty(tuKhoa) ? "" : "%" + tuKhoa + "%")
+    };
+
+            return ExecuteQuery(query, p);
         }
 
-        public bool XuLyYeuCauOGhep(int MAYC, string TRANGTHAI)
+
+
+        // 4 Xử lý yêu cầu — cập nhật trạng thái
+        public bool CapNhatTrangThaiTin(int maTinOGhep, TrangThaiTinOGhep trangThai)
         {
-            string QUERY = "UPDATE YEUCAUOGHEP SET TRANGTHAI=@TRANGTHAI WHERE MAYC=@MAYC";
-            SqlParameter[] PARAMETERS = new SqlParameter[]
-            {
-                new SqlParameter("@TRANGTHAI", TRANGTHAI),
-                new SqlParameter("@MAYC", MAYC)
+            string query = @"UPDATE TINOGHEP 
+                             SET TRANGTHAITIN = @TRANGTHAITIN 
+                             WHERE MATINOG = @MATINOG";
+            SqlParameter[] p = {
+                new SqlParameter("@TRANGTHAITIN", GetStringTrangThaiTin(trangThai)),
+                new SqlParameter("@MATINOG",      maTinOGhep)
             };
-            return ExecuteNonQuery(QUERY, PARAMETERS) > 0;
+            return ExecuteNonQuery(query, p) > 0;
         }
 
-        public DataTable LayDanhSachNguoiOGhep(int MAPHONG)
+        // 5 Lấy danh sách tin theo phòng
+
+
+        public DataTable LayDanhSachTinTheoPhong(int maPhong)
         {
-            string QUERY = "SELECT K.MAKH, K.HOTEN, K.SDT FROM KHACHTHUE K WHERE K.MAPHONG = @MAPHONG";
-            SqlParameter[] PARAMETERS = new SqlParameter[]
-            {
-                new SqlParameter("@MAPHONG", MAPHONG)
-            };
-            return ExecuteQuery(QUERY, PARAMETERS);
+            string query = @"
+        SELECT 
+            T.MATINOG,
+            P.TENPHONG,
+            (K.HOKH + ' ' + K.TENKH) AS HOTENKHACH,
+            T.SONGUOICAN,
+            T.GIOITINH,
+            T.GIACHIA,
+            T.TRANGTHAITIN,
+            T.MOTA,
+            T.MAPHONG  AS MaPhongRaw,
+            T.MAKH     AS MaKHRaw
+        FROM TINOGHEP T
+        INNER JOIN PHONG P ON T.MAPHONG = P.MAPHONG
+        INNER JOIN KHACHTHUE K ON T.MAKH = K.MAKH
+        WHERE @MAPHONG = 0 OR T.MAPHONG = @MAPHONG";
+
+            SqlParameter[] p = { new SqlParameter("@MAPHONG", maPhong) };
+            return ExecuteQuery(query, p);
         }
 
-        public bool LuuDanhGiaPhanHoi(int MAKH_DG, int MAKH_NHAN, string NOIDUNG)
-        {
-            string QUERY = "INSERT INTO DANHGIAPHANHOI(MAKH_DG, MAKH_NHAN, NOIDUNG, NGAYDG) VALUES (@MAKH_DG, @MAKH_NHAN, @NOIDUNG, GETDATE())";
-            SqlParameter[] PARAMETERS = new SqlParameter[]
-            {
-                new SqlParameter("@MAKH_DG", MAKH_DG),
-                new SqlParameter("@MAKH_NHAN", MAKH_NHAN),
-                new SqlParameter("@NOIDUNG", NOIDUNG)
-            };
-            return ExecuteNonQuery(QUERY, PARAMETERS) > 0;
-        }
-
-        //public bool GUI_QuanLyTinNhanHoiThoai(DTO_HoiThoai HT)
-        //{
-        //    string QUERY = "INSERT INTO HOITHOAI(MAKH, MANV, THOIGIANTAOHT) VALUES (@MAKH, @MANV, @THOIGIANTAOHT)";
-        //    SqlParameter[] PARAMETERS = new SqlParameter[]
-        //    {
-        //        new SqlParameter("@MAKH", HT.MAKH),
-        //        new SqlParameter("@MANV", HT.MANV),
-        //        new SqlParameter("@THOIGIANTAOHT", HT.THOIGIANTAOHT == default ? DateTime.Now : HT.THOIGIANTAOHT)
-        //    };
-        //    return ExecuteNonQuery(QUERY, PARAMETERS) > 0;
-        //}
     }
 }

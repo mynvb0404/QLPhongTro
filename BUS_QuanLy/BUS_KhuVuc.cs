@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using DAL_QuanLy;
 using DTO_QuanLy;
 
@@ -9,29 +8,25 @@ namespace BUS_QuanLy
     {
         private DAL_KhuVuc dalKhuVuc = new DAL_KhuVuc();
 
-        //Lấy danh sách toàn bộ khu vực
         public DataTable LayDanhSachKhuVuc() => dalKhuVuc.LayDanhSachKhuVuc();
 
-        //Thêm khu vực mới
-        public string ThemKhuVuc(DTO_KhuVuc kv)
+        // 1 Thêm khu vực
+        public string ThemKhuVuc(DTO_KHUVUC kv)
         {
-            if (string.IsNullOrWhiteSpace(kv.MAKV))
-                return "Mã khu vực không được để trống!";
             if (kv.MAKV.Length > 5)
                 return "Mã khu vực tối đa 5 ký tự!";
             if (string.IsNullOrWhiteSpace(kv.TENKV))
                 return "Tên khu vực không được để trống!";
             if (string.IsNullOrWhiteSpace(kv.DCHI))
                 return "Địa chỉ khu vực không được để trống!";
-
             if (dalKhuVuc.KiemTraTonTai(kv.MAKV))
                 return "Mã khu vực này đã tồn tại trong hệ thống!";
 
-            return dalKhuVuc.ThemKhuVuc(kv) ? "THÀNH CÔNG" : "Thất bại: Lỗi hệ thống khi thêm khu vực!";
+            return dalKhuVuc.ThemKhuVuc(kv) ? "" : "Thêm khu vực thất bại!";
         }
 
-        //Sửa thông tin khu vực
-        public string SuaKhuVuc(DTO_KhuVuc kv)
+        // 2 Sửa thông tin khu vực
+        public string SuaKhuVuc(DTO_KHUVUC kv)
         {
             if (string.IsNullOrWhiteSpace(kv.MAKV))
                 return "Mã khu vực không hợp lệ!";
@@ -40,26 +35,21 @@ namespace BUS_QuanLy
             if (string.IsNullOrWhiteSpace(kv.DCHI))
                 return "Địa chỉ không được để trống!";
 
-            return dalKhuVuc.SuaKhuVuc(kv) ? "THÀNH CÔNG" : "Thất bại: Không thể cập nhật thông tin khu vực!";
+            return dalKhuVuc.SuaKhuVuc(kv) ? "" : "Cập nhật thất bại!";
         }
 
-        //Xóa khu vực 
+        // 3 Xóa khu vực
         public string XoaKhuVuc(string maKV)
         {
             if (string.IsNullOrWhiteSpace(maKV))
                 return "Mã khu vực không hợp lệ!";
 
             if (dalKhuVuc.KiemTraCoPhong(maKV))
-                return "Không thể xóa! Khu vực này đang có các phòng trọ hoạt động.";
-
-            return dalKhuVuc.XoaKhuVuc(maKV) ? "THÀNH CÔNG" : "Thất bại: Khu vực có thể đang liên kết với dữ liệu lịch sử khác!";
+                return "Không thể xóa! Khu vực này vẫn còn phòng đang hoạt động.";
+            return dalKhuVuc.XoaKhuVuc(maKV) ? "" : "Xóa thất bại!";
         }
 
-        //Tìm kiếm khu vực
-        public DataTable TimKiemKhuVuc(string tuKhoa)
-        {
-            string thamSoTuKhoa = string.IsNullOrWhiteSpace(tuKhoa) ? "" : tuKhoa.Trim();
-            return dalKhuVuc.TimKiemKhuVuc(thamSoTuKhoa);
-        }
+        // 4 Tìm kiếm khu vực
+        public DataTable TimKiemKhuVuc(string tuKhoa) => dalKhuVuc.TimKiemKhuVuc(tuKhoa);
     }
 }

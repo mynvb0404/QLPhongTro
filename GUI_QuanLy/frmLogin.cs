@@ -49,7 +49,7 @@ namespace GUI_QuanLy
 
             string taiKhoan = txtUsername.Text.Trim();
             string matKhau = txtPassword.Text.Trim();
-            DTO_TaiKhoan tkAccount = tkBUS.DangNhap(taiKhoan, matKhau);
+            DTO_TAIKHOAN tkAccount = tkBUS.DangNhap(taiKhoan, matKhau);
 
             if (tkAccount == null)
             {
@@ -63,7 +63,7 @@ namespace GUI_QuanLy
 
             if (cboRole.SelectedIndex == 0) // ---- KIỂM TRA QUYỀN NHÂN VIÊN ----
             {
-                if (tkAccount.LOAITK == "NV")
+                if (tkAccount.LOAITK == LoaiTaiKhoan.NV)
                 {
                     string sqlNV = $"SELECT HONV + ' ' + TENNV AS HOTEN, EMAIL FROM NHANVIEN WHERE MANV = {tkAccount.MANV}";
                     DataTable dtNV = db.ExecuteQuery(sqlNV);
@@ -88,7 +88,7 @@ namespace GUI_QuanLy
             }
             else if (cboRole.SelectedIndex == 1) // ---- KIỂM TRA QUYỀN KHÁCH THUÊ ----
             {
-                if (tkAccount.LOAITK == "KH")
+                if (tkAccount.LOAITK == LoaiTaiKhoan.KH)
                 {
                     string sqlKH = $"SELECT HOKH + ' ' + TENKH AS HOTEN, SDT FROM KHACHTHUE WHERE MAKH = {tkAccount.MAKH}";
                     DataTable dtKH = db.ExecuteQuery(sqlKH);
@@ -113,7 +113,7 @@ namespace GUI_QuanLy
                 }
             }
 
-            frmMenu mainMenu = new frmMenu(hoTen, email, tkAccount.LOAITK);
+            frmMenu mainMenu = new frmMenu(hoTen, email, tkAccount.LOAITK.ToString());
 
             this.Hide();
 

@@ -1,120 +1,127 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DTO_QuanLy;
 using Microsoft.Data.SqlClient;
-using static Microsoft.Data.SqlClient.Internal.SqlClientEventSource;
+using DTO_QuanLy;
 
 namespace DAL_QuanLy
 {
-    public class DAL_LichHen : DBConnect
+    public class DAL_LICHHEN : DBConnect
     {
-        //lấy ds lịch hẹn
+        private string GetStringTrangThai(TrangThaiLichHen tth)
+        {
+            switch (tth)
+            {
+                case TrangThaiLichHen.DaDat: return "Đã đặt";
+                case TrangThaiLichHen.DaHuy: return "Đã hủy";
+                case TrangThaiLichHen.HoanThanh: return "Hoàn thành";
+                default: return "Đã đặt";
+            }
+        }
+        // Lấy toàn bộ danh sách lịch hẹn
         public DataTable LayDanhSachLichHen()
         {
             string query = "SELECT * FROM LICHHEN";
             return ExecuteQuery(query);
         }
 
-        //Thêm lịch hẹn
-        public bool ThemLichHen(DTO_LichHen lh)
+        // 1 Thêm lịch hẹn
+        public bool ThemLichHen(DTO_LICHHEN lh)
         {
-            string query = "INSERT INTO LICHHEN (MAKH ,MANV ,MAPHONG ,THOIGIANHEN ,TRANGTHAIHEN ,NOIDUNGHEN ,THOIGIANTAO ,THOIGIANCAPNHAT) VALUES(@MAKH, @MANV, @MAPHONG, @THOIGIANHEN, @TRANGTHAIHEN, @NOIDUNGHEN ,@THOIGIANTAO ,@THOIGIANCAPNHAT)";
-
-            SqlParameter[] parameters = new SqlParameter[]
-            {
-                new SqlParameter("@MAKH", lh.MAKH),
-                new SqlParameter("@MANV", lh.MANV),
-                new SqlParameter("@MAPHONG", lh.MAPHONG),
+            string query = @"INSERT INTO LICHHEN (MAKH, MANV, MAPHONG, THOIGIANHEN, TRANGTHAIHEN, NOIDUNGHEN)
+                             VALUES (@MAKH, @MANV, @MAPHONG, @THOIGIANHEN, @TRANGTHAIHEN, @NOIDUNGHEN)";
+            SqlParameter[] p = {
+                new SqlParameter("@MAKH",        lh.MAKH),
+                new SqlParameter("@MANV",        lh.MANV),
+                new SqlParameter("@MAPHONG",     lh.MAPHONG),
                 new SqlParameter("@THOIGIANHEN", lh.THOIGIANHEN),
-                new SqlParameter("@TRANGTHAIHEN", lh.TRANGTHAIHEN),
-                new SqlParameter("@NOIDUNGHEN", lh.NOIDUNGHEN),
-                new SqlParameter("@THOIGIANTAO", lh.THOIGIANTAO),
-                new SqlParameter("@THOIGIANCAPPHAT", lh.THOIGIANCAPNHAT)
+                new SqlParameter("@TRANGTHAIHEN", GetStringTrangThai(lh.TRANGTHAIHEN)),
+                new SqlParameter("@NOIDUNGHEN", lh.NOIDUNGHEN!)
             };
-            return ExecuteNonQuery(query, parameters) > 0;
+            return ExecuteNonQuery(query, p) > 0;
         }
-        
-        //sửa lịch hẹn
-        public bool SuaLichHen(DTO_LichHen lh)
+
+        // 2 Sửa thông tin lịch hẹn
+        public bool SuaLichHen(DTO_LICHHEN lh)
         {
-            string query = @"UPDATE LICHHEN
-                             SET   MAKH = @MAKH
-                                  ,MANV = @MANV
-                                  ,MAPHONG = @MAPHONG
-                                  ,THOIGIANHEN = @THOIGIANHEN
-                                  ,TRANGTHAIHEN = @TRANGTHAIHEN
-                                  ,NOIDUNGHEN = @NOIDUNGHEN
-                                  ,THOIGIANTAO = @THOIGIANTAO
-                                  ,THOIGIANCAPNHAT = @THOIGIANCAPNHAT
-                             WHERE MALH = @MALH";
-
-            SqlParameter[] parameters = new SqlParameter[]
-            {
-                new SqlParameter("@MAKH", lh.MAKH),
-                new SqlParameter("@MANV", lh.MANV),
-                new SqlParameter("@MAPHONG", lh.MAPHONG),
+            string query = @"UPDATE LICHHEN SET
+                            MAKH = @MAKH,
+                            MANV = @MANV,
+                            MAPHONG = @MAPHONG,
+                            THOIGIANHEN = @THOIGIANHEN,
+                            TRANGTHAIHEN = @TRANGTHAIHEN,
+                            NOIDUNGHEN = @NOIDUNGHEN,
+                            THOIGIANCAPNHAT = GETDATE()
+                            WHERE MALH = @MALH";
+            SqlParameter[] p = {
+                new SqlParameter("@MALH",        lh.MALH),
+                new SqlParameter("@MAKH",        lh.MAKH),
+                new SqlParameter("@MANV",        lh.MANV),
+                new SqlParameter("@MAPHONG",     lh.MAPHONG),
                 new SqlParameter("@THOIGIANHEN", lh.THOIGIANHEN),
-                new SqlParameter("@TRANGTHAIHEN", lh.TRANGTHAIHEN),
-                new SqlParameter("@NOIDUNGHEN", lh.NOIDUNGHEN),
-                new SqlParameter("@THOIGIANTAO", lh.THOIGIANTAO),
-                new SqlParameter("@THOIGIANCAPPHAT", lh.THOIGIANCAPNHAT)            };
-
-            return ExecuteNonQuery(query, parameters) > 0;
+                new SqlParameter("@TRANGTHAIHEN", GetStringTrangThai(lh.TRANGTHAIHEN)),
+                new SqlParameter("@NOIDUNGHEN", lh.NOIDUNGHEN!)
+            };
+            return ExecuteNonQuery(query, p) > 0;
         }
 
-        //xóa
-        public bool XoaLichHen(int id)
+        // 3 Xóa lịch hẹn
+        public bool XoaLichHen(int maLH)
         {
             string query = "DELETE FROM LICHHEN WHERE MALH = @MALH";
-
-            SqlParameter[] parameters = new SqlParameter[]
-            {
-                new SqlParameter("@MALH", id)
-            };
-
-            return ExecuteNonQuery(query, parameters) > 0;
+            SqlParameter[] p = { new SqlParameter("@MALH", maLH) };
+            return ExecuteNonQuery(query, p) > 0;
         }
 
-        //tìm kiếm
-        public DataTable TimKiemLichHen(string keyword)
+        // 4 Xem chi tiết lịch hẹn 
+        public DataTable XemChiTietLichHen(int maLH)
         {
-            string query = @"SELECT lh.*, kh.TENKH, nv.TENNV 
-                             FROM LICHHEN lh, KHACHTHUE kh, NHANVIEN nv
-                             WHERE lh.MAKH = kh.MAKH 
-                               AND lh.MANV = nv.MANV
-                               AND (kh.TENKH LIKE @KEYWORD 
-                                    OR nv.TENNV LIKE @KEYWORD 
-                                    OR lh.TRANGTHAIHEN LIKE @KEYWORD 
-                                    OR lh.NOIDUNGHEN LIKE @KEYWORD)";
+            string query = @"SELECT 
+                        LH.MALH, 
+                        K.TENKH, 
+                        N.TENNV, 
+                        P.TENPHONG, 
+                        LH.THOIGIANHEN, 
+                        LH.TRANGTHAIHEN, 
+                        LH.NOIDUNGHEN,
+                        LH.THOIGIANTAO
+                    FROM LICHHEN LH
+                    JOIN KHACHTHUE K ON LH.MAKH = K.MAKH
+                    JOIN NHANVIEN N ON LH.MANV = N.MANV
+                    JOIN PHONG P ON LH.MAPHONG = P.MAPHONG
+                    WHERE LH.MALH = @MALH";
+
+            return ExecuteQuery(query, new SqlParameter[] { new SqlParameter("@MALH", maLH) });
+        }
+
+        // 5 Cập nhật trạng thái lịch hẹn
+        public bool CapNhatTrangThaiLichHen(int maLH, TrangThaiLichHen trangThai)
+        {
+            string query = @"UPDATE LICHHEN SET 
+                            TRANGTHAIHEN = @TRANGTHAIHEN,
+                            THOIGIANCAPNHAT = GETDATE()
+                            WHERE MALH = @MALH";
+            SqlParameter[] p = {
+                new SqlParameter("@TRANGTHAIHEN", GetStringTrangThai(trangThai)),
+                new SqlParameter("@MALH",         maLH)
+            };
+            return ExecuteNonQuery(query, p) > 0;
+        }
+
+        // Thống kê lịch hẹn theo tháng và năm
+        public DataTable ThongKeLichHen(int thang, int nam)
+        {
+            string query = @"SELECT TRANGTHAIHEN, COUNT(*) AS SOLUONG 
+                    FROM LICHHEN 
+                    WHERE MONTH(THOIGIANHEN) = @THANG AND YEAR(THOIGIANHEN) = @NAM
+                    GROUP BY TRANGTHAIHEN";
 
             SqlParameter[] parameters = new SqlParameter[]
             {
-        new SqlParameter("@KEYWORD", "%" + keyword + "%")
+        new SqlParameter("@THANG", thang),
+        new SqlParameter("@NAM", nam)
             };
 
             return ExecuteQuery(query, parameters);
-        }
-
-        //Cập nhật trạng thái
-        public bool CapNhatTrangThaiLichHen(int id, string trangThai)
-        {
-            string query = @"UPDATE LICHHEN 
-                             SET TRANGTHAIHEN = @TRANGTHAI, 
-                                 THOIGIANCAPNHAT = GETDATE() 
-                             WHERE MALH = @MALH";
-
-            SqlParameter[] parameters = new SqlParameter[]
-            {
-        new SqlParameter("@MALH", id),
-        new SqlParameter("@TRANGTHAI", trangThai)
-            };
-
-            return ExecuteNonQuery(query, parameters) > 0;
         }
     }
 }

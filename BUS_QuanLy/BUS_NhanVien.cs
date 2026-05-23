@@ -27,11 +27,11 @@ namespace BUS_QuanLy
                 if (maNVVuaTao > 0)
                 {
 
-                    DTO_TaiKhoan tkNew = new DTO_TaiKhoan()
+                    DTO_TAIKHOAN tkNew = new DTO_TAIKHOAN()
                     {
                         TENDANGNHAP = tenDN,
                         MATKHAU = matKhau,
-                        LOAITK = "NV",
+                        LOAITK = LoaiTaiKhoan.NV,
                         MANV = maNVVuaTao
                     };
 

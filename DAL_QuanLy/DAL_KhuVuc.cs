@@ -15,7 +15,7 @@ namespace DAL_QuanLy
         }
 
         // Thêm khu vực mới
-        public bool ThemKhuVuc(DTO_KhuVuc kv)
+        public bool ThemKhuVuc(DTO_KHUVUC kv)
         {
             string query = "INSERT INTO KHUVUC (MAKV, TENKV, MANV, DCHI) VALUES (@MAKV, @TENKV, @MANV, @DCHI)";
 
@@ -31,7 +31,7 @@ namespace DAL_QuanLy
         }
 
         //Sửa thông tin khu vực theo mã khu vực
-        public bool SuaKhuVuc(DTO_KhuVuc kv)
+        public bool SuaKhuVuc(DTO_KHUVUC kv)
         {
             string query = "UPDATE KHUVUC SET TENKV = @TENKV, MANV = @MANV, DCHI = @DCHI WHERE MAKV = @MAKV";
 

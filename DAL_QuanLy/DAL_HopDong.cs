@@ -1,97 +1,105 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using DTO_QuanLy;
 
 namespace DAL_QuanLy
 {
-    public class DAL_HopDong : DBConnect
+    public class DAL_HOPDONG : DBConnect
     {
-        //Thêm hợp đồng
-        public bool ThemHopDong(DTO_HopDong HD)
+        private string GetStringTrangThaiHD(TrangThaiHopDong tt)
         {
-            string QUERY = "INSERT INTO HOPDONG (MAPHONG, MAKH, NGAYKYHD, NGAYKT, TRANGTHAIHOPDONG, THONGTINHD)  VALUES (@MAPHONG, @MAKH, @NGAYKYHD, @NGAYKT, @TRANGTHAIHOPDONG, @THONGTINHD)";
-
-            SqlParameter[] PARAMETERS = new SqlParameter[]
-            {
-                new SqlParameter("@MAPHONG", HD.MAPHONG),
-                new SqlParameter("@MAKH", HD.MAKH),
-                new SqlParameter("@NGAYKYHD", HD.NGAYKYHD == default ? DateTime.Now : HD.NGAYKYHD),
-                new SqlParameter("@NGAYKT", HD.NGAYKT),
-                new SqlParameter("@TRANGTHAIHOPDONG", HD.TRANGTHAIHOPDONG),
-                new SqlParameter("@THONGTINHD", HD.THONGTINHD)
-            };
-
-            return ExecuteNonQuery(QUERY, PARAMETERS) > 0;
+            return tt == TrangThaiHopDong.ConHieuLuc ? "Còn hiệu lực" : "Hết hiệu lực";
         }
 
-        //Sửa hợp đồng
-        public bool SuaHopDong(DTO_HopDong HD)
+        public DataTable LayDanhSachHopDong()
         {
-            string QUERY = "UPDATE HOPDONG SET MAPHONG = @MAPHONG, MAKH = @MAKH, NGAYKYHD = @NGAYKYHD, NGAYKT = @NGAYKT, TRANGTHAIHOPDONG = @TRANGTHAIHOPDONG, THONGTINHD = @THONGTINHD WHERE MAHOPDONG = @MAHOPDONG";
-
-            SqlParameter[] PARAMETERS = new SqlParameter[]
-            {
-                new SqlParameter("@MAHOPDONG", HD.MAHOPDONG),
-                new SqlParameter("@MAPHONG", HD.MAPHONG),
-                new SqlParameter("@MAKH", HD.MAKH),
-                new SqlParameter("@NGAYKYHD", HD.NGAYKYHD),
-                new SqlParameter("@NGAYKT", HD.NGAYKT),
-                new SqlParameter("@TRANGTHAIHOPDONG", HD.TRANGTHAIHOPDONG),
-                new SqlParameter("@THONGTINHD", HD.THONGTINHD)
-            };
-
-            return ExecuteNonQuery(QUERY, PARAMETERS) > 0;
+            return ExecuteQuery("SELECT * FROM HOPDONG");
         }
 
-        //Xóa hợp đồng
-        public bool XoaHopDong(int MAHOPDONG)
+        public DataTable LayHopDongConHieuLuc()
         {
-            string QUERY = "DELETE FROM HOPDONG WHERE MAHOPDONG = @MAHOPDONG";
+            string query = @"
+                SELECT 
+                    HD.MAHOPDONG,
+                    HD.MAHOPDONG + N' - Phòng ' + P.TENPHONG AS HIENTHIHD
+                FROM HOPDONG HD
+                INNER JOIN PHONG P ON HD.MAPHONG = P.MAPHONG
+                WHERE HD.TRANGTHAIHOPDONG = N'Còn hiệu lực'
+                ORDER BY HD.MAHOPDONG";
+            return ExecuteQuery(query);
+        }
+        // 1 Thêm hợp đồng
+        public bool ThemHopDong(DTO_HOPDONG hd)
+        {
+            string query = @"INSERT INTO HOPDONG (MAPHONG, MAKH, NGAYKT, TRANGTHAIHOPDONG, THONGTINHD)
+                             VALUES (@MAPHONG, @MAKH, @NGAYKT, @TRANGTHAIHOPDONG, @THONGTINHD)";
 
-            SqlParameter[] PARAMETERS = new SqlParameter[]
-            {
-                new SqlParameter("@MAHOPDONG", MAHOPDONG)
+            SqlParameter[] p = {
+                new SqlParameter("@MAPHONG",          hd.MAPHONG),
+                new SqlParameter("@MAKH",             hd.MAKH),
+                new SqlParameter("@NGAYKT",           hd.NGAYKT),
+                new SqlParameter("@TRANGTHAIHOPDONG", GetStringTrangThaiHD(hd.TRANGTHAIHOPDONG)),
+                new SqlParameter("@THONGTINHD",       hd.THONGTINHD)
             };
-
-            return ExecuteNonQuery(QUERY, PARAMETERS) > 0;
+            return ExecuteNonQuery(query, p) > 0;
         }
 
-        public DataTable TimKiemHopDong(string KEYWORD)
+        // 2 Sửa thông tin hợp đồng
+        public bool SuaHopDong(DTO_HOPDONG hd)
         {
-            string QUERY = "SELECT * FROM HOPDONG WHERE THONGTINHD LIKE @KEYWORD OR TRANGTHAIHOPDONG LIKE @KEYWORD OR CAST(MAHOPDONG AS NVARCHAR) LIKE @KEYWORD";
-
-            SqlParameter[] PARAMETERS = new SqlParameter[]
-            {
-                new SqlParameter("@KEYWORD", "%" + KEYWORD + "%")
+            string query = @"UPDATE HOPDONG SET
+                            NGAYKT = @NGAYKT,
+                            TRANGTHAIHOPDONG = @TRANGTHAIHOPDONG,
+                            THONGTINHD = @THONGTINHD
+                            WHERE MAHOPDONG = @MAHOPDONG";
+            SqlParameter[] p = {
+                new SqlParameter("@MAHOPDONG",        hd.MAHOPDONG),
+                new SqlParameter("@NGAYKT",           hd.NGAYKT),
+                new SqlParameter("@TRANGTHAIHOPDONG", GetStringTrangThaiHD(hd.TRANGTHAIHOPDONG)),
+                new SqlParameter("@THONGTINHD",       hd.THONGTINHD)
             };
-
-            return ExecuteQuery(QUERY, PARAMETERS);
+            return ExecuteNonQuery(query, p) > 0;
         }
 
-        // Lấy thông tin chi tiết một hợp đồng 
-        public DataTable LayThongTinHopDong(int MAHOPDONG)
+        // 3 Xóa hợp đồng
+        public bool XoaHopDong(int maHopDong)
         {
-            string QUERY = "SELECT * FROM HOPDONG WHERE MAHOPDONG = @MAHOPDONG";
-
-            SqlParameter[] PARAMETERS = new SqlParameter[]
-            {
-                new SqlParameter("@MAHOPDONG", MAHOPDONG)
-            };
-
-            return ExecuteQuery(QUERY, PARAMETERS);
+            string query = "DELETE FROM HOPDONG WHERE MAHOPDONG = @MAHOPDONG";
+            SqlParameter[] p = { new SqlParameter("@MAHOPDONG", maHopDong) };
+            return ExecuteNonQuery(query, p) > 0;
         }
 
-        // Lấy danh sách hợp đồng theo phòng
-        public DataTable LayHopDongTheoPhong(int MAPHONG)
+        // 4 Tìm kiếm hợp đồng
+        public DataTable TimKiemHopDong(string tuKhoa)
         {
-            string QUERY = "SELECT * FROM HOPDONG WHERE MAPHONG = @MAPHONG";
-            SqlParameter[] PARAMETERS = new SqlParameter[]
-            {
-                new SqlParameter("@MAPHONG", MAPHONG)
+            string query = @"SELECT * FROM HOPDONG
+                             WHERE CAST(MAHOPDONG AS VARCHAR) LIKE @TK
+                                OR CAST(MAKHACH AS VARCHAR) LIKE @TK
+                                OR THONGTINHD LIKE @TK
+                                OR TRANGTHAIHOPDONG LIKE @TK";
+            SqlParameter[] p = {
+                new SqlParameter("@TK", "%" + tuKhoa + "%")
             };
-            return ExecuteQuery(QUERY, PARAMETERS);
+            return ExecuteQuery(query, p);
+        }
+
+        // 5 Xem thông tin hợp đồng theo mã
+        public DataTable XemHopDong(int maHopDong)
+        {
+            string query = "SELECT * FROM HOPDONG WHERE MAHOPDONG = @MAHOPDONG";
+            SqlParameter[] p = { new SqlParameter("@MAHOPDONG", maHopDong) };
+            return ExecuteQuery(query, p);
+        }
+
+        public bool CapNhatTrangThai(int maHopDong, TrangThaiHopDong trangThai)
+        {
+            string query = "UPDATE HOPDONG SET TRANGTHAIHOPDONG = @TT WHERE MAHOPDONG = @MA";
+            SqlParameter[] p = {
+                new SqlParameter("@TT", GetStringTrangThaiHD(trangThai)),
+                new SqlParameter("@MA", maHopDong)
+            };
+            return ExecuteNonQuery(query, p) > 0;
         }
     }
 }

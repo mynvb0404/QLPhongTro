@@ -41,7 +41,7 @@ namespace DAL_QuanLy
 
 
         //Đăng nhập
-        public DTO_TaiKhoan DangNhap(string tenDN, string matKhau)
+        public DTO_TAIKHOAN DangNhap(string tenDN, string matKhau)
         {
             string query = "SELECT TENDANGNHAP, MATKHAU, LOAITK, MANV, MAKH FROM TAIKHOAN " +
                            "WHERE TENDANGNHAP = @TenDN AND MATKHAU = @MatKhau";
@@ -57,11 +57,11 @@ namespace DAL_QuanLy
             if (dt.Rows.Count > 0)
             {
                 DataRow row = dt.Rows[0];
-                DTO_TaiKhoan tk = new DTO_TaiKhoan()
+                DTO_TAIKHOAN tk = new DTO_TAIKHOAN()
                 {
                     TENDANGNHAP = row["TENDANGNHAP"].ToString(),
                     MATKHAU = row["MATKHAU"].ToString(),
-                    LOAITK = row["LOAITK"].ToString(),
+                    LOAITK = Enum.TryParse(row["LOAITK"].ToString(), out LoaiTaiKhoan loai) ? loai: LoaiTaiKhoan.NV,
                     MANV = row["MANV"] != DBNull.Value ? (int?)Convert.ToInt32(row["MANV"]) : null,
                     MAKH = row["MAKH"] != DBNull.Value ? (int?)Convert.ToInt32(row["MAKH"]) : null
                 };
@@ -72,7 +72,7 @@ namespace DAL_QuanLy
         }
 
         // 1. Thêm tài khoản
-        public bool ThemTaiKhoan(DTO_TaiKhoan tk)
+        public bool ThemTaiKhoan(DTO_TAIKHOAN tk)
         {
             string query = "INSERT INTO TAIKHOAN (TENDANGNHAP, MATKHAU, LOAITK, MANV, MAKH) VALUES (@TenDN, @MK, @LoaiTK, @MaNV, @MaKH)";
 
@@ -81,8 +81,8 @@ namespace DAL_QuanLy
                 new SqlParameter("@TenDN", tk.TENDANGNHAP),
                 new SqlParameter("@MK", tk.MATKHAU),
                 new SqlParameter("@LoaiTK", tk.LOAITK),
-                new SqlParameter("@MaNV", (object)tk.MANV ?? DBNull.Value),
-                new SqlParameter("@MaKH", (object)tk.MAKH ?? DBNull.Value)
+                 new SqlParameter("@MANV", tk.MANV.HasValue ? tk.MANV : DBNull.Value),
+                new SqlParameter("@MAKH", tk.MAKH.HasValue ? tk.MAKH : DBNull.Value)
             };
 
             return ExecuteNonQuery(query, parameters) > 0;
@@ -95,11 +95,11 @@ namespace DAL_QuanLy
         }
 
         // 2. Sửa tài khoản
-        public bool SuaTaiKhoan(DTO_TaiKhoan tk)
+        public bool SuaTaiKhoan(DTO_TAIKHOAN tk)
         {
             try
             {
-                string loaiTK = tk.LOAITK?.Trim().ToUpper();
+                string loaiTK = tk.LOAITK.ToString().Trim().ToUpper();
                 string cotDieuKien = (loaiTK == "NV") ? "MANV" : "MAKH";
                 int? idDoiTuong = (loaiTK == "NV") ? tk.MANV : tk.MAKH;
 
