@@ -30,8 +30,11 @@ namespace GUI_QuanLy
         {
             (1, "Phòng 101 - KV001"),
             (2, "Phòng 102 - KV001"),
-            (3, "Phòng 201 - KV002"),
-            (4, "Phòng 301 - KV003"),
+            (3, "Phòng 103 - KV001"),
+            (4, "Phòng 201 - KV002"),
+            (5, "Phòng 202 - KV002"),
+            (6, "Phòng 301 - KV003"),
+            (7, "Phòng 302 - KV003"),
         };
 
         private readonly List<(int Ma, string Ten)> _danhSachKH = new()
@@ -39,6 +42,17 @@ namespace GUI_QuanLy
             (1, "Phạm Minh Tuấn"),
             (2, "Lê Thị Mai"),
             (3, "Hoàng Văn Đông"),
+            (4, "Trần Thu Hà"),
+            (5, "Lê Minh Khôi"),
+            (6, "Phạm Hải Yến"),
+            (7, "Hoàng Quốc Bảo"),
+            (8, "Vũ Hồng Ngọc"),
+            (9, "Phan Văn Đức"),
+            (10, "Đặng Minh Anh"),
+            (11, "Bùi Tuyết Mai"),
+            (12, "Ngô Tiến Tùng"),
+
+
         };
 
         // LOAD FORM
