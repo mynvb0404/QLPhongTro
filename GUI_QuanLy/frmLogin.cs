@@ -133,5 +133,10 @@ namespace GUI_QuanLy
             txtUsername.Clear();
             txtPassword.Clear();
         }
+
+        private void frmLogin_Load(object sender, EventArgs e)
+        {
+            cboRole.SelectedIndex = 0;
+        }
     }
 }

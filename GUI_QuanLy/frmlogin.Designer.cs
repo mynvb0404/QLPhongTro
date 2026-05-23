@@ -217,6 +217,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Đăng nhập";
             Activated += frmLogin_Activated;
+            Load += frmLogin_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
