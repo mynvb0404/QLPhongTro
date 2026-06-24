@@ -10,27 +10,70 @@ namespace DAL_QuanLy
         // Lấy danh sách nhân viên
         public DataTable LayDanhSachNhanVien()
         {
-            string query = "SELECT * FROM NHANVIEN";
+            string query = @"SELECT *, 
+                     (SELECT TENDANGNHAP FROM TAIKHOAN WHERE TAIKHOAN.MANV = NHANVIEN.MANV) AS TENDANGNHAP,
+                     (SELECT MATKHAU FROM TAIKHOAN WHERE TAIKHOAN.MANV = NHANVIEN.MANV) AS MATKHAU
+                     FROM NHANVIEN";
             return ExecuteQuery(query);
         }
 
-        //Thêm nhân viên
-        public bool ThemNhanVien(DTO_NhanVien nv)
+        public string ThemNhanVienVaTaiKhoan(DTO_NhanVien nv, string tenDN, string matKhau)
         {
-            string query = "INSERT INTO NHANVIEN (HONV, TENNV, SDT, EMAIL, CHUCVU) VALUES (@HONV, @TENNV, @SDT, @EMAIL, @CHUCVU)";
+            string query = @" DECLARE @InsertedRows TABLE (NewMANV INT);
+
+                              INSERT INTO NHANVIEN (HONV, TENNV, SDT, EMAIL, CHUCVU)
+                              OUTPUT INSERTED.MANV INTO @InsertedRows
+                              VALUES (@HoNV, @TenNV, @SDT, @Email, @ChucVu);
+
+                              DECLARE @NewMANV INT;
+                              SELECT @NewMANV = NewMANV FROM @InsertedRows;
+
+                              INSERT INTO TAIKHOAN (TENDANGNHAP, MATKHAU, LOAITK, MANV, MAKH)
+                              VALUES (@TenDN, @MatKhau, 'NV', @NewMANV, NULL);";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@HoNV", nv.HONV),
+                new SqlParameter("@TenNV", nv.TENNV),
+                new SqlParameter("@SDT", nv.SDT),
+                new SqlParameter("@Email", nv.EMAIL),
+                new SqlParameter("@ChucVu", nv.CHUCVU),
+        
+                new SqlParameter("@TenDN", tenDN),
+                new SqlParameter("@MatKhau", matKhau)
+            };
+
+            try
+            {
+                int rowsAffected = ExecuteNonQuery(query, parameters);
+
+                return rowsAffected > 0 ? "THÀNH CÔNG" : "Thất bại: Không có dữ liệu nào được thêm.";
+            }
+            catch (Exception ex)
+            {
+                return "Lỗi database hoặc trùng tên đăng nhập: " + ex.Message;
+            }
+        }
+        //Thêm nhân viên
+        public int ThemNhanVien(DTO_NhanVien nv)
+        {
+            string query = @"INSERT INTO NHANVIEN (HONV, TENNV, SDT, EMAIL, CHUCVU) 
+                    OUTPUT INSERTED.MANV
+                    VALUES (@HONV, @TENNV, @SDT, @EMAIL, @CHUCVU)";
 
             SqlParameter[] parameters = new SqlParameter[]
             {
                 new SqlParameter("@HONV", nv.HONV),
                 new SqlParameter("@TENNV", nv.TENNV),
-                new SqlParameter("@SDT", nv.SDT ?? (object)DBNull.Value),
-                new SqlParameter("@EMAIL", nv.EMAIL ?? (object)DBNull.Value),
-                new SqlParameter("@CHUCVU", nv.CHUCVU ?? (object)DBNull.Value)
+                new SqlParameter("@SDT", nv.SDT),
+                new SqlParameter("@EMAIL", nv.EMAIL),
+                new SqlParameter("@CHUCVU", nv.CHUCVU)
             };
 
-            return ExecuteNonQuery(query, parameters) > 0;
+            DBConnect db = new DBConnect();
+            object result = db.ExecuteScalar(query, parameters);
+            return result != null ? Convert.ToInt32(result) : 0;
         }
-
         // Sửa thông tin nhân viên
         public bool SuaNhanVien(DTO_NhanVien nv)
         {
@@ -65,10 +108,20 @@ namespace DAL_QuanLy
         // Tìm kiếm nhân viên theo từ khóa
         public DataTable TimKiemNhanVien(string keyword)
         {
-            string query = "SELECT * FROM NHANVIEN WHERE HONV LIKE @keyword OR TENNV LIKE @keyword OR SDT LIKE @keyword OR CHUCVU LIKE @keyword";
-            SqlParameter[] parameters = {
-                new SqlParameter("@keyword", "%" + keyword + "%")
+            string query = @"SELECT *, 
+                     (SELECT TENDANGNHAP FROM TAIKHOAN WHERE TAIKHOAN.MANV = NHANVIEN.MANV) AS TENDANGNHAP,
+                     (SELECT MATKHAU FROM TAIKHOAN WHERE TAIKHOAN.MANV = NHANVIEN.MANV) AS MATKHAU
+                     FROM NHANVIEN
+                     WHERE HONV LIKE @KEYWORD 
+                        OR TENNV LIKE @KEYWORD 
+                        OR SDT LIKE @KEYWORD
+                        OR MANV IN (SELECT MANV FROM TAIKHOAN WHERE TENDANGNHAP LIKE @KEYWORD)";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@KEYWORD", "%" + keyword + "%")
             };
+
             return ExecuteQuery(query, parameters);
         }
     }

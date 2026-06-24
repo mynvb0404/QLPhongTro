@@ -36,6 +36,7 @@ namespace DAL_QuanLy
             catch (Exception ex)
             {
                 Console.WriteLine("Lỗi ExecuteQuery: " + ex.Message);
+                throw;
             }
             finally
             {
@@ -65,6 +66,7 @@ namespace DAL_QuanLy
             catch (Exception ex)
             {
                 Console.WriteLine("Lỗi ExecuteNonQuery: " + ex.Message);
+                throw;
             }
             finally
             {
@@ -94,6 +96,7 @@ namespace DAL_QuanLy
             catch (Exception ex)
             {
                 Console.WriteLine("Lỗi ExecuteScalar: " + ex.Message);
+                throw;
             }
             finally
             {

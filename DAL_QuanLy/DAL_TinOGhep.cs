@@ -49,13 +49,13 @@ namespace DAL_QuanLy
             return ExecuteQuery(QUERY, PARAMETERS);
         }
 
-        public bool GuiYeuCauOGhep(int MATINOG, int MAKH_GUI)
+        public bool GUI_QuanLyYeuCauOGhep(int MATINOG, int MAKH_GUI_QuanLy)
         {
-            string QUERY = "INSERT INTO YEUCAUOGHEP(MATINOG, MAKH_GUI, TRANGTHAI) VALUES (@MATINOG, @MAKH_GUI, N'Chờ duyệt')";
+            string QUERY = "INSERT INTO YEUCAUOGHEP(MATINOG, MAKH_GUI_QuanLy, TRANGTHAI) VALUES (@MATINOG, @MAKH_GUI_QuanLy, N'Chờ duyệt')";
             SqlParameter[] PARAMETERS = new SqlParameter[]
             {
                 new SqlParameter("@MATINOG", MATINOG),
-                new SqlParameter("@MAKH_GUI", MAKH_GUI)
+                new SqlParameter("@MAKH_GUI_QuanLy", MAKH_GUI_QuanLy)
             };
             return ExecuteNonQuery(QUERY, PARAMETERS) > 0;
         }
@@ -93,16 +93,16 @@ namespace DAL_QuanLy
             return ExecuteNonQuery(QUERY, PARAMETERS) > 0;
         }
 
-        public bool GuiTinNhanHoiThoai(DTO_HoiThoai HT)
-        {
-            string QUERY = "INSERT INTO HOITHOAI(MAKH, MANV, THOIGIANTAOHT) VALUES (@MAKH, @MANV, @THOIGIANTAOHT)";
-            SqlParameter[] PARAMETERS = new SqlParameter[]
-            {
-                new SqlParameter("@MAKH", HT.MAKH),
-                new SqlParameter("@MANV", HT.MANV),
-                new SqlParameter("@THOIGIANTAOHT", HT.THOIGIANTAOHT == default ? DateTime.Now : HT.THOIGIANTAOHT)
-            };
-            return ExecuteNonQuery(QUERY, PARAMETERS) > 0;
-        }
+        //public bool GUI_QuanLyTinNhanHoiThoai(DTO_HoiThoai HT)
+        //{
+        //    string QUERY = "INSERT INTO HOITHOAI(MAKH, MANV, THOIGIANTAOHT) VALUES (@MAKH, @MANV, @THOIGIANTAOHT)";
+        //    SqlParameter[] PARAMETERS = new SqlParameter[]
+        //    {
+        //        new SqlParameter("@MAKH", HT.MAKH),
+        //        new SqlParameter("@MANV", HT.MANV),
+        //        new SqlParameter("@THOIGIANTAOHT", HT.THOIGIANTAOHT == default ? DateTime.Now : HT.THOIGIANTAOHT)
+        //    };
+        //    return ExecuteNonQuery(QUERY, PARAMETERS) > 0;
+        //}
     }
 }
